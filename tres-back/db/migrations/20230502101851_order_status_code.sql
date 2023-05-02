@@ -1,8 +1,8 @@
 -- migrate:up
-CREATE TABLE images(
+CREATE TABLE order_status(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    food_image VARCHAR(200)
+    status VARCHAR(100)
 )
 
 -- migrate:down
-DROP TABLE images
+DROP TABLE order_status_codes

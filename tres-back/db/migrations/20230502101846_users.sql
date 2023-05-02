@@ -10,8 +10,8 @@ CREATE TABLE users (
     gender VARCHAR(100),
     birth_date DATE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP
-    FOREIGN KEY(country_preference_id) REFERENCES countries (id);
+    updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY(country_preference_id) REFERENCES countries (id)
 )
 
 -- migrate:down

@@ -1,10 +1,10 @@
 -- migrate:up
 CREATE TABLE order_items(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    order_price VARCHAR(100),
-    order_count int,
-    foods_id int,
-    FOREIGN KEY (foods_id) REFERENCES foods(id)
+    price DECIMAL NOT NULL,
+    quantity INT,
+    food_id INT,
+    FOREIGN KEY (food_id) REFERENCES foods(id)
 )
 
 -- migrate:down
