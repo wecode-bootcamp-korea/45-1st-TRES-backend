@@ -13,24 +13,23 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(routes);
 
-dataSource
-  .initialize()
-  .then(() => {
-    console.log('Data Source has been initalized!');
-  })
-  .catch((err) => {
-    console.log('Error occured during Data Source initializtion!', err);
-    dataSource.destroy();
-  });
+const port = process.env.PORT;
 
 app.get('/ping', (req, res) => {
   res.json({ message: 'pong!' });
 });
 
-const port = process.env.PORT;
-
 const start = async () => {
   try {
+    dataSource
+      .initialize()
+      .then(() => {
+        console.log('Data Source has been initalized!');
+      })
+      .catch((err) => {
+        console.log('Error occured during Data Source initializtion!', err);
+        dataSource.destroy();
+      });
     app.listen(port, () => console.log(`Server is listening on ${port}`));
   } catch (err) {
     console.log(err);
