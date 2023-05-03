@@ -16,22 +16,11 @@ const getCountriesList = async (req, res) => {
 };
 
 const joinOk = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
-  console.log(`22222222222`, email, firstName, lastName, cointries, umber, gender, birth, address);
+  console.log(`22222222222`, email, firstName, lastName, cointries, pNumber, gender, birth, address);
 
-  await passwordValidationCheck(password);
+  // await passwordValidationCheck(password);
 
-  const joinOk = await userDao.joinOk(
-    email,
-    firstName,
-    lastName,
-    password,
-    cointries,
-
-    pNumber,
-    gender,
-    birth,
-    address
-  );
+  const joinOk = await userDao.joinOk(email, firstName, lastName, password, cointries, pNumber, gender, birth, address);
 
   return joinOk;
 };
