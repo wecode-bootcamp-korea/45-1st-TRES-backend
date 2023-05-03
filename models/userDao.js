@@ -1,5 +1,20 @@
 const dataSoure = require('./dataSource');
 
+const getCountriesList = async (req, res) => {
+  try {
+    return await dataSoure.query(`
+    SELECT country
+    FROM
+    countries;
+  `);
+  } catch (err) {
+    console.log(err);
+    err = new Error('DATA_NOT_FOUND');
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
 const joinOk = async (
   email,
   firstName,
@@ -75,20 +90,21 @@ const joinOk = async (
     // `,
     //   [countries.insertedId]
     // );
-    const coutryResult = await dataSoure.query(`
-        INSERT INTO countries(
-          country
-        )
-    `);
+    // const coutryResult = await dataSoure.query(`
+    //     INSERT INTO countries(
+    //       country
+    //     )
+    // `);
 
     return res.status(201).console.log('joinOk success!');
   } catch (err) {
     console.log(err);
-    const error = new Error('INVALID_DATA_INPUT');
-    throw error;
+    err = new Error('INVALID_DATA_INPUT');
+    err.statusCode = 500;
   }
 };
 
 module.exports = {
+  getCountriesList,
   joinOk,
 };

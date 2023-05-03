@@ -1,5 +1,16 @@
 const userService = require('../services/userService');
 
+const getCountriesList = async (req, res) => {
+  try {
+    const result = await userService.getCountriesList();
+    return res.status(200).json({ result });
+  } catch (err) {
+    err = new Error('CONTROLLER_ERROR');
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
 const joinOk = async (req, res) => {
   try {
     const { email, firstName, lastName, password, countries, pNumber, gender, birth, address } = req.body;
@@ -17,4 +28,5 @@ const joinOk = async (req, res) => {
 
 module.exports = {
   joinOk,
+  getCountriesList,
 };
