@@ -8,6 +8,7 @@ CREATE TABLE users (
     country_preference_id INT NOT NULL,
     phone_number VARCHAR(200) NOT NULL UNIQUE,
     gender VARCHAR(100),
+    points DECIMAL(12,2) NOT NULL DEFAULT 0,
     birth_date DATE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
