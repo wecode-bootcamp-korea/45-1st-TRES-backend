@@ -51,24 +51,24 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
         `
         SELECT country
         FROM countries
-        WHERE = ?
+        WHERE country = ?;
        `,
         [countries[i]]
       );
-      for (leti = 0; i < countries.length; i++) {
-        await dataSource.query(
-          `
-          INSERT INTO country_user(
-            country_id,
-            user_id
-          ) VALUES (?, ?);
-        `,
-          [countryResult[i], userResult.insertId]
-        );
-      }
+    }
+    for (let i = 0; i < countries.length; i++) {
+      await dataSource.query(
+        `
+        INSERT INTO country_user(
+          country_id,
+          user_id
+        ) VALUES (?, ?);
+      `,
+        [countryResult[i], userResult.insertId]
+      );
     }
 
-    return res.status(201).console.log('joinOk success!');
+    return res.status(201).send('joinOk sucess!');
   } catch (err) {
     console.log(err);
     err = new Error('INVALID_DATA_INPUT');
@@ -76,7 +76,28 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
   }
 };
 
+const getUserByEmail = async (email) => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT
+      id,
+      password
+      FROM users
+      WHERE email = ?;
+    `,
+      [email]
+    );
+  } catch (err) {
+    console.log(err);
+    err = new Error('DATA_NOT_FOUND');
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
 module.exports = {
   getCountriesList,
   joinOk,
+  getUserByEmail,
 };

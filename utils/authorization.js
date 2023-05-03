@@ -1,19 +1,27 @@
-const jwt = require('jsonwebtoken');
-const userService = require('../services/userService');
+// const jwt = require('jsonwebtoken');
+// const userService = require('../services/userService');
 
-const authhorization = async (req, res, next) => {
-  try {
-    const token = req.headers.authhorization;
+// const authorization = async (req, res, next) => {
+//   try {
+//     const token = req.headers.authhorization;
 
-    if (!token) return res.status(400);
+//     if (!token) return res.status(400);
 
-    // const decoded = jwt.verify(token, process.env.SECRETKEY);
-    // const user = await userService.getUserById(decoded.userId);
+//     const decoded = jwt.verify(token, process.env.SECRETKEY);
+//     const user = await userService.getUserById(decoded.userId);
+//     if (!user) {
+//       const error = new Error('USER_NOT_EXIST');
+//       error.statusCode = 404;
 
-    next();
-  } catch (err) {
-    return res.status(401);
-  }
-};
+//       return res.status(error.statusCode).json({ message: error.message });
+//     }
 
-module.exports = { authhorization };
+//     req.user = user;
+
+//     next();
+//   } catch (err) {
+//     return res.status(401).json({ message: 'Token Error' });
+//   }
+// };
+
+// module.exports = { authorization };
