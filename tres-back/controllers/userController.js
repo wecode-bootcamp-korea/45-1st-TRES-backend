@@ -2,13 +2,38 @@ const userService = require('../services/userService');
 
 const signUp = async (req, res) => {
   try {
-    const { email, firstName, lastName, password, countryPre, pNumber, gender, birth, adress } = req.body;
-    console.log(`111111111111111`, email, firstName, lastName, countryPre, pNumber, gender, birth, adress);
+    const { email, firstName, lastName, password, country1, country2, country3, pNumber, gender, birth, address } =
+      req.body;
+    console.log(
+      `111111111111111`,
+      email,
+      firstName,
+      lastName,
+      country1,
+      country2,
+      country3,
+      pNumber,
+      gender,
+      birth,
+      address
+    );
 
-    if (!email || !firstName || !lastName || !password || !countryPre || !pNumber || !gender || !birth || adress) {
-      return res.status(400);
+    if (!email || !firstName || !lastName || !password || !pNumber || !gender || !birth || !address) {
+      return res.status(400).json({ message: `1111Error` });
     }
-    await userService.signUp(email, firstName, lastName, password, countryPre, pNumber, gender, birth, adress);
+    await userService.signUp(
+      email,
+      firstName,
+      lastName,
+      password,
+      country1,
+      country2,
+      country3,
+      pNumber,
+      gender,
+      birth,
+      address
+    );
   } catch (err) {
     console.log(err);
     return res.status(err.statusCode || 500);
