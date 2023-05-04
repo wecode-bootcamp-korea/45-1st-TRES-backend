@@ -1,6 +1,6 @@
 const dataSource = require("./dataSource");
 
-function filterBuilder(countryId, spiceLevel) {
+function filterBuilder(countryId, spiceLevel, allergyId, meatId) {
   let conditionArr = [];
 
   if (countryId) {
@@ -9,6 +9,14 @@ function filterBuilder(countryId, spiceLevel) {
 
   if (spiceLevel) {
     conditionArr.push(`f.spice_level = ${spiceLevel}`);
+  }
+
+  if (allergyId) {
+    conditionArr.push(`f.spice_level = ${allergyId}`);
+  }
+
+  if (meatId) {
+    conditionArr.push(`f.spice_level = ${meatId}`);
   }
 
   let whereCondition = "";
@@ -35,15 +43,41 @@ function orderByBuilder(orderBy) {
       break;
   }
   return orderQuery;
-} //(SELECT food_id, COUNT(*) FROM likes GROUP BY food_id)
+}
 
-const filter = async (orderBy, countryId, spiceLevel) => {
+function limitBuilder(limit, offset) {
+  if (!limit) {
+    limit = 12;
+  }
+
+  if (!offset) {
+    offset = 0;
+  }
+
+  return `LIMIT ${limit} OFFSET ${offset}`;
+}
+
+const filter = async (
+  orderBy,
+  countryId,
+  spiceLevel,
+  allergyId,
+  meatId,
+  limit,
+  offset
+) => {
   try {
-    const baseQuery = `SELECT f.food, f.price, (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count FROM foods f JOIN countries c ON c.id = f.country_id`;
-    const whereCondition = filterBuilder(countryId, spiceLevel);
+    const baseQuery = `SELECT f.food, f.eng_food, f.price, (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count FROM foods f JOIN countries c ON c.id = f.country_id`;
+    const whereCondition = filterBuilder(
+      countryId,
+      spiceLevel,
+      allergyId,
+      meatId
+    );
     const sortQuery = orderByBuilder(orderBy);
+    const limitQuery = limitBuilder(limit, offset);
     const rooms = await dataSource.query(
-      `${baseQuery} ${whereCondition} ${sortQuery}`
+      `${baseQuery} ${whereCondition} ${sortQuery} ${limitQuery}`
     );
     return rooms;
   } catch (err) {

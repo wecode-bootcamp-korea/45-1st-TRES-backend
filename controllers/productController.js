@@ -2,9 +2,18 @@ const productService = require("../services/productService");
 
 const filter = async (req, res) => {
   try {
-    const { orderBy, countryId, spiceLevel } = req.query;
+    const { orderBy, countryId, spiceLevel, allergyId, meatId, limit, offset } =
+      req.query;
 
-    const result = await productService.filter(orderBy, countryId, spiceLevel);
+    const result = await productService.filter(
+      orderBy,
+      countryId,
+      spiceLevel,
+      allergyId,
+      meatId,
+      limit,
+      offset
+    );
     return res.status(200).json({ data: result });
   } catch (err) {
     console.log(err);
