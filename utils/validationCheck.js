@@ -1,3 +1,14 @@
+const emailValidationCheck = async (email) => {
+  // email validation using REGEX
+  const emailValidation = new RegExp('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/');
+  if (!emailValidation.test(email)) {
+    const err = new Error('EMAIL_IS_NOT_VALID');
+    err.statusCode = 409;
+    throw err;
+  }
+  return emailValidation;
+};
+
 const passwordValidationCheck = async (password) => {
   // password validation using REGEX
   const pwValidation = new RegExp('^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})');
@@ -9,4 +20,7 @@ const passwordValidationCheck = async (password) => {
   return pwValidation;
 };
 
-module.exports = { passwordValidationCheck };
+module.exports = {
+  passwordValidationCheck,
+  emailValidationCheck,
+};

@@ -8,11 +8,11 @@ const userEmailCheck = async (req, res) => {
     }
     const result = await userService.userEmailCheck(email);
     if (result === undefined) {
-      return res.json('EMAIL_NOT_FOUND!');
-      return false;
+      // return console.log('EMAIL_NOT_FOUND!');
+      return res.status(400).json({ isEmailExist: false });
     }
-    return res.json('EMAIL_FOUND!');
-    return true;
+    // return console.log('EMAIL_FOUND!');
+    return res.status(200).json({ isEmailExist: true });
   } catch (err) {
     console.log(err);
     err = new Error('KEY_ERROR');
@@ -30,7 +30,7 @@ const login = async (req, res) => {
       return res.status(400).send(false);
     }
     const result = await userService.login(email, password);
-    console.log(`result`, result);
+    console.log(`result5555555`, result);
     if (!!result == false) {
       console.log('EMAIL_OR_PASSWORD_NOT_FOUND');
       return res.status(400).json('USER_NOT_FOUND');
@@ -55,25 +55,25 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-const joinOk = async (req, res) => {
-  try {
-    const { email, firstName, lastName, password, countries, pNumber, gender, birth, address } = req.body;
-    console.log(`111111111111111`, email, firstName, lastName, countries, pNumber, gender, birth, address);
+// const joinOk = async (req, res) => {
+//   try {
+//     const { email, firstName, lastName, password, countries, pNumber, gender, birth, address } = req.body;
+//     console.log(`111111111111111`, email, firstName, lastName, countries, pNumber, gender, birth, address);
 
-    if (!email || !firstName || !lastName || !password || !pNumber || !gender || !birth || !address) {
-      return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
-    }
-    await userService.joinOk(email, firstName, lastName, password, countries, pNumber, gender, birth, address);
-    return res.status(200).send('JOIN_SUCCESS!');
-  } catch (err) {
-    console.log(err);
-    return res.status(err.statusCode || 500);
-  }
-};
+//     if (!email || !firstName || !lastName || !password || !pNumber || !gender || !birth || !address) {
+//       return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
+//     }
+//     await userService.joinOk(email, firstName, lastName, password, countries, pNumber, gender, birth, address);
+//     return res.status(200).send('JOIN_SUCCESS!');
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(err.statusCode || 500);
+//   }
+// };
 
 module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
-  joinOk,
+  // joinOk,
 };
