@@ -3,7 +3,8 @@ const productController = require("../controllers/productController");
 
 const router = express.Router();
 
-router.get("", productController.viewCountries);
+//router.get("", productController.viewCountries);
+router.get("", productController.filter);
 
 module.exports = {
   router,
