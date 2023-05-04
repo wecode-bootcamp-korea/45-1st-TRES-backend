@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE TABLE food_images(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    image_url VARCHAR(2000)
+    food_image VARCHAR(2000) NOT NULL
 )
 
 -- migrate:down
