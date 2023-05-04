@@ -81,7 +81,7 @@ const getUserByEmail = async (email) => {
     return await dataSource.query(
       `
       SELECT
-      id,
+      email,
       password
       FROM users
       WHERE email = ?;

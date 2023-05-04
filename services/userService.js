@@ -28,9 +28,10 @@ const joinOk = async (email, firstName, lastName, password, cointries, pNumber, 
 const login = async (email, password) => {
   try {
     const [user] = await userDao.getUserByEmail(email);
+    console.log(`2222222222`, user);
 
     if (!user || !password) {
-      throw err;
+      return user;
     }
     return jwt.sign({ id: user.id, email: user.email }, process.env.SECRETKEY, {
       expiresIn: '10h',

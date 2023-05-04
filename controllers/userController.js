@@ -27,15 +27,34 @@ const joinOk = async (req, res) => {
   }
 };
 
+const userEmailCheck = async (res, req) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).send(false);
+    }
+  } catch (err) {
+    console.log(err);
+    err = new Error('KEY_ERROR');
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(`1111111`, req.body);
     // console.log(email, password);
     if (!email || !password) {
-      return res.status(400).send('KEY_EMPTY');
+      return res.status(400).send(false);
     }
     const result = await userService.login(email, password);
+    console.log(`result`, result);
+    if (!!result == false) {
+      console.log('EMAIL_OR_PASSWORD_NOT_FOUND');
+      return res.status(400).json('USER_NOT_FOUND');
+    }
     return res.status(200).send({ accessToken: result });
   } catch (err) {
     console.log(err);
