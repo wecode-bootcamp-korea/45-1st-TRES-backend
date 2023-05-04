@@ -1,28 +1,5 @@
 const dataSource = require("./dataSource");
 
-// const viewCountries = async (countryId) => {
-//   try {
-//     console.log(countryId);
-//     return dataSource.query(
-//       `SELECT
-//             f.food,
-//             f.price,
-//             fi.image_url
-//           FROM foods f
-//           JOIN countries c ON c.id = f.country_id
-//           JOIN food_images fi ON fi.id = f.food_image_id
-//         WHERE f.country_id = ?
-//       `,
-//       [countryId]
-//     );
-//   } catch (err) {
-//     console.log(countryId);
-//     const error = new Error("errrrrror");
-//     error.statusCode = 500;
-//     throw error;
-//   }
-// };
-
 function filterBuilder(countryId, spiceLevel) {
   let conditionArr = [];
 
@@ -38,18 +15,38 @@ function filterBuilder(countryId, spiceLevel) {
   if (conditionArr.length > 0) {
     whereCondition = `WHERE ${conditionArr.join(" AND ")}`;
   }
-  console.log(whereCondition);
   return whereCondition;
 }
 
-const filter = async (countryId, spiceLevel) => {
+function orderByBuilder(orderBy) {
+  let orderQuery = "";
+  switch (orderBy) {
+    case "priceAsc":
+      orderQuery = "ORDER BY f.price ASC, f.id ASC";
+      break;
+    case "priceDesc":
+      orderQuery = "ORDER BY f.price DESC, f.id DESC";
+      break;
+    case "best":
+      orderQuery = "ORDER BY likes_count DESC";
+      break;
+    default:
+      orderQuery = "ORDER BY f.id";
+      break;
+  }
+  return orderQuery;
+} //(SELECT food_id, COUNT(*) FROM likes GROUP BY food_id)
+
+const filter = async (orderBy, countryId, spiceLevel) => {
   try {
-    const baseQuery = `SELECT * FROM foods f JOIN countries c ON c.id = f.country_id`;
+    const baseQuery = `SELECT f.food, f.price, (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count FROM foods f JOIN countries c ON c.id = f.country_id`;
     const whereCondition = filterBuilder(countryId, spiceLevel);
-    const rooms = await dataSource.query(`${baseQuery} ${whereCondition}`);
+    const sortQuery = orderByBuilder(orderBy);
+    const rooms = await dataSource.query(
+      `${baseQuery} ${whereCondition} ${sortQuery}`
+    );
     return rooms;
   } catch (err) {
-    console.log(countryId, spiceLevel);
     const error = new Error("errrrrror");
     error.statusCode = 500;
     throw error;
@@ -57,6 +54,5 @@ const filter = async (countryId, spiceLevel) => {
 };
 
 module.exports = {
-  // viewCountries,
   filter,
 };

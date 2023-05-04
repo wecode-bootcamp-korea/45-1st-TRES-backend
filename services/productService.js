@@ -1,18 +1,11 @@
 const productDao = require("../models/productDao");
 
-// const viewCountries = async (countryId) => {
-//   const viewCountries = await productDao.viewCountries(countryId);
-
-//   return viewCountries;
-// };
-
-const filter = async (countryId, spiceLevel) => {
-  const filter = await productDao.filter(countryId, spiceLevel);
+const filter = async (orderBy, countryId, spiceLevel) => {
+  const filter = await productDao.filter(orderBy, countryId, spiceLevel);
 
   return filter;
 };
 
 module.exports = {
-  //viewCountries,
   filter,
 };
