@@ -63,7 +63,7 @@ const joinOk = async (req, res) => {
       return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
     }
     await userService.joinOk(email, firstName, lastName, password, countries, pNumber, gender, birth, address);
-    return res.status(200).send('JOIN_SUCCESS!');
+    return res.status(200).json({ message: '회원가입 성공!' });
   } catch (err) {
     console.log(err);
     return res.status(err.statusCode || 500);

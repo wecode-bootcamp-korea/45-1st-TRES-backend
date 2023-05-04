@@ -13,6 +13,7 @@ const getUserByEmail = async (email) => {
       [email]
     );
   } catch (err) {
+    console.log(err);
     err = new Error('DATA_NOT_FOUND');
     err.statusCode = 500;
     throw err;
@@ -27,6 +28,7 @@ const getCountriesList = async (req, res) => {
     ORDER BY country;
   `);
   } catch (err) {
+    console.log(err);
     err = new Error('DATA_NOT_FOUND');
     err.statusCode = 500;
     throw err;
@@ -43,6 +45,7 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
     `,
       [address]
     );
+    console.log(`4444444`, addressResult.insertId);
     const userResult = await dataSource.query(
       `
         INSERT INTO users (
@@ -58,6 +61,7 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
     `,
       [email, firstName, lastName, password, addressResult.insertId, pNumber, gender, birth]
     );
+    console.log(`5555`, userResult);
 
     let countryResult = [];
     for (let i = 0; i < countries.length; i++) {
@@ -69,8 +73,11 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
         `,
         [countries[i]]
       );
+      console.log(countryId[0]['id']);
       countryResult.push(countryId[0]['id']);
     }
+
+    console.log(`77777777777`, countryResult);
 
     for (let i = 0; i < countries.length; i++) {
       await dataSource.query(
@@ -83,8 +90,8 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
         [countryResult[i], userResult.insertId]
       );
     }
-    return;
   } catch (err) {
+    console.log(err);
     err = new Error('INVALID_DATA_INPUT');
     err.statusCode = 500;
   }

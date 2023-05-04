@@ -1,6 +1,6 @@
 const emailValidationCheck = async (email) => {
   // email validation using REGEX
-  const emailValidation = new RegExp('');
+  const emailValidation = new RegExp('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/');
   if (!emailValidation.test(email)) {
     const err = new Error('EMAIL_IS_NOT_VALID');
     err.statusCode = 409;
