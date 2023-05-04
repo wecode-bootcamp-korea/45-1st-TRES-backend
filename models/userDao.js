@@ -17,7 +17,6 @@ const getCountriesList = async (req, res) => {
 };
 
 const joinOk = async (email, firstName, lastName, password, countries, pNumber, gender, birth, address) => {
-  console.log(`33333333`, email, firstName, lastName, password, countries, pNumber, gender, birth, address);
   try {
     const addressResult = await dataSource.query(
       `
