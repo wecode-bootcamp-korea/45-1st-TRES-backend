@@ -29,10 +29,20 @@ const login = async (email, password) => {
     } else if (!user || !passwordResult) {
       return undefined;
     }
-    return jwt.sign({ id: user.id, email: user.email }, process.env.SECRETKEY, {
-      expiresIn: '10h',
-      issuer: 'inni',
-    });
+    return jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        fristName: user.fristName,
+        lastName: user.lastName,
+        address: user.address,
+      },
+      process.env.SECRETKEY,
+      {
+        expiresIn: '10h',
+        issuer: 'inni',
+      }
+    );
   } catch (err) {
     console.log(err);
     err = new Error('INVALID_USER');
@@ -51,37 +61,36 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-// const joinOk = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
-//   console.log(`22222222222`, email, firstName, lastName, cointries, pNumber, gender, birth, address);
-//   try {
-//     await emailValidationCheck(email);
-//     await passwordValidationCheck(password);
-//     const hashedPassword = await bcrypt.hash(password, 12);
-//     console.log(`hashed`, hashedPassword);
+const joinOk = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
+  try {
+    await emailValidationCheck(email);
+    await passwordValidationCheck(password);
+    const hashedPassword = await bcrypt.hash(password, 12);
+    console.log(`hashed`, hashedPassword);
 
-//     const joinOk = await userDao.joinOk(
-//       email,
-//       firstName,
-//       lastName,
-//       hashedPassword,
-//       cointries,
-//       pNumber,
-//       gender,
-//       birth,
-//       address
-//     );
-//     return joinOk;
-//   } catch (err) {
-//     console.log(err);
-//     err = new Error('Service_Error');
-//     err.statusCode = 409;
-//     throw err;
-//   }
-// };
+    const joinOk = await userDao.joinOk(
+      email,
+      firstName,
+      lastName,
+      hashedPassword,
+      cointries,
+      pNumber,
+      gender,
+      birth,
+      address
+    );
+    return joinOk;
+  } catch (err) {
+    console.log(err);
+    err = new Error('Service_Error');
+    err.statusCode = 409;
+    throw err;
+  }
+};
 
 module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
-  // joinOk,
+  joinOk,
 };

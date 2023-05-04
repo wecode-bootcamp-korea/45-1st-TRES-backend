@@ -55,25 +55,24 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-// const joinOk = async (req, res) => {
-//   try {
-//     const { email, firstName, lastName, password, countries, pNumber, gender, birth, address } = req.body;
-//     console.log(`111111111111111`, email, firstName, lastName, countries, pNumber, gender, birth, address);
+const joinOk = async (req, res) => {
+  try {
+    const { email, firstName, lastName, password, countries, pNumber, gender, birth, address } = req.body;
 
-//     if (!email || !firstName || !lastName || !password || !pNumber || !gender || !birth || !address) {
-//       return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
-//     }
-//     await userService.joinOk(email, firstName, lastName, password, countries, pNumber, gender, birth, address);
-//     return res.status(200).send('JOIN_SUCCESS!');
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(err.statusCode || 500);
-//   }
-// };
+    if (!email || !firstName || !lastName || !password || !pNumber || !gender || !birth || !address) {
+      return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
+    }
+    await userService.joinOk(email, firstName, lastName, password, countries, pNumber, gender, birth, address);
+    return res.status(200).send('JOIN_SUCCESS!');
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500);
+  }
+};
 
 module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
-  // joinOk,
+  joinOk,
 };
