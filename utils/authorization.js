@@ -2,10 +2,29 @@ const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
 
 const authorization = async (req, res, next) => {
-  const token = req.heaers.authorization;
-  if (!token) return res.status(400).json({ message: 'TOKEN_EMPTY' });
+  try {
+    const token = req.headers.authorization;
 
-  const decoded = jwt.verify(token, process.env.SECRETKEY);
-  console.log(decoded);
-  const user = await userService.userEmailCheck(decoded.email);
+    console.log(`token`, token);
+    if (!token) return res.status(400).json({ message: 'TOKEN_EMPTY' });
+
+    const decoded = jwt.verify(token, process.env.SECRETKEY);
+    console.log(`decoded`, decoded);
+    const [user] = await userService.getUserById(decoded.id);
+    console.log(`user`, user);
+
+    if (!user) {
+      const error = new Error('USER_DOES_NOT_EXIST');
+      error.statusCode = 404;
+
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+
+    req = user;
+
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Token Error' });
+  }
 };
+module.exports = { authorization };

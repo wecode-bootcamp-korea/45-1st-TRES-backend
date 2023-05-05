@@ -19,6 +19,7 @@ const userEmailCheck = async (email) => {
 const login = async (email, password) => {
   try {
     const [user] = await userDao.getUserByEmail(email);
+    console.log(user);
 
     const passwordResult = await bcrypt.compare(password, user.password);
     if (passwordResult == false) {
@@ -29,11 +30,6 @@ const login = async (email, password) => {
     return jwt.sign(
       {
         id: user.id,
-        email: user.email,
-        fristName: user.fristName,
-        lastName: user.lastName,
-        address: user.address_id,
-        points: user.points,
       },
       process.env.SECRETKEY,
       {
@@ -85,20 +81,20 @@ const signUp = async (email, firstName, lastName, password, cointries, pNumber, 
   }
 };
 
-// const getUserById = async (userId) => {
-//   try {
-//     const user = await userDao.getUserById(userId);
-//     return user;
-//   } catch (err) {
-//     console.log(err);
-//     throw new Error('INVALID_USER');
-//   }
-// };
+const getUserById = async (userId) => {
+  try {
+    const user = await userDao.getUserById(userId);
+    return user;
+  } catch (err) {
+    console.log(err);
+    throw new Error('INVALID_USER');
+  }
+};
 
 module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
   signUp,
-  // getUserById,
+  getUserById,
 };

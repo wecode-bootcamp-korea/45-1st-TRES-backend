@@ -5,6 +5,7 @@ const getUserByEmail = async (email) => {
     return await dataSource.query(
       `
       SELECT
+      id,
       email,
       password
       FROM users
@@ -91,9 +92,33 @@ const signUp = async (email, firstName, lastName, password, countries, pNumber, 
     err.statusCode = 500;
   }
 };
+const getUserById = async (userId) => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT
+      id,
+      email,
+      first_name,
+      last_name,
+      address_id,
+      phone_number,
+      points
+      FROM users
+      WHERE id = ?;
+    `,
+      [userId]
+    );
+  } catch (err) {
+    console.log(err);
+    err = new Error('USER_NOT_FOUND');
+    err.statusCode = 500;
+  }
+};
 
 module.exports = {
   getCountriesList,
   signUp,
   getUserByEmail,
+  getUserById,
 };

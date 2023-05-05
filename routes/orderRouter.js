@@ -1,7 +1,8 @@
-const express = requir('express');
+const express = require('express');
 const userController = require('../controllers/userController');
+const { authorization } = require('../utils/authorization');
 const router = express.Router();
 
-const { authorization } = require('../utils/authorization');
+router.get('/', authorization);
 
-router.get('/');
+module.exports = { router };
