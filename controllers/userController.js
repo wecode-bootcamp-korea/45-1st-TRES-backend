@@ -3,13 +3,11 @@ const userService = require('../services/userService');
 const userEmailCheck = async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) {
-      return res.status(400).send('EMAIL_EMPTY!');
-    }
+    if (!email) return res.status(400).send('EMAIL_EMPTY!');
+
     const result = await userService.userEmailCheck(email);
-    if (!result) {
-      return res.status(400).json({ isEmailExist: false });
-    }
+    if (!result) return res.status(400).json({ isEmailExist: false });
+
     return res.status(200).json({ isEmailExist: true });
   } catch (err) {
     console.log(err);
@@ -26,9 +24,8 @@ const login = async (req, res) => {
       return res.status(400).send(false);
     }
     const result = await userService.login(email, password);
-    if (!!result == false) {
-      return res.status(400).json('USER_NOT_FOUND');
-    }
+    console.log(`11111111`, result);
+    if (!result) return res.status(400).json({ passwordError: 'CHECK_PASSWORD' });
     return res.status(200).send({ accessToken: result });
   } catch (err) {
     console.log(err);
