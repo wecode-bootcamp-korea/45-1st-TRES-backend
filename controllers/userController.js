@@ -24,7 +24,6 @@ const login = async (req, res) => {
       return res.status(400).send(false);
     }
     const result = await userService.login(email, password);
-    console.log(`11111111`, result);
     if (!result) return res.status(400).json({ passwordError: 'CHECK_PASSWORD' });
     return res.status(200).send({ accessToken: result });
   } catch (err) {
