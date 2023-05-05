@@ -1,27 +1,11 @@
-// const jwt = require('jsonwebtoken');
-// const userService = require('../services/userService');
+const jwt = require('jsonwebtoken');
+const userService = require('../services/userService');
 
-// const authorization = async (req, res, next) => {
-//   try {
-//     const token = req.headers.authhorization;
+const authorization = async (req, res, next) => {
+  const token = req.heaers.authorization;
+  if (!token) return res.status(400).json({ message: 'TOKEN_EMPTY' });
 
-//     if (!token) return res.status(400);
-
-//     const decoded = jwt.verify(token, process.env.SECRETKEY);
-//     const user = await userService.getUserById(decoded.userId);
-//     if (!user) {
-//       const error = new Error('USER_NOT_EXIST');
-//       error.statusCode = 404;
-
-//       return res.status(error.statusCode).json({ message: error.message });
-//     }
-
-//     req.user = user;
-
-//     next();
-//   } catch (err) {
-//     return res.status(401).json({ message: 'Token Error' });
-//   }
-// };
-
-// module.exports = { authorization };
+  const decoded = jwt.verify(token, process.env.SECRETKEY);
+  console.log(decoded);
+  const user = await userService.userEmailCheck(decoded.email);
+};

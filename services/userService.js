@@ -85,9 +85,20 @@ const signUp = async (email, firstName, lastName, password, cointries, pNumber, 
   }
 };
 
+// const getUserById = async (userId) => {
+//   try {
+//     const user = await userDao.getUserById(userId);
+//     return user;
+//   } catch (err) {
+//     console.log(err);
+//     throw new Error('INVALID_USER');
+//   }
+// };
+
 module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
   signUp,
+  // getUserById,
 };
