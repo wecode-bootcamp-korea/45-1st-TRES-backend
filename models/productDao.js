@@ -67,7 +67,15 @@ const filter = async (
   offset
 ) => {
   try {
-    const baseQuery = `SELECT f.food, f.eng_food, f.price, (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count FROM foods f JOIN countries c ON c.id = f.country_id`;
+    const baseQuery = `
+    SELECT
+          f.food,
+          f.eng_food,
+          f.price,
+          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
+    FROM foods f
+    JOIN countries c ON c.id = f.country_id
+    `;
     const whereCondition = filterBuilder(
       countryId,
       spiceLevel,
@@ -81,8 +89,8 @@ const filter = async (
     );
     return rooms;
   } catch (err) {
-    const error = new Error("errrrrror");
-    error.statusCode = 500;
+    const error = new Error("DATABASE_CONNECTION_ERROR");
+    error.statusCode = 400;
     throw error;
   }
 };
