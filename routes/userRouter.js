@@ -5,6 +5,6 @@ const router = express.Router();
 router.post('/check', userController.userEmailCheck);
 router.post('/login', userController.login);
 router.get('/', userController.getCountriesList);
-router.post('/', userController.joinOk);
+router.post('/', userController.signUp);
 
 module.exports = { router };

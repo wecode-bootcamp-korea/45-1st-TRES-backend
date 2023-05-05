@@ -35,7 +35,7 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-const joinOk = async (email, firstName, lastName, password, countries, pNumber, gender, birth, address) => {
+const signUp = async (email, firstName, lastName, password, countries, pNumber, gender, birth, address) => {
   try {
     const addressResult = await dataSource.query(
       `
@@ -45,7 +45,6 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
     `,
       [address]
     );
-    console.log(`4444444`, addressResult.insertId);
     const userResult = await dataSource.query(
       `
         INSERT INTO users (
@@ -61,7 +60,6 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
     `,
       [email, firstName, lastName, password, addressResult.insertId, pNumber, gender, birth]
     );
-    console.log(`5555`, userResult);
 
     let countryResult = [];
     for (let i = 0; i < countries.length; i++) {
@@ -73,11 +71,8 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
         `,
         [countries[i]]
       );
-      console.log(countryId[0]['id']);
       countryResult.push(countryId[0]['id']);
     }
-
-    console.log(`77777777777`, countryResult);
 
     for (let i = 0; i < countries.length; i++) {
       await dataSource.query(
@@ -99,6 +94,6 @@ const joinOk = async (email, firstName, lastName, password, countries, pNumber, 
 
 module.exports = {
   getCountriesList,
-  joinOk,
+  signUp,
   getUserByEmail,
 };

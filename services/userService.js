@@ -19,11 +19,8 @@ const userEmailCheck = async (email) => {
 const login = async (email, password) => {
   try {
     const [user] = await userDao.getUserByEmail(email);
-    console.log(`2222222222`, user);
 
-    console.log(`3333333333`, user.password);
     const passwordResult = await bcrypt.compare(password, user.password);
-    console.log(`4444444`, passwordResult);
     if (passwordResult == false) {
       return undefined;
     } else if (!user || !passwordResult) {
@@ -61,14 +58,13 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-const joinOk = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
+const signUp = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
   try {
     await emailValidationCheck(email);
     await passwordValidationCheck(password);
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log(`hashed`, hashedPassword);
 
-    const joinOk = await userDao.joinOk(
+    const signUp = await userDao.signUp(
       email,
       firstName,
       lastName,
@@ -79,7 +75,7 @@ const joinOk = async (email, firstName, lastName, password, cointries, pNumber, 
       birth,
       address
     );
-    return joinOk;
+    return signUp;
   } catch (err) {
     console.log(err);
     err = new Error('Service_Error');
@@ -92,5 +88,5 @@ module.exports = {
   userEmailCheck,
   login,
   getCountriesList,
-  joinOk,
+  signUp,
 };
