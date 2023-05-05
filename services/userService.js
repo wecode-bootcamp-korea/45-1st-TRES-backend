@@ -33,6 +33,7 @@ const login = async (email, password) => {
         fristName: user.fristName,
         lastName: user.lastName,
         address: user.address,
+        points: user.points,
       },
       process.env.SECRETKEY,
       {
