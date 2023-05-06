@@ -5,7 +5,6 @@ const authorization = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
 
-    console.log(`token`, token);
     if (!token) return res.status(400).json({ message: 'TOKEN_EMPTY' });
 
     const decoded = jwt.verify(token, process.env.SECRETKEY);
@@ -18,7 +17,7 @@ const authorization = async (req, res, next) => {
       return res.status(error.statusCode).json({ message: error.message });
     }
 
-    req = user;
+    req.user = user;
 
     next();
   } catch (err) {

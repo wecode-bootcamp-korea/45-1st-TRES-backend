@@ -1,8 +1,10 @@
 const express = require('express');
-const userController = require('../controllers/userController');
+const orderController = require('../controllers/orderController');
 const { authorization } = require('../utils/authorization');
 const router = express.Router();
 
-router.get('/', authorization);
+// router.get('/', authorization);
+router.post('/', authorization, orderController.addCart);
+router.get('/cart', authorization, orderController.getCart);
 
 module.exports = { router };
