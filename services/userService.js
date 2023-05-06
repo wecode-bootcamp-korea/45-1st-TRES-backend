@@ -27,16 +27,7 @@ const login = async (email, password) => {
     } else if (!user || !passwordResult) {
       return undefined;
     }
-    return jwt.sign(
-      {
-        id: user.id,
-      },
-      process.env.SECRETKEY,
-      {
-        expiresIn: '10h',
-        issuer: 'inni',
-      }
-    );
+    return jwt.sign({ id: user.id }, process.env.SECRETKEY, process.env.PAYLOAD);
   } catch (err) {
     console.log(err);
     err = new Error('INVALID_USER');
@@ -55,7 +46,7 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-const signUp = async (email, firstName, lastName, password, cointries, pNumber, gender, birth, address) => {
+const signUp = async (email, firstName, lastName, password, cointries, phoneNumber, gender, birth, address) => {
   try {
     await emailValidationCheck(email);
     await passwordValidationCheck(password);
@@ -67,7 +58,7 @@ const signUp = async (email, firstName, lastName, password, cointries, pNumber, 
       lastName,
       hashedPassword,
       cointries,
-      pNumber,
+      phoneNumber,
       gender,
       birth,
       address

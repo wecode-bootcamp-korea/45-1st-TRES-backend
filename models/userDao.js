@@ -23,7 +23,9 @@ const getUserByEmail = async (email) => {
 const getCountriesList = async (req, res) => {
   try {
     return await dataSource.query(`
-    SELECT id, country
+    SELECT 
+    id,
+    country
     FROM
     countries
     ORDER BY country;
@@ -36,7 +38,7 @@ const getCountriesList = async (req, res) => {
   }
 };
 
-const signUp = async (email, firstName, lastName, password, countries, pNumber, gender, birth, address) => {
+const signUp = async (email, firstName, lastName, password, countries, phoneNumber, gender, birth, address) => {
   try {
     const addressResult = await dataSource.query(
       `
@@ -59,7 +61,7 @@ const signUp = async (email, firstName, lastName, password, countries, pNumber, 
             birth_date
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     `,
-      [email, firstName, lastName, password, addressResult.insertId, pNumber, gender, birth]
+      [email, firstName, lastName, password, addressResult.insertId, phoneNumber, gender, birth]
     );
 
     let countryResult = [];
