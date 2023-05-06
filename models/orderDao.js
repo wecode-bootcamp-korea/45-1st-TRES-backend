@@ -35,7 +35,7 @@ const addCart = async (user, product) => {
           order_items_id
         ) VALUES (?, ?, ?, ?);
     `,
-      [orderNumber, 'in_cart', user.id, orderItemsResult.insertId]
+      [orderNumber, 'default', user.id, orderItemsResult.insertId]
     );
   } catch (err) {
     console.log(err);
@@ -85,7 +85,27 @@ const getCart = async (user) => {
   }
 };
 
+const updateOrderStatus = async (user) => {
+  try {
+    return await dataSource.query(
+      `
+      UPDATE
+      orders
+      SET order_status_id = 2
+      WHERE user_id = ? AND order_status_id = 1
+    `,
+      [user.id]
+    );
+  } catch (err) {
+    console.log(err);
+    err = new Error('DATA_NOT_FOUND');
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
 module.exports = {
   addCart,
   getCart,
+  updateOrderStatus,
 };
