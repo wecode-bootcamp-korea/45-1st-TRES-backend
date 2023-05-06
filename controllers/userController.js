@@ -1,8 +1,10 @@
 const userService = require('../services/userService');
+const { emailValidationCheck, passwordValidationCheck } = require('../utils/validationCheck');
 
 const userEmailCheck = async (req, res) => {
   try {
     const { email } = req.body;
+    await emailValidationCheck(email);
     if (!email) return res.status(400).send('EMAIL_EMPTY!');
 
     const result = await userService.userEmailCheck(email);
@@ -46,6 +48,7 @@ const getCountriesList = async (req, res) => {
 const signUp = async (req, res) => {
   try {
     const { email, firstName, lastName, password, countries, phoneNumber, gender, birth, address } = req.body;
+    await passwordValidationCheck(password);
 
     if (!email || !firstName || !lastName || !password || !phoneNumber || !gender || !birth || !address) {
       return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });

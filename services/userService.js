@@ -19,7 +19,6 @@ const userEmailCheck = async (email) => {
 const login = async (email, password) => {
   try {
     const [user] = await userDao.getUserByEmail(email);
-    console.log(user);
 
     const passwordResult = await bcrypt.compare(password, user.password);
     if (passwordResult == false) {
@@ -27,7 +26,16 @@ const login = async (email, password) => {
     } else if (!user || !passwordResult) {
       return undefined;
     }
-    return jwt.sign({ id: user.id }, process.env.SECRETKEY, process.env.PAYLOAD);
+    return jwt.sign(
+      {
+        id: user.id,
+      },
+      process.env.SECRETKEY,
+      {
+        expiresIn: process.env.expiresIn,
+        issuer: process.env.issuer,
+      }
+    );
   } catch (err) {
     console.log(err);
     err = new Error('INVALID_USER');
