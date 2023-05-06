@@ -1,15 +1,8 @@
 const productDao = require('../models/productDao');
 
-const getMainPage = async () => {
-    try {
-        return await productDao.getMainPage();
-
-    } catch(err){ 
-        const error = new Error('CANNOT GET DATA');
-        error.statusCode = 400;
-        throw error;
-    }
-}
+const getMainProducts = async (count) => {
+        return await productDao.getMainProducts(count);
+};
 
 
-module.exports = {getMainPage } ;  
+module.exports = { getMainProducts } ;  

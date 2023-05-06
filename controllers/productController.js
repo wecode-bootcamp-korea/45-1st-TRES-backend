@@ -1,13 +1,13 @@
 const productService = require('../services/productService');
 
-const getMainPage = async (req, res) => {
+const getMainProducts = async (req, res) => {
     try{
-        const mainPage = await productService.getMainPage();
+        const { count } = req.body;
+        const mainPage = await productService.getMainProducts(count);
         return res.status(200).json({ mainPage });
     } catch(err){
         return res.status(err.statusCode || 400).json({ message:err.message });
     };
 };
 
-
-module.exports = { getMainPage } ;
+module.exports = { getMainProducts } ;
