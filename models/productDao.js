@@ -57,7 +57,7 @@ function limitBuilder(limit, offset) {
   return `LIMIT ${limit} OFFSET ${offset}`;
 }
 
-const filter = async (
+const getProductsById = async (
   orderBy,
   countryId,
   spiceLevel,
@@ -96,5 +96,5 @@ const filter = async (
 };
 
 module.exports = {
-  filter,
+  getProductsById,
 };

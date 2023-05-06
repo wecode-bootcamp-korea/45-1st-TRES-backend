@@ -1,6 +1,6 @@
 const productDao = require("../models/productDao");
 
-const filter = async (
+const getProductsById = async (
   orderBy,
   countryId,
   spiceLevel,
@@ -9,7 +9,7 @@ const filter = async (
   limit,
   offset
 ) => {
-  const filter = await productDao.filter(
+  const filter = await productDao.getProductsById(
     orderBy,
     countryId,
     spiceLevel,
@@ -23,5 +23,5 @@ const filter = async (
 };
 
 module.exports = {
-  filter,
+  getProductsById,
 };

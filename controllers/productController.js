@@ -1,11 +1,11 @@
 const productService = require("../services/productService");
 
-const filter = async (req, res) => {
+const getProductsById = async (req, res) => {
   try {
     const { orderBy, countryId, spiceLevel, allergyId, meatId, limit, offset } =
       req.query;
 
-    const result = await productService.filter(
+    const result = await productService.getProductsById(
       orderBy,
       countryId,
       spiceLevel,
@@ -22,5 +22,5 @@ const filter = async (req, res) => {
 };
 
 module.exports = {
-  filter,
+  getProductsById,
 };
