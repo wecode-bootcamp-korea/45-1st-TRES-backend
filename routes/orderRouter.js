@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/', authorization, orderController.addCart);
 router.get('/cart', authorization, orderController.getCart);
-router.post('/done', authorization, orderController.updateOrderStatus);
+router.post('/shipping', authorization, orderController.updateOrderStatus);
 
 module.exports = { router };

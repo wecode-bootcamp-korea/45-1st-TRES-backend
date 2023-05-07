@@ -42,8 +42,7 @@ const getCart = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const user = req.user;
-    const result = await orderService.updateOrderStatus(user);
-    console.log(result);
+    await orderService.updateOrderStatus(user);
     return res.status(200).json({ message: 'UPDATE_ORDER_STATUS_CODE' });
   } catch (err) {
     err = new Error('UPDATE_CONTROLLER_ERROR');

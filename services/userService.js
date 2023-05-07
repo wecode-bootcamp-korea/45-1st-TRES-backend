@@ -19,7 +19,6 @@ const userEmailCheck = async (email) => {
 const login = async (email, password) => {
   try {
     const [user] = await userDao.getUserByEmail(email);
-    console.log(user);
 
     const passwordResult = await bcrypt.compare(password, user.password);
     if (passwordResult == false) {
