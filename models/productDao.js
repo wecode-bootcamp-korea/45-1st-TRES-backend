@@ -1,7 +1,8 @@
 const dataSource  = require('./dataSource');
 
-const getMainProducts = async (count) => {
+const getProducts = async (quantity) => {
     try {
+        console.log(quantity);
         return await dataSource.query(
             `SELECT 
             c.country, 
@@ -13,7 +14,7 @@ const getMainProducts = async (count) => {
             JOIN food_images fi ON f.id = fi.food_id
             GROUP BY c.country, f.food, f.price
             ORDER BY RAND()
-            LIMIT ${ count }
+            LIMIT ${ quantity }
             `
         );
     } catch(err){
@@ -24,4 +25,4 @@ const getMainProducts = async (count) => {
 };
 
 
-module.exports = { getMainProducts };
+module.exports = { getProducts };

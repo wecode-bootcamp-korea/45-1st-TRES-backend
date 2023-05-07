@@ -1,8 +1,8 @@
 const productDao = require('../models/productDao');
 
-const getMainProducts = async (count) => {
-        return await productDao.getMainProducts(count);
+const getProducts = async (quantity) => {
+        return await productDao.getProducts(quantity);
 };
 
 
-module.exports = { getMainProducts } ;  
+module.exports = { getProducts } ;  
