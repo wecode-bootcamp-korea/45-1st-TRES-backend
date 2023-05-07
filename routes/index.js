@@ -1,11 +1,13 @@
-const express = require('express');
+// routes/index.js
 
-const productRouter = require('./productRouter');
-const orderRouter = require('./orderRouter');
+const express = require("express");
+
+const productRouter = require("./productRouter");
 
 const router = express.Router();
 
-router.use('/products', productRouter.router);
-router.use('/orders', orderRouter.router)
+const userRouter = require('./userRouter');
+
+router.use('/users', userRouter.router);
 
 module.exports = router;
