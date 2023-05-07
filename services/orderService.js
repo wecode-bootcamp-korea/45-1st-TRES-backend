@@ -1,13 +1,17 @@
 const orderDao = require('../models/orderDao');
 
+//get userId from jwt middleware to orderService?
 const modifyOrderCount = async (foodId, quantity, userId) => {
     try {
+        //double check if quantity in request body is greater than order_count
         const doubleCheck = await orderDao.checkQuantity(foodId, quantity, userId);
 
         if(!doubleCheck) return await orderDao.modifyOrderCount(foodId, quantity, userId);
         
+        return res.status(400).json({ message: "INVALID QUANTITY" });
+
     } catch (err){
-        const error = new Error('Could Not Make Changes');
+        const error = new Error('COULD NOT MAKE CHANGES');
         error.statusCode = 404;
         throw error;
     };

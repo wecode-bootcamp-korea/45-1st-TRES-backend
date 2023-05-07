@@ -11,8 +11,8 @@ const modifyOrderCount = async (req, res) => {
         await orderService.modifyOrderCount(foodId, quantity, userId);
         return res.status(statusCode || 200).json({ message: "ORDER MODIFIED" });
     } catch(err) {
-        return res.status(err.statusCode || 400).json({ message: err.message });
-    };  //에러 메시지 좀 바꿔야할듯? INVALID KEY ERROR?
+        return res.status(err.statusCode || 400).json({ message: "INVALID KEY" });
+    };
 };
 
 const deleteOrder = async (req, res) => {
@@ -23,8 +23,8 @@ const deleteOrder = async (req, res) => {
         await orderService.deleteOrder(deleteOrderItem, userId);
         return res.status(statusCode || 200).json({ message: "ORDER DELETED" });
     } catch(err) {
-        return res.status(err.statusCode || 400).json({ message: err.message });
-    };  //에러 메시지 좀 바꿔야할듯? INVALID KEY ERROR?
+        return res.status(err.statusCode || 400).json({ message: "INVALID KEY" });
+    };
 };
 
 module.exports = { modifyOrderCount, deleteOrder };

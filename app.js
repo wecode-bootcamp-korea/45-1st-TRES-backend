@@ -9,7 +9,7 @@ const app = express();
 const dataSource = require('./models/dataSource');
 
 app.use(cors());
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(routes);
 
