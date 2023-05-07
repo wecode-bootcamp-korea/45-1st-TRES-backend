@@ -1,9 +1,11 @@
-// sercixes/userService.js
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { passwordValidationCheck, emailValidationCheck } = require('../utils/validationCheck');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const {
+  passwordValidationCheck,
+  emailValidationCheck,
+} = require("../utils/validationCheck");
 
-const userDao = require('../models/userDao');
+const userDao = require("../models/userDao");
 
 const userEmailCheck = async (email) => {
   try {
@@ -11,7 +13,7 @@ const userEmailCheck = async (email) => {
     return user;
   } catch (err) {
     console.log(err);
-    err = new Error('INVALID_USER');
+    err = new Error("INVALID_USER");
     err.statusCode = 409;
     throw err;
   }
@@ -38,7 +40,7 @@ const login = async (email, password) => {
     );
   } catch (err) {
     console.log(err);
-    err = new Error('INVALID_USER');
+    err = new Error("INVALID_USER");
     err.statusCode = 409;
     throw err;
   }
@@ -48,13 +50,23 @@ const getCountriesList = async (req, res) => {
     return await userDao.getCountriesList();
   } catch (err) {
     console.log(err);
-    err = new Error('Service_Error');
+    err = new Error("Service_Error");
     err.statusCode = 409;
     throw err;
   }
 };
 
-const signUp = async (email, firstName, lastName, password, cointries, phoneNumber, gender, birth, address) => {
+const signUp = async (
+  email,
+  firstName,
+  lastName,
+  password,
+  cointries,
+  phoneNumber,
+  gender,
+  birth,
+  address
+) => {
   try {
     await emailValidationCheck(email);
     await passwordValidationCheck(password);
@@ -74,7 +86,7 @@ const signUp = async (email, firstName, lastName, password, cointries, phoneNumb
     return signUp;
   } catch (err) {
     console.log(err);
-    err = new Error('Service_Error');
+    err = new Error("Service_Error");
     err.statusCode = 409;
     throw err;
   }
@@ -86,7 +98,7 @@ const getUserById = async (userId) => {
     return user;
   } catch (err) {
     console.log(err);
-    throw new Error('INVALID_USER');
+    throw new Error("INVALID_USER");
   }
 };
 

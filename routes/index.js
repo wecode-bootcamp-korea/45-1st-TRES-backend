@@ -1,13 +1,14 @@
 // routes/index.js
 
 const express = require("express");
+const router = express.Router();
 
 const productRouter = require("./productRouter");
 
-const router = express.Router();
+const userRouter = require("./userRouter");
+const paymentRouter = require("./paymentRouter");
 
-const userRouter = require('./userRouter');
-
-router.use('/users', userRouter.router);
+router.use("/users", userRouter.router);
+router.use("/payment", paymentRouter.router);
 
 module.exports = router;
