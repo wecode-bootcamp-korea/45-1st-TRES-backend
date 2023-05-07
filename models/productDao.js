@@ -99,6 +99,7 @@ const getProductInfo = async (foodId) => {
   try {
     return await dataSource.query(
       `SELECT
+            f.id AS foodId,
             f.food,
             f.eng_food AS engFood,
             f.price,
@@ -108,13 +109,15 @@ const getProductInfo = async (foodId) => {
             m.meat,
             m.eng_meat AS engMeat,
             a.allergy,
-            a.eng_allergy AS engAllergy
+            a.eng_allergy AS engAllergy,
+            r.review
        FROM foods f 
-       JOIN food_images fi ON f.id = fi.food_id
-       JOIN meat_foods mf ON f.id = mf.food_id
-       JOIN meats m ON mf.meat_id = m.id
-       JOIN allergy_foods af ON f.id = af.food_id
-       JOIN allergies a ON a.id = af.allergy_id
+       LEFT JOIN food_images fi ON f.id = fi.food_id
+       LEFT JOIN meat_foods mf ON f.id = mf.food_id
+       LEFT JOIN meats m ON mf.meat_id = m.id
+       LEFT JOIN allergy_foods af ON f.id = af.food_id
+       LEFT JOIN allergies a ON a.id = af.allergy_id
+       LEFT JOIN reviews r ON r.food_id = f.id
        WHERE f.id = ?`,
       [foodId]
     );
