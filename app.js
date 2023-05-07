@@ -24,7 +24,7 @@ const start = async () => {
     dataSource
       .initialize()
       .then(() => {
-        console.log("Data Source has been initalized!");
+        console.log('Data Source has been initialized!');
       })
       .catch((err) => {
         console.log("Error occured during Data Source initializtion!", err);
