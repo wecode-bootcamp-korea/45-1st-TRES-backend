@@ -3,8 +3,6 @@
 
 .env
 db/schema.sql
-.prettierrc
-node_modules/
 
 ### Linux ###
 *~
