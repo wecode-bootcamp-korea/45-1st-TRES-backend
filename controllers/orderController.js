@@ -8,7 +8,7 @@ const addCart = async (req, res) => {
     const result = await orderService.addCart(user, product);
     return res.status(200).json({ message: 'ADD_CART_SUCCESS' });
   } catch (err) {
-    err = new Error('CONTROLLER_ERROR');
+    err = new Error('ADD_CART_CONTROLLER_ERROR');
     err.statusCode = 400;
     throw err;
   }
@@ -18,7 +18,6 @@ const getCart = async (req, res) => {
   try {
     const user = req.user;
     const result = await orderService.getCart(user);
-    console.log(`55555`, result);
     const renameResult = result.map((el) => ({
       userId: el.user_id,
       orderItemsId: el.order_items_id,
@@ -34,7 +33,7 @@ const getCart = async (req, res) => {
     }));
     return res.status(200).json(renameResult);
   } catch (err) {
-    err = new Error('CONTROLLER_ERROR');
+    err = new Error('GET_CART_CONTROLLER_ERROR');
     err.statusCode = 400;
     throw err;
   }
@@ -47,7 +46,7 @@ const updateOrderStatus = async (req, res) => {
     console.log(result);
     return res.status(200).json({ message: 'UPDATE_ORDER_STATUS_CODE' });
   } catch (err) {
-    err = new Error('CONTROLLER_ERROR');
+    err = new Error('UPDATE_CONTROLLER_ERROR');
     err.statusCode = 400;
     throw err;
   }

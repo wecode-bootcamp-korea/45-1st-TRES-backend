@@ -2,19 +2,6 @@ const dataSource = require('./dataSource');
 
 const addCart = async (user, product) => {
   try {
-    // const cartResult = await dataSource.query(`
-    //     SELECT
-    //     f.id,
-    //     f.food,
-    //     f.price,
-    //     f_i.food_image,
-    //     f_i.food_id
-    //     FROM food_images f_i
-    //     JOIN foods f
-    //     ON f.id = f_i.food_id;
-    //     `);
-    // console.log(`555555`, cartResult[0]);
-    // console.log(`66666`, cartResult[0].id, `orderCount`, cartResult[0].food_id);
     const orderItemsResult = await dataSource.query(
       `
       INSERT INTO order_items (

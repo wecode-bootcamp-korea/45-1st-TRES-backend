@@ -5,7 +5,7 @@ const addCart = async (user, product) => {
     return await orderDao.addCart(user, product);
   } catch (err) {
     console.log(err);
-    err = new Error('SERVICE_ERROR');
+    err = new Error('ADD_CART_SERVICE_ERROR');
     throw err;
   }
 };
@@ -15,7 +15,7 @@ const getCart = async (user) => {
     return await orderDao.getCart(user);
   } catch (err) {
     console.log(err);
-    err = new Error('SERVICE_ERROR');
+    err = new Error('GET_CART_SERVICE_ERROR');
     throw err;
   }
 };
@@ -25,7 +25,7 @@ const updateOrderStatus = async (user) => {
     return await orderDao.updateOrderStatus(user);
   } catch (err) {
     console.log(err);
-    err = new Error('SERVICE_ERROR');
+    err = new Error('UPDATE_STATUS_CODE_SERVICE_ERROR');
   }
 };
 
