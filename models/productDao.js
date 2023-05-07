@@ -1,8 +1,7 @@
 const dataSource  = require('./dataSource');
 
-const getProducts = async (quantity) => {
+const getRandomProducts = async (offset, limit) => {
     try {
-        console.log(quantity);
         return await dataSource.query(
             `SELECT 
             c.country, 
@@ -14,15 +13,16 @@ const getProducts = async (quantity) => {
             JOIN food_images fi ON f.id = fi.food_id
             GROUP BY c.country, f.food, f.price
             ORDER BY RAND()
-            LIMIT ${ quantity }
+            LIMIT ${ limit }
+            OFFSET ${ offset }
             `
         );
     } catch(err){
-        const error = new Error(error.message);
+        const error = new Error("DataSource Error");
         error.statusCode(400);
         throw error;
     };
 };
 
 
-module.exports = { getProducts };
+module.exports = { getRandomProducts };

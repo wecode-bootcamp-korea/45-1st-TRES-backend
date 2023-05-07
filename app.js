@@ -8,9 +8,9 @@ const routes = require('./routes');
 const app = express();
 const dataSource = require('./models/dataSource');
 
-app.use(cors());
-app.use(morgan('combined'));
 app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
 app.use(routes);
 
 const port = process.env.PORT;

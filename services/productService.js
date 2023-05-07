@@ -1,8 +1,8 @@
 const productDao = require('../models/productDao');
 
-const getProducts = async (quantity) => {
-        return await productDao.getProducts(quantity);
+const getRandomProducts = async (offset, limit) => {
+        return await productDao.getRandomProducts(offset, limit);
 };
 
 
-module.exports = { getProducts } ;  
+module.exports = { getRandomProducts } ;  

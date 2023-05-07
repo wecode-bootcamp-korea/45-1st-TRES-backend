@@ -1,14 +1,17 @@
 const productService = require('../services/productService');
 
-const getProducts = async (req, res) => {
+const getRandomProducts = async (req, res) => {
     try{
-        const { count } = req.body;
-        const quantity = count ? count : 10;
-        const mainPage = await productService.getProducts(quantity);
+        const { from, count } = req.body;
+        const DEFAULT_OFFSET = 1;
+        const DEFAULT_LIMIT = 10;
+        const offset = from ? from : DEFAULT_OFFSET; 
+        const limit = count ? count : DEFAULT_LIMIT;
+        const mainPage = await productService.getRandomProducts(offset, limit);
         return res.status(200).json({ mainPage });
     } catch(err){
-        return res.status(err.statusCode || 400).json({ message:err.message });
+        return res.status(err.statusCode || 400).json({ message: "INVALID KEY" });
     };
 };
 
-module.exports = { getProducts } ;
+module.exports = { getRandomProducts };
