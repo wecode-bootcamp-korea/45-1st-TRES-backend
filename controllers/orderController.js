@@ -1,14 +1,13 @@
-const orderService = require('../services/orderService');
+const orderService = require("../services/orderService");
 
 const addCart = async (req, res) => {
   try {
     const user = req.user;
-    // 배열안 객체 형식으로 옴 [{id:1, foodName: 어쩌고, ...}]
     const [product] = req.body;
     const result = await orderService.addCart(user, product);
-    return res.status(200).json({ message: 'ADD_CART_SUCCESS' });
+    return res.status(200).json({ message: "ADD_CART_SUCCESS" });
   } catch (err) {
-    err = new Error('ADD_CART_CONTROLLER_ERROR');
+    err = new Error("ADD_CART_CONTROLLER_ERROR");
     err.statusCode = 400;
     throw err;
   }
@@ -33,7 +32,7 @@ const getCart = async (req, res) => {
     }));
     return res.status(200).json(renameResult);
   } catch (err) {
-    err = new Error('GET_CART_CONTROLLER_ERROR');
+    err = new Error("GET_CART_CONTROLLER_ERROR");
     err.statusCode = 400;
     throw err;
   }
@@ -43,9 +42,9 @@ const updateOrderStatus = async (req, res) => {
   try {
     const user = req.user;
     await orderService.updateOrderStatus(user);
-    return res.status(200).json({ message: 'UPDATE_ORDER_STATUS_CODE' });
+    return res.status(200).json({ message: "UPDATE_ORDER_STATUS_CODE" });
   } catch (err) {
-    err = new Error('UPDATE_CONTROLLER_ERROR');
+    err = new Error("UPDATE_CONTROLLER_ERROR");
     err.statusCode = 400;
     throw err;
   }
