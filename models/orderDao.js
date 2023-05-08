@@ -1,4 +1,4 @@
-const dataSource = require('./dataSource');
+const dataSource = require("./dataSource");
 
 const addCart = async (user, product) => {
   try {
@@ -12,7 +12,7 @@ const addCart = async (user, product) => {
     `,
       [product.price, product.count, product.foodId]
     );
-    const orderNumber = Math.floor(Math.random() * 10000);
+    const orderNumber = Date.now().toString();
     await dataSource.query(
       `
         INSERT INTO orders (
@@ -22,11 +22,11 @@ const addCart = async (user, product) => {
           order_items_id
         ) VALUES (?, ?, ?, ?);
     `,
-      [orderNumber, 'default', user.id, orderItemsResult.insertId]
+      [orderNumber, "default", user.id, orderItemsResult.insertId]
     );
   } catch (err) {
     console.log(err);
-    err = new Error('DATA_NOT_FOUND');
+    err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
   }
@@ -66,7 +66,7 @@ const getCart = async (user) => {
     );
   } catch (err) {
     console.log(err);
-    err = new Error('DATA_NOT_FOUND');
+    err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
   }
@@ -85,7 +85,7 @@ const updateOrderStatus = async (user) => {
     );
   } catch (err) {
     console.log(err);
-    err = new Error('DATA_NOT_FOUND');
+    err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
   }
