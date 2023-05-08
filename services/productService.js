@@ -1,10 +1,10 @@
 const productDao = require('../models/productDao');
 
 const getRandomProducts = async (offset, limit) => {
-        return await productDao.getRandomProducts(offset, limit);
+  return await productDao.getRandomProducts(offset, limit);
 };
 
-const getProductsById = async (
+const getAllProducts = async (
   orderBy,
   countryId,
   spiceLevel,
@@ -13,7 +13,7 @@ const getProductsById = async (
   limit,
   offset
 ) => {
-  const filter = await productDao.getProductsById(
+  const getAllProducts = await productDao.getAllProducts(
     orderBy,
     countryId,
     spiceLevel,
@@ -23,10 +23,10 @@ const getProductsById = async (
     offset
   );
 
-  return filter;
+  return getAllProducts;
 };
 
 module.exports = {
-        getRandomProducts, 
-        getProductsById
+  getRandomProducts, 
+  getAllProducts
 };
