@@ -1,26 +1,26 @@
 const dataSource = require("./dataSource");
 
-const likes = async (userId, postId) => {
+const likes = async (userId, foodId) => {
   try {
     const isExists = await dataSource.query(
       `
                 SELECT EXISTS (
                     SELECT * FROM likes 
                     WHERE (
-                      user_id = ? AND post_id = ?
+                      user_id = ? AND food_id = ?
                     )
                 )
         `,
-      [userId, postId]
+      [userId, foodId]
     );
 
     if (Object.values(isExists[0]) == 1) {
       await dataSource.query(
         `
                 DELETE FROM likes
-                WHERE user_id = ? AND post_id = ?
+                WHERE user_id = ? AND food_id = ?
           `,
-        [userId, postId]
+        [userId, foodId]
       );
       return false;
     }
@@ -29,17 +29,17 @@ const likes = async (userId, postId) => {
       `
                 INSERT INTO likes (
                     user_id,
-                    post_id
+                    food_id
                 ) VALUES (
                     ?,
                     ?
                 )
           `,
-      [userId, postId]
+      [userId, foodId]
     );
     return true;
-  } catch (err) {
-    const error = new Error("INVALID_DATA_INPUT");
+  } catch (error) {
+    error = new Error("INVALID_DATA_INPUT");
     error.statusCode = 500;
     throw error;
   }

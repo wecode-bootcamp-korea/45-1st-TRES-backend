@@ -1,20 +1,22 @@
 const likesService = require("../services/likesService");
+const { catchAsync } = require("../utils/error");
 
-const likes = async (req, res) => {
-  try {
-    const { userId, postId } = req.body;
+const likes = catchAsync(async (req, res) => {
+  const { userId, foodId } = req.body;
 
-    const userLikes = await likesService.likes(userId, postId);
-
-    if (userLikes == true)
-      return res.status(201).json({ message: "likeCreated" });
-
-    return res.status(201).json({ message: "likeCanceled" });
-  } catch (err) {
-    console.log(err);
-    return res.status(err.statusCode || 500).json({ message: err.message });
+  if (!userId || !foodId) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
   }
-};
+
+  const userLikes = await likesService.likes(userId, foodId);
+
+  if (userLikes == true)
+    return res.status(201).json({ message: "likeCreated" });
+
+  return res.status(201).json({ message: "likeCanceled" });
+});
 
 module.exports = {
   likes,
