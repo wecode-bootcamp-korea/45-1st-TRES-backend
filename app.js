@@ -5,13 +5,16 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const routes = require("./routes");
-const app = express();
+const { globalErrorHandler } = require("./utils/error");
 const dataSource = require("./models/dataSource");
 
-app.use(cors());
-app.use(morgan("dev"));
+const app = express();
+
 app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
 app.use(routes);
+app.use(globalErrorHandler);
 
 const port = process.env.PORT;
 
@@ -24,7 +27,7 @@ const start = async () => {
     dataSource
       .initialize()
       .then(() => {
-        console.log('Data Source has been initialized!');
+        console.log("Data Source has been initialized!");
       })
       .catch((err) => {
         console.log("Error occured during Data Source initializtion!", err);
