@@ -10,6 +10,7 @@ const getAllProducts = async (
   spiceLevel,
   allergyId,
   meatId,
+  vegetarian,
   limit,
   offset
 ) => {
@@ -19,6 +20,7 @@ const getAllProducts = async (
     spiceLevel,
     allergyId,
     meatId,
+    vegetarian,
     limit,
     offset
   );

@@ -31,6 +31,7 @@ const getAllProducts = async (
   spiceLevel,
   allergyId,
   meatId,
+  vegetarian,
   limit,
   offset
 ) => {
@@ -53,7 +54,8 @@ const getAllProducts = async (
       countryId,
       spiceLevel,
       allergyId,
-      meatId
+      meatId,
+      vegetarian
     );
     const sortQuery = builder.orderByBuilder(orderBy);
     const limitQuery = builder.limitBuilder(limit, offset);
@@ -76,22 +78,29 @@ const getProductInfo = async (foodId) => {
             f.food,
             f.eng_food,
             f.price,
+            f.vegetarian,
+            ct.continent,
+            ct.eng_continent,
+            c.country,
+            c.eng_country,
+            f.spice_level,
             f.description,
             f.eng_description,
-            f.spice_level,
-            fi.food_image,
-            m.meat,
-            m.eng_meat,
             a.allergy,
             a.eng_allergy,
+            m.meat,
+            m.eng_meat,
+            fi.food_image,
             r.review
-       FROM foods f 
+       FROM foods f
        LEFT JOIN food_images fi ON f.id = fi.food_id
        LEFT JOIN meat_foods mf ON f.id = mf.food_id
        LEFT JOIN meats m ON mf.meat_id = m.id
        LEFT JOIN allergy_foods af ON f.id = af.food_id
        LEFT JOIN allergies a ON a.id = af.allergy_id
        LEFT JOIN reviews r ON r.food_id = f.id
+       LEFT JOIN countries c ON f.country_id = c.id
+       LEFT JOIN continents ct ON ct.id = c.continent_id
        WHERE f.id = ?`,
       [foodId]
     );
