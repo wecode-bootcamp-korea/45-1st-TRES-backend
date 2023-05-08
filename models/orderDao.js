@@ -1,54 +1,42 @@
 const dataSource  = require('./dataSource');
 
-const doubleCheck = async (foodId, quantity, userId) => {
-  try {
-    return await dataSource.query(
-    `SELECT
-    order_items.order_count > ${quantity} AS RESULT
-    FROM order_items oi
-    INNER JOIN orders ON oi.order_id = orders.id
-    WHERE orders.user_id = ?
-    AND oi.food_id = ${foodId}
-    `, [userId]
-    );
-  }catch (err){
-
-  }
-};
 
 const modifyOrderCount = async (foodId, quantity, userId) => {
   try {
     return await dataSource.query(
     `UPDATE order_items
-    SET order_count = ${quantity}
-    WHERE foods_id = ${foodId}
-    AND id IN (
-    SELECT order_items_id
-    FROM orders
-    WHERE users_id = ${userId}
-    AND status_code_id = 1
-    )`
+    JOIN orders ON orders.order_items_id = order_items.id
+    JOIN foods ON foods.id = order_items.food_id
+    SET order_items.order_count = ?, order_items.order_price = foods.price * ?
+    WHERE order_items.food_id = ?
+    AND orders.user_id = ?
+    `, [ quantity, quantity, foodId, userId ]
     );
   }catch (err) {
-
+    const error = new Error("DataSource Error");
+    error.statusCode = 400;
+    throw error;
   };
 };
 
-const deleteOrderItem = async (product, userId) => {
-  try { 
+const deleteOrderItems = async (food_id, userId) => {
+  try {
     return await dataSource.query(
-    `DELETE FROM orders
-    WHERE user_id = ?
-    AND order_items_id IN
-    (SELECT id FROM order_items WHERE food_id = ${product})
-    `, [ userId ]
-    );
+    `DELETE order_items, orders
+    FROM order_items
+    JOIN orders ON order_items.id = orders.order_items_id
+    WHERE order_items.food_id = ?
+    AND orders.user_id = ?
+    `, [ food_id, userId ]
+    )
   } catch (err) {
-
+    const error = new Error("DataSource Error");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
 
 
 
-module.exports = { doubleCheck, modifyOrderCount, deleteOrderItem };
+module.exports = { modifyOrderCount, deleteOrderItems };

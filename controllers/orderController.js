@@ -3,6 +3,8 @@ const { catchAsync } = require("../utils/error")
 
 const modifyOrderCount = catchAsync(async (req, res) => {
 
+  const user = req.user;
+  const userId = user.id;
   const { foodId, quantity } = req.body;
 
   if(!foodId && !quantity) {
@@ -11,13 +13,14 @@ const modifyOrderCount = catchAsync(async (req, res) => {
     throw error;
   }
 
-  await orderService.modifyOrderCount(foodId, quantity);
-  return res.status(statusCode || 200).json({ message: "ORDER MODIFIED" });
+  await orderService.modifyOrderCount(foodId, quantity, userId);
+  return res.status(200).json({ message: "ORDER MODIFIED" });
    
 });
 
 const deleteOrder = catchAsync(async (req, res) => {
-
+  const user = req.user;
+  const userId = user.id;
   const { deleteOrderItem } = req.body;
   
   if(!deleteOrderItem) {
@@ -26,8 +29,8 @@ const deleteOrder = catchAsync(async (req, res) => {
     throw error;
   }
 
-  await orderService.deleteOrder(deleteOrderItem);
-  return res.status(statusCode || 200).json({ message: "ORDER DELETED" });
+  await orderService.deleteOrder(deleteOrderItem, userId);
+  return res.status(200).json({ message: "ORDER DELETED" });
     
 });
 
