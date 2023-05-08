@@ -1,65 +1,90 @@
-const userService = require('../services/userService');
-const { emailValidationCheck, passwordValidationCheck } = require('../utils/validationCheck');
+const userService = require("../services/userService");
+const { catchAsync } = require("../utils/error");
+const {
+  emailValidationCheck,
+  passwordValidationCheck,
+} = require("../utils/validationCheck");
 
-const userEmailCheck = async (req, res) => {
-  try {
-    const { email } = req.body;
-    await emailValidationCheck(email);
-    if (!email) return res.status(400).send('EMAIL_EMPTY!');
+const userEmailCheck = catchAsync(async (req, res) => {
+  const { email } = req.body;
 
-    const result = await userService.userEmailCheck(email);
-    if (!result) return res.status(400).json({ isEmailExist: false });
-
-    return res.status(200).json({ isEmailExist: true });
-  } catch (err) {
-    err = new Error('EMAIL_NOT_VALID');
-    err.statusCode = 400;
-    throw err;
+  if (!email) {
+    const error = new Error("EMAIL_EMPTY!");
+    error.statusCode = 400;
+    throw error;
   }
-};
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: Key_Error });
-    }
-    const result = await userService.login(email, password);
-    if (!result) return res.status(400).json({ passwordError: 'CHECK_PASSWORD' });
-    return res.status(200).send({ accessToken: result });
-  } catch (err) {
-    err = new Error('INVALID_USER_INPUT');
-    err.statusCode = 400;
-    throw err;
+  await emailValidationCheck(email);
+
+  const result = await userService.userEmailCheck(email);
+
+  if (!result) return res.status(400).json({ isEmailExist: false });
+
+  return res.status(200).json({ isEmailExist: true });
+});
+
+const login = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
   }
-};
 
-const getCountriesList = async (req, res) => {
-  try {
-    const result = await userService.getCountriesList();
-    return res.status(200).json(result);
-  } catch (err) {
-    err = new Error('CONTROLLER_ERROR');
-    err.statusCode = 400;
-    throw err;
+  const result = await userService.login(email, password);
+
+  return res.status(200).send({ accessToken: result });
+});
+
+const getCountriesList = catchAsync(async (req, res) => {
+  const result = await userService.getCountriesList();
+
+  return res.status(200).json(result);
+});
+
+const signUp = catchAsync(async (req, res) => {
+  const {
+    email,
+    firstName,
+    lastName,
+    password,
+    countries,
+    phoneNumber,
+    gender,
+    birth,
+    address,
+  } = req.body;
+
+  if (
+    !email ||
+    !firstName ||
+    !lastName ||
+    !password ||
+    !phoneNumber ||
+    !gender ||
+    !birth ||
+    !address
+  ) {
+    const error = new Error("VALUE_MUST_NOT_EMPTY");
+    error.statusCode = 400;
+    throw error;
   }
-};
 
-const signUp = async (req, res) => {
-  try {
-    const { email, firstName, lastName, password, countries, phoneNumber, gender, birth, address } = req.body;
-    await passwordValidationCheck(password);
+  await userService.signUp(
+    email,
+    firstName,
+    lastName,
+    password,
+    countries,
+    phoneNumber,
+    gender,
+    birth,
+    address
+  );
 
-    if (!email || !firstName || !lastName || !password || !phoneNumber || !gender || !birth || !address) {
-      return res.status(400).json({ message: `VALUE_MUST_NOT_EMPTY` });
-    }
-    await userService.signUp(email, firstName, lastName, password, countries, phoneNumber, gender, birth, address);
-    return res.status(200).json({ message: 'SIGN_UP_SUCCESS' });
-  } catch (err) {
-    console.log(err);
-    return res.status(err.statusCode || 500);
-  }
-};
+  return res.status(200).json({ message: "SIGN_UP_SUCCESS" });
+});
 
 module.exports = {
   userEmailCheck,

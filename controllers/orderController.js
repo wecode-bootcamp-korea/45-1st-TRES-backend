@@ -1,30 +1,34 @@
-const orderService = require('../services/orderService');
+const orderService = require("../services/orderService");
+const { catchAsync } = require("../utils/error")
 
-const modifyOrderCount = async (req, res) => {
-    try {
-        //get userId from jwt
-        const { foodId, quantity } = req.body;
-        // const token = req.headers.authorization;
-        // if(!token) return res.status(403).json({ message: "NOT AUTHORIZED" });
-        // const verified = jwt verify(token, process.env.JWT_SECRETKEY);
-        // const userId = verified.id
-        await orderService.modifyOrderCount(foodId, quantity, userId);
-        return res.status(statusCode || 200).json({ message: "ORDER MODIFIED" });
-    } catch(err) {
-        return res.status(err.statusCode || 400).json({ message: "INVALID KEY" });
-    };
-};
+const modifyOrderCount = catchAsync(async (req, res) => {
 
-const deleteOrder = async (req, res) => {
-    try{
-        const { deleteOrderItem } = req.body;
-        //const userId = 
-        //get userId
-        await orderService.deleteOrder(deleteOrderItem, userId);
-        return res.status(statusCode || 200).json({ message: "ORDER DELETED" });
-    } catch(err) {
-        return res.status(err.statusCode || 400).json({ message: "INVALID KEY" });
-    };
-};
+  const { foodId, quantity } = req.body;
+
+  if(!foodId && !quantity) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  await orderService.modifyOrderCount(foodId, quantity);
+  return res.status(statusCode || 200).json({ message: "ORDER MODIFIED" });
+   
+});
+
+const deleteOrder = catchAsync(async (req, res) => {
+
+  const { deleteOrderItem } = req.body;
+  
+  if(!deleteOrderItem) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  await orderService.deleteOrder(deleteOrderItem);
+  return res.status(statusCode || 200).json({ message: "ORDER DELETED" });
+    
+});
 
 module.exports = { modifyOrderCount, deleteOrder };
