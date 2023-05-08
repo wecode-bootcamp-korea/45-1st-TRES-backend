@@ -1,4 +1,4 @@
-const dataSource = require('./dataSource');
+const dataSource = require("./dataSource");
 
 const getUserByEmail = async (email) => {
   try {
@@ -13,13 +13,13 @@ const getUserByEmail = async (email) => {
     `,
       [email]
     );
-  } catch (err) {
-    console.log(err);
-    err = new Error('DATA_NOT_FOUND');
-    err.statusCode = 500;
-    throw err;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
+
 const getCountriesList = async (req, res) => {
   try {
     return await dataSource.query(`
@@ -30,15 +30,24 @@ const getCountriesList = async (req, res) => {
     countries
     ORDER BY country;
   `);
-  } catch (err) {
-    console.log(err);
-    err = new Error('DATA_NOT_FOUND');
-    err.statusCode = 500;
-    throw err;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
-const signUp = async (email, firstName, lastName, password, countries, phoneNumber, gender, birth, address) => {
+const signUp = async (
+  email,
+  firstName,
+  lastName,
+  password,
+  countries,
+  phoneNumber,
+  gender,
+  birth,
+  address
+) => {
   try {
     const addressResult = await dataSource.query(
       `
@@ -61,7 +70,16 @@ const signUp = async (email, firstName, lastName, password, countries, phoneNumb
             birth_date
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     `,
-      [email, firstName, lastName, password, addressResult.insertId, phoneNumber, gender, birth]
+      [
+        email,
+        firstName,
+        lastName,
+        password,
+        addressResult.insertId,
+        phoneNumber,
+        gender,
+        birth,
+      ]
     );
 
     let countryResult = [];
@@ -74,7 +92,7 @@ const signUp = async (email, firstName, lastName, password, countries, phoneNumb
         `,
         [countries[i]]
       );
-      countryResult.push(countryId[0]['id']);
+      countryResult.push(countryId[0]["id"]);
     }
 
     for (let i = 0; i < countries.length; i++) {
@@ -88,12 +106,13 @@ const signUp = async (email, firstName, lastName, password, countries, phoneNumb
         [countryResult[i], userResult.insertId]
       );
     }
-  } catch (err) {
-    console.log(err);
-    err = new Error('INVALID_DATA_INPUT');
-    err.statusCode = 500;
+  } catch (error) {
+    error = new Error("INVALID_DATA_INPUT");
+    error.statusCode = 400;
+    throw error;
   }
 };
+
 const getUserById = async (userId) => {
   try {
     return await dataSource.query(
@@ -111,10 +130,10 @@ const getUserById = async (userId) => {
     `,
       [userId]
     );
-  } catch (err) {
-    console.log(err);
-    err = new Error('USER_NOT_FOUND');
-    err.statusCode = 500;
+  } catch (error) {
+    error = new Error("USER_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
