@@ -60,7 +60,7 @@ const getCart = async (user) => {
       ON ctr.id = f.country_id
       JOIN continents cti
       ON cti.id = ctr.continent_id
-      WHERE o.user_id = ?;
+      WHERE o.user_id = ? AND o.order_status_id = 1;
     `,
       [user.id]
     );
