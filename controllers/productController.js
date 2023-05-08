@@ -1,11 +1,10 @@
-const productService = require('../services/productService');
+const productService = require("../services/productService");
 const { catchAsync } = require("../utils/error");
 
 const getRandomProducts = catchAsync(async (req, res) => {
-
   const { from, count } = req.body;
 
-  if(!from || !count){
+  if (!from || !count) {
     const error = new Error("KEY_ERROR");
     error.statusCode = 400;
     throw error;
@@ -13,16 +12,15 @@ const getRandomProducts = catchAsync(async (req, res) => {
 
   const DEFAULT_OFFSET = 1;
   const DEFAULT_LIMIT = 10;
-  const offset = from ? from : DEFAULT_OFFSET; 
+  const offset = from ? from : DEFAULT_OFFSET;
   const limit = count ? count : DEFAULT_LIMIT;
   const mainPage = await productService.getRandomProducts(offset, limit);
   return res.status(200).json({ mainPage });
-  
 });
 
-
 const getAllProducts = catchAsync(async (req, res) => {
-  const { orderBy, countryId, spiceLevel, allergyId, meatId, limit, offset } = req.query;
+  const { orderBy, countryId, spiceLevel, allergyId, meatId, limit, offset } =
+    req.query;
 
   if (!countryId) {
     const error = new Error("KEY_ERROR");
@@ -42,7 +40,21 @@ const getAllProducts = catchAsync(async (req, res) => {
   return res.status(200).json({ data: result });
 });
 
+const getProductInfo = catchAsync(async (req, res) => {
+  const { foodId } = req.params;
+
+  if (!foodId) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const result = await productService.getProductInfo(foodId);
+  return res.status(200).json({ data: result });
+});
+
 module.exports = {
   getRandomProducts,
   getAllProducts,
+  getProductInfo,
 };
