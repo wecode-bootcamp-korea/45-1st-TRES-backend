@@ -12,11 +12,11 @@ function filterBuilder(countryId, spiceLevel, allergyId, meatId) {
   }
 
   if (allergyId) {
-    conditionArr.push(`f.spice_level = ${allergyId}`);
+    conditionArr.push(`f.allergy_id = ${allergyId}`);
   }
 
   if (meatId) {
-    conditionArr.push(`f.spice_level = ${meatId}`);
+    conditionArr.push(`f.meat_id = ${meatId}`);
   }
 
   let whereCondition = "";
@@ -47,11 +47,11 @@ function orderByBuilder(orderBy) {
 
 function limitBuilder(limit, offset) {
   if (!limit) {
-    limit = 12;
+    limit = 40;
   }
 
   if (!offset) {
-    offset = 0;
+    offset = 80;
   }
 
   return `LIMIT ${limit} OFFSET ${offset}`;
@@ -69,6 +69,7 @@ const getProductsById = async (
   try {
     const baseQuery = `
     SELECT
+          f.id,
           f.food,
           f.eng_food,
           f.price,
