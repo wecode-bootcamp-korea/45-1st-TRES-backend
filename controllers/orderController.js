@@ -37,19 +37,7 @@ const getCart = catchAsync(async (req, res) => {
   return res.status(200).json(renameResult);
 });
 
-const updateOrderStatus = catchAsync(async (req, res) => {
-  const user = req.user;
-  await orderService.updateOrderStatus(user);
-  if (!user) {
-    error = new Error("UPDATE_CONTROLLER_ERROR");
-    error.statusCode = 400;
-    throw error;
-  }
-  return res.status(200).json({ message: "UPDATE_ORDER_STATUS_CODE" });
-});
-
 module.exports = {
   addCart,
   getCart,
-  updateOrderStatus,
 };

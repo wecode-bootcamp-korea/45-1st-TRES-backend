@@ -8,12 +8,7 @@ const getCart = async (user) => {
   return await orderDao.getCart(user);
 };
 
-const updateOrderStatus = async (user) => {
-  return await orderDao.updateOrderStatus(user);
-};
-
 module.exports = {
   addCart,
   getCart,
-  updateOrderStatus,
 };
