@@ -34,7 +34,7 @@ const getUserCartInfo = async (user) => {
       JOIN order_items o_i ON o.order_items_id = o_i.id
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON f.country_id = c.id
-      WHERE u.id = 45
+      WHERE u.id = ?
       GROUP BY u.id, o.order_number, o.order_items_id, o_i.id, o_i.food_id, f.country_id, c.id;
   
     `,
