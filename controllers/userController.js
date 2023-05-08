@@ -57,8 +57,6 @@ const signUp = catchAsync(async (req, res) => {
     address,
   } = req.body;
 
-  await passwordValidationCheck(password);
-
   if (
     !email ||
     !firstName ||
