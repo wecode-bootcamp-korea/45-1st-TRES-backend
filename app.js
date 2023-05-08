@@ -8,6 +8,8 @@ const routes = require("./routes");
 const { globalErrorHandler } = require("./utils/error");
 const dataSource = require("./models/dataSource");
 
+const app = express();
+
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
