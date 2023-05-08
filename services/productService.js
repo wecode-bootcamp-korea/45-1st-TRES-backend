@@ -1,4 +1,8 @@
-const productDao = require("../models/productDao");
+const productDao = require('../models/productDao');
+
+const getRandomProducts = async (offset, limit) => {
+  return await productDao.getRandomProducts(offset, limit);
+};
 
 const getAllProducts = async (
   orderBy,
@@ -23,5 +27,6 @@ const getAllProducts = async (
 };
 
 module.exports = {
-  getAllProducts,
+  getRandomProducts, 
+  getAllProducts
 };
