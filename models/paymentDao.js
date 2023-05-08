@@ -6,12 +6,13 @@ const getUserCartInfo = async (user) => {
     return await dataSource.query(
       `
       SELECT
-      u.id,
+      u.id userId,
       u.email,
-      u.first_name,
-      u.last_name,
-      u.phone_number,
-      u.points,
+      u.first_name firstName,
+      u.last_name lastName,
+      u.phone_number phoneNumber,
+      u.points point,
+      o.order_number orderNumber,
       o.user_id,
       o.order_items_id,
       o_i.id,
@@ -34,7 +35,7 @@ const getUserCartInfo = async (user) => {
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON f.country_id = c.id
       WHERE u.id = 45
-      GROUP BY u.id, o.order_items_id, o_i.id, o_i.food_id, f.country_id, c.id;
+      GROUP BY u.id, o.order_number, o.order_items_id, o_i.id, o_i.food_id, f.country_id, c.id;
   
     `,
       [user.id]
