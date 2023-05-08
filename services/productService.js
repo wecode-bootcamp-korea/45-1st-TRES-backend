@@ -1,5 +1,9 @@
 const productDao = require("../models/productDao");
 
+const getRandomProducts = async (offset, limit) => {
+  return await productDao.getRandomProducts(offset, limit);
+};
+
 const getAllProducts = async (
   orderBy,
   countryId,
@@ -29,6 +33,7 @@ const getProductInfo = async (foodId) => {
 };
 
 module.exports = {
-  getAllProducts,
+  getRandomProducts,
   getProductInfo,
+  getAllProducts,
 };
