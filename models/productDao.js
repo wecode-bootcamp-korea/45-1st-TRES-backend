@@ -1,63 +1,7 @@
 const dataSource = require("./dataSource");
+const builder = require("./builder");
 
-function filterBuilder(countryId, spiceLevel, allergyId, meatId) {
-  let conditionArr = [];
-
-  if (countryId) {
-    conditionArr.push(`f.country_id = ${countryId}`);
-  }
-
-  if (spiceLevel) {
-    conditionArr.push(`f.spice_level = ${spiceLevel}`);
-  }
-
-  if (allergyId) {
-    conditionArr.push(`f.spice_level = ${allergyId}`);
-  }
-
-  if (meatId) {
-    conditionArr.push(`f.spice_level = ${meatId}`);
-  }
-
-  let whereCondition = "";
-  if (conditionArr.length > 0) {
-    whereCondition = `WHERE ${conditionArr.join(" AND ")}`;
-  }
-  return whereCondition;
-}
-
-function orderByBuilder(orderBy) {
-  let orderQuery = "";
-  switch (orderBy) {
-    case "priceAsc":
-      orderQuery = "ORDER BY f.price ASC, f.id ASC";
-      break;
-    case "priceDesc":
-      orderQuery = "ORDER BY f.price DESC, f.id DESC";
-      break;
-    case "best":
-      orderQuery = "ORDER BY likes_count DESC";
-      break;
-    default:
-      orderQuery = "ORDER BY f.id";
-      break;
-  }
-  return orderQuery;
-}
-
-function limitBuilder(limit, offset) {
-  if (!limit) {
-    limit = 12;
-  }
-
-  if (!offset) {
-    offset = 0;
-  }
-
-  return `LIMIT ${limit} OFFSET ${offset}`;
-}
-
-const getProductsById = async (
+const getAllProducts = async (
   orderBy,
   countryId,
   spiceLevel,
@@ -69,27 +13,32 @@ const getProductsById = async (
   try {
     const baseQuery = `
     SELECT
+          f.id,
           f.food,
           f.eng_food,
           f.price,
           (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
     FROM foods f
-    JOIN countries c ON c.id = f.country_id
+    LEFT JOIN countries c ON c.id = f.country_id
+    LEFT JOIN meat_foods mf ON f.id = mf.food_id
+    LEFT JOIN meats m ON mf.meat_id = m.id
+    LEFT JOIN allergy_foods af ON f.id = af.food_id
+    LEFT JOIN allergies a ON a.id = af.allergy_id
     `;
-    const whereCondition = filterBuilder(
+    const whereCondition = builder.filterBuilder(
       countryId,
       spiceLevel,
       allergyId,
       meatId
     );
-    const sortQuery = orderByBuilder(orderBy);
-    const limitQuery = limitBuilder(limit, offset);
+    const sortQuery = builder.orderByBuilder(orderBy);
+    const limitQuery = builder.limitBuilder(limit, offset);
     const rooms = await dataSource.query(
       `${baseQuery} ${whereCondition} ${sortQuery} ${limitQuery}`
     );
     return rooms;
-  } catch (err) {
-    const error = new Error("DATABASE_CONNECTION_ERROR");
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
     throw error;
   }
@@ -99,17 +48,18 @@ const getProductInfo = async (foodId) => {
   try {
     return await dataSource.query(
       `SELECT
-            f.id AS foodId,
+            f.id,
             f.food,
-            f.eng_food AS engFood,
+            f.eng_food,
             f.price,
             f.description,
-            f.spice_level AS spiceLevel,
-            fi.food_image AS foodImage,
+            f.eng_description,
+            f.spice_level,
+            fi.food_image,
             m.meat,
-            m.eng_meat AS engMeat,
+            m.eng_meat,
             a.allergy,
-            a.eng_allergy AS engAllergy,
+            a.eng_allergy,
             r.review
        FROM foods f 
        LEFT JOIN food_images fi ON f.id = fi.food_id
@@ -121,14 +71,14 @@ const getProductInfo = async (foodId) => {
        WHERE f.id = ?`,
       [foodId]
     );
-  } catch (err) {
-    const error = new Error("DATABASE_CONNECTION_ERROR");
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
     throw error;
   }
 };
 
 module.exports = {
-  getProductsById,
+  getAllProducts,
   getProductInfo,
 };
