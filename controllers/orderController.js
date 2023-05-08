@@ -1,16 +1,15 @@
 const orderService = require("../services/orderService");
 
 const addCart = async (req, res) => {
-  try {
-    const user = req.user;
-    const [product] = req.body;
-    const result = await orderService.addCart(user, product);
-    return res.status(200).json({ message: "ADD_CART_SUCCESS" });
-  } catch (err) {
-    err = new Error("ADD_CART_CONTROLLER_ERROR");
-    err.statusCode = 400;
-    throw err;
+  const user = req.user;
+  const [product] = req.body;
+  const result = await orderService.addCart(user, product);
+  if (!result) {
+    error = new Error("ADD_CART_CONTROLLER_ERROR");
+    error.statusCode = 400;
+    throw error;
   }
+  return res.status(200).json({ message: "ADD_CART_SUCCESS" });
 };
 
 const getCart = async (req, res) => {
@@ -31,10 +30,10 @@ const getCart = async (req, res) => {
       continent: el.eng_continent,
     }));
     return res.status(200).json(renameResult);
-  } catch (err) {
-    err = new Error("GET_CART_CONTROLLER_ERROR");
-    err.statusCode = 400;
-    throw err;
+  } catch (error) {
+    error = new Error("GET_CART_CONTROLLER_ERROR");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
@@ -43,10 +42,10 @@ const updateOrderStatus = async (req, res) => {
     const user = req.user;
     await orderService.updateOrderStatus(user);
     return res.status(200).json({ message: "UPDATE_ORDER_STATUS_CODE" });
-  } catch (err) {
-    err = new Error("UPDATE_CONTROLLER_ERROR");
-    err.statusCode = 400;
-    throw err;
+  } catch (error) {
+    error = new Error("UPDATE_CONTROLLER_ERROR");
+    error.statusCode = 400;
+    throw error;
   }
 };
 

@@ -13,13 +13,13 @@ const getUserByEmail = async (email) => {
     `,
       [email]
     );
-  } catch (err) {
-    console.log(err);
-    err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
-    throw err;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
+
 const getCountriesList = async (req, res) => {
   try {
     return await dataSource.query(`
@@ -30,11 +30,10 @@ const getCountriesList = async (req, res) => {
     countries
     ORDER BY country;
   `);
-  } catch (err) {
-    console.log(err);
-    err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
-    throw err;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
@@ -107,12 +106,13 @@ const signUp = async (
         [countryResult[i], userResult.insertId]
       );
     }
-  } catch (err) {
-    console.log(err);
-    err = new Error("INVALID_DATA_INPUT");
-    err.statusCode = 500;
+  } catch (error) {
+    error = new Error("INVALID_DATA_INPUT");
+    error.statusCode = 400;
+    throw error;
   }
 };
+
 const getUserById = async (userId) => {
   try {
     return await dataSource.query(
@@ -130,10 +130,10 @@ const getUserById = async (userId) => {
     `,
       [userId]
     );
-  } catch (err) {
-    console.log(err);
-    err = new Error("USER_NOT_FOUND");
-    err.statusCode = 500;
+  } catch (error) {
+    error = new Error("USER_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   }
 };
 
