@@ -3,6 +3,7 @@ const express = require("express");
 
 const productRouter = require("./productRouter");
 const userRouter = require("./userRouter");
+const paymentRouter = require("./paymentRouter");
 
 const router = express.Router();
 
