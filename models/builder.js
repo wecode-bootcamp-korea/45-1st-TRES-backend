@@ -1,4 +1,4 @@
-function filterBuilder(countryId, spiceLevel, allergyId, meatId) {
+function filterBuilder(countryId, spiceLevel, allergyId, meatId, vegetarian) {
   let conditionArr = [];
 
   if (countryId) {
@@ -15,6 +15,10 @@ function filterBuilder(countryId, spiceLevel, allergyId, meatId) {
 
   if (meatId) {
     conditionArr.push(`m.id = ${meatId}`);
+  }
+
+  if (vegetarian) {
+    conditionArr.push(`f.vegetarian = ${vegetarian}`);
   }
 
   let whereCondition = "";

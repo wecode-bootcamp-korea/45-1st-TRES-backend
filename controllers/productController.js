@@ -19,8 +19,16 @@ const getRandomProducts = catchAsync(async (req, res) => {
 });
 
 const getAllProducts = catchAsync(async (req, res) => {
-  const { orderBy, countryId, spiceLevel, allergyId, meatId, limit, offset } =
-    req.query;
+  const {
+    orderBy,
+    countryId,
+    spiceLevel,
+    allergyId,
+    meatId,
+    vegetarian,
+    limit,
+    offset,
+  } = req.query;
 
   if (!countryId) {
     const error = new Error("KEY_ERROR");
@@ -34,6 +42,7 @@ const getAllProducts = catchAsync(async (req, res) => {
     spiceLevel,
     allergyId,
     meatId,
+    vegetarian,
     limit,
     offset
   );
