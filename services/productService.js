@@ -3,7 +3,6 @@ const productDao = require('../models/productDao');
 const getProducts = async (quantity) => {
         return await productDao.getProducts(quantity);
 };
-const productDao = require("../models/productDao");
 
 const getProductsById = async (
   orderBy,
