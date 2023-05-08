@@ -4,5 +4,10 @@ const paymentController = require("../controllers/paymentController");
 const { authorization } = require("../utils/authorization");
 
 router.get("/", authorization, paymentController.getUserCartInfo);
+router.post(
+  "/",
+  authorization,
+  paymentController.updateOrderStatusOrderNumberPoints
+);
 
 module.exports = { router };

@@ -21,7 +21,7 @@ const getUserCartInfo = async (user) => {
       c.id,
       c.country,
         JSON_ARRAYAGG(JSON_OBJECT(
-          'foodId', f.food,
+          'foodId', f.id,
           'foodName', f.food,
           'foodNameEng', f.eng_food,
           'country', c.country,
@@ -47,6 +47,38 @@ const getUserCartInfo = async (user) => {
   }
 };
 
+const updateOrderStatusOrderNumberPoints = async (user) => {
+  console.log(user.id);
+  try {
+    const orderNumber = Date.now().toString();
+    console.log(orderNumber);
+    await dataSource.query(
+      `
+      UPDATE
+      orders
+      SET order_status_id = 2  ,  order_number = ?
+      WHERE user_id = ? AND order_status_id = 1
+    `,
+      [orderNumber, user.id]
+    );
+    // return await dataSource.query(
+    //   `
+    //     UPDATE
+    //     users
+    //     SET points = ?
+    //     WHERE id = ?
+    // `,
+    //   [point.point, user.id]
+    // );
+  } catch (err) {
+    console.log(err);
+    err = new Error("DATA_NOT_FOUND");
+    err.statusCode = 500;
+    throw err;
+  }
+};
+
 module.exports = {
   getUserCartInfo,
+  updateOrderStatusOrderNumberPoints,
 };
