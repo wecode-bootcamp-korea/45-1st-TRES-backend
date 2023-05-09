@@ -34,8 +34,20 @@ const getProductInfo = async (foodId) => {
   return getProductInfo;
 };
 
+const getCategories = async() => {
+  const result = await productDao.getCategories();
+  let categories = [];
+
+  for(let i = 0; i<=result.length - 1; i++){
+    categories.push(result[i].categories);
+  }
+  
+  return categories;
+}
+
 module.exports = {
   getRandomProducts,
   getProductInfo,
   getAllProducts,
+  getCategories
 };

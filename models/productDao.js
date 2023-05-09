@@ -111,8 +111,33 @@ const getProductInfo = async (foodId) => {
   }
 };
 
+const getCategories = async() => {
+  try {
+    return await dataSource.query(
+      `SELECT
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'id', c.id,
+          'continent', co.id,
+          'name', c.country,
+          'engName', c.eng_country
+        )
+      ) AS categories
+      FROM countries c
+      JOIN continents co ON co.id = c.continent_id
+      GROUP BY co.id
+      `
+    );
+  }catch (error){
+    error = new Error("DataSource ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
 module.exports = {
   getRandomProducts,
   getAllProducts,
   getProductInfo,
+  getCategories,
 };

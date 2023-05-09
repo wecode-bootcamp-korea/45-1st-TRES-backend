@@ -62,8 +62,18 @@ const getProductInfo = catchAsync(async (req, res) => {
   return res.status(200).json({ data: result });
 });
 
+const getCategories = catchAsync(async (req, res) => {
+  const categories = await productService.getCategories();
+  return res.status(200).json(categories);
+});
+
+
+
+
+
 module.exports = {
   getRandomProducts,
   getAllProducts,
   getProductInfo,
+  getCategories
 };
