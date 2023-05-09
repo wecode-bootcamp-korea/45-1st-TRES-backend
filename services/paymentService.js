@@ -4,11 +4,17 @@ const getUserCartInfo = async (user) => {
   return await paymentDao.getUserCartInfo(user);
 };
 
-const updateOrderStatusOrderNumberPoints = async (user, point) => {
-  return await paymentDao.updateOrderStatusOrderNumberPoints(user, point);
+const payment = async (user, point) => {
+  const result = await paymentDao.checkPoint(user);
+
+  const userPoints = result[0].points;
+  if (userPoints > point) return await paymentDao.payment(user, point);
+  const error = new Error("NOT_ENOUGH_POINT");
+  error.statusCode = 409;
+  throw error;
 };
 
 module.exports = {
   getUserCartInfo,
-  updateOrderStatusOrderNumberPoints,
+  payment,
 };

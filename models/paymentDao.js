@@ -1,4 +1,5 @@
 const dataSource = require("./dataSource");
+const queryRunner = dataSource.createQueryRunner();
 
 const getUserCartInfo = async (user) => {
   try {
@@ -45,36 +46,76 @@ const getUserCartInfo = async (user) => {
   }
 };
 
-const updateOrderStatusOrderNumberPoints = async (user, point) => {
+const checkPoint = async (user) => {
   try {
-    const orderNumber = Date.now().toString();
-    await dataSource.query(
-      `
-      UPDATE
-      orders
-      SET order_status_id = 2  ,  order_number = ?
-      WHERE user_id = ? AND order_status_id = 1
-    `,
-      [orderNumber, user.id]
-    );
     return await dataSource.query(
       `
-        UPDATE
-        users
-        SET points = ?
-        WHERE id = ?
+      SELECT
+      u.id,
+      u.points
+      FROM users u
+      WHERE u.id = ?
     `,
-      [point.point, user.id]
+      [user.id]
     );
+  } catch (error) {
+    console.log(err);
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 500;
+    return error;
+  }
+};
+
+const payment = async (user, point) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
+  try {
+    const orderNumber = Date.now().toString();
+
+    await queryRunner.query(
+      `
+            UPDATE
+            users u
+            SET points = u.points - ?
+            WHERE id = ?
+        `,
+      [point, user.id]
+    );
+    await queryRunner.query(
+      `
+          UPDATE
+          orders
+          SET order_status_id = 2  ,  order_number = ?
+          WHERE user_id = ? AND order_status_id = 1
+        `,
+      [orderNumber, user.id]
+    );
+
+    const userFinalPoint = await queryRunner.query(
+      `
+      SELECT
+      u.points
+      FROM users u
+      WHERE u.id = ?
+    `,
+      [user.id]
+    );
+    await queryRunner.commitTransaction();
+    return userFinalPoint;
   } catch (err) {
+    await queryRunner.rollbackTransaction();
     console.log(err);
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
+  } finally {
+    await queryRunner.release();
   }
 };
 
 module.exports = {
   getUserCartInfo,
-  updateOrderStatusOrderNumberPoints,
+  checkPoint,
+  payment,
 };

@@ -27,13 +27,15 @@ const getUserCartInfo = catchAsync(async (req, res) => {
   });
 });
 
-const updateOrderStatusOrderNumberPoints = catchAsync(async (req, res) => {
-  const { point } = req.body;
+const payment = catchAsync(async (req, res) => {
   const user = req.user;
-  const result = await paymentService.updateOrderStatusOrderNumberPoints(
-    user,
-    point
-  );
+  const { point } = req.body;
+  if (!point) {
+    error = new Error("KEY_ERROR!");
+    error.statusCode = 400;
+    throw error;
+  }
+  const result = await paymentService.payment(user, point);
   if (!result) {
     error = new Error("ORDER_FAILED!");
     error.statusCode = 400;
@@ -44,5 +46,5 @@ const updateOrderStatusOrderNumberPoints = catchAsync(async (req, res) => {
 
 module.exports = {
   getUserCartInfo,
-  updateOrderStatusOrderNumberPoints,
+  payment,
 };
