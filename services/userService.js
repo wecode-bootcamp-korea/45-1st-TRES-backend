@@ -1,4 +1,3 @@
-// sercixes/userService.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -54,7 +53,7 @@ const signUp = async (
 ) => {
   await emailValidationCheck(email);
   await passwordValidationCheck(password);
-  const hashedPassword = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, process.env.SALTROUND);
 
   const signUp = await userDao.signUp(
     email,
