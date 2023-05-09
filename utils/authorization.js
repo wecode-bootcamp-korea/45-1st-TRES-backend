@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
+const { use } = require("../routes");
 
 const authorization = async (req, res, next) => {
   try {
@@ -8,7 +9,6 @@ const authorization = async (req, res, next) => {
     if (!token) return res.status(400).json({ message: "TOKEN_EMPTY" });
 
     const decoded = jwt.verify(token, process.env.SECRETKEY);
-    console.log(decoded);
     const [user] = await userService.getUserById(decoded.id);
 
     if (!user) {

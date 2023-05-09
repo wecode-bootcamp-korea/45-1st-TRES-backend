@@ -4,18 +4,36 @@ const { catchAsync } = require("../utils/error");
 const getUserCartInfo = catchAsync(async (req, res) => {
   const user = req.user;
   const result = await paymentService.getUserCartInfo(user);
+
   if (!result) {
     error = new Error("CONTROLLER!!");
     error.statusCode = 400;
     throw error;
   }
-  return res.status(200).json(result);
+
+  let foodArray = [];
+  for (let i = 0; i < result.length; i++) {
+    foodArray.push(result[i].food);
+  }
+
+  return res.status(200).json({
+    userId: result[0].userId,
+    email: result[0].email,
+    lastName: result[0].lastName,
+    firstName: result[0].firstName,
+    phoneNumber: result[0].phoneNumber,
+    point: result[0].point,
+    food: foodArray,
+  });
 });
 
 const updateOrderStatusOrderNumberPoints = catchAsync(async (req, res) => {
-  // const { point } = req.body;
+  const { point } = req.body;
   const user = req.user;
-  const result = await paymentService.updateOrderStatusOrderNumberPoints(user);
+  const result = await paymentService.updateOrderStatusOrderNumberPoints(
+    user,
+    point
+  );
   if (!result) {
     error = new Error("ORDER_FAILED!");
     error.statusCode = 400;

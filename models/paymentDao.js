@@ -1,7 +1,6 @@
 const dataSource = require("./dataSource");
 
 const getUserCartInfo = async (user) => {
-  console.log(`dao`, user.id);
   try {
     return await dataSource.query(
       `
@@ -20,14 +19,14 @@ const getUserCartInfo = async (user) => {
       f.country_id,
       c.id,
       c.country,
-        JSON_ARRAYAGG(JSON_OBJECT(
+        JSON_OBJECT(
           'foodId', f.id,
           'foodName', f.food,
           'foodNameEng', f.eng_food,
           'country', c.country,
           'quantity', o_i.order_count,
           'price', o_i.order_price
-        )) AS food
+        ) AS food
        FROM users u
       JOIN addresses a ON a.id = u.address_id
       JOIN orders o ON o.user_id = u.id
@@ -36,7 +35,6 @@ const getUserCartInfo = async (user) => {
       JOIN countries c ON f.country_id = c.id
       WHERE u.id = ?
       GROUP BY u.id, o.order_number, o.order_items_id, o_i.id, o_i.food_id, f.country_id, c.id;
-  
     `,
       [user.id]
     );
@@ -47,11 +45,9 @@ const getUserCartInfo = async (user) => {
   }
 };
 
-const updateOrderStatusOrderNumberPoints = async (user) => {
-  console.log(user.id);
+const updateOrderStatusOrderNumberPoints = async (user, point) => {
   try {
     const orderNumber = Date.now().toString();
-    console.log(orderNumber);
     await dataSource.query(
       `
       UPDATE
@@ -61,15 +57,15 @@ const updateOrderStatusOrderNumberPoints = async (user) => {
     `,
       [orderNumber, user.id]
     );
-    // return await dataSource.query(
-    //   `
-    //     UPDATE
-    //     users
-    //     SET points = ?
-    //     WHERE id = ?
-    // `,
-    //   [point.point, user.id]
-    // );
+    return await dataSource.query(
+      `
+        UPDATE
+        users
+        SET points = ?
+        WHERE id = ?
+    `,
+      [point.point, user.id]
+    );
   } catch (err) {
     console.log(err);
     err = new Error("DATA_NOT_FOUND");
