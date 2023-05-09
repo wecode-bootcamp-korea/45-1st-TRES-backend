@@ -15,12 +15,11 @@ const addCart = async (user, product) => {
     await dataSource.query(
       `
         INSERT INTO orders (
-          order_status_id,
           user_id,
           order_items_id
-        ) VALUES (?, ?, ?);
+        ) VALUES (?, ?);
     `,
-      [1, user.id, orderItemsResult.insertId]
+      [user.id, orderItemsResult.insertId]
     );
   } catch (err) {
     console.log(err);
