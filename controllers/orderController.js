@@ -29,9 +29,10 @@ const deleteOrder = catchAsync(async (req, res) => {
     throw error;
   }
 
-  await orderService.deleteOrder(deleteOrderItem, userId);
-  return res.status(200).json({ message: "ORDER DELETED" });
+  const result = await orderService.deleteOrder(deleteOrderItem, userId);
+  if(result) return res.status(200).json({ message: "ORDER DELETED" });
     
+  return res.status(400).json({ message: "NO MODIFICATIONS MADE" })
 });
 
 module.exports = { modifyOrderCount, deleteOrder };

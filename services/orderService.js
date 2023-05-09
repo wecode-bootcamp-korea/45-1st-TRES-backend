@@ -5,16 +5,21 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
 };
 
 const deleteOrder = async(deleteOrderItem, userId) =>{
-    try {
-        for(let i = 0; i <= deleteOrderItem.length - 1; i++) {
-            let food_id = deleteOrderItem[i].foodId;
-            await orderDao.deleteOrderItems(food_id, userId);
-        }
-    } catch (err) {
-        const error = new Error("COULD NOT DELETE DATA");
-        error.statusCode = 404;
-        throw error;
-    }
+
+  const food_id = [];
+  deleteOrderItem.map((item)=>{
+    food_id.push(item.foodId)
+  })
+  const isExist = await orderDao.checkDeleteQuery(food_id, userId);
+  
+  const inputLength = food_id.length;
+  const isExistLength = isExist.length;
+
+  if(inputLength !== isExistLength) return false  
+
+  await orderDao.deleteOrderItems(food_id, userId);
+  return true;
+
 };
 
 module.exports = { modifyOrderCount, deleteOrder };
