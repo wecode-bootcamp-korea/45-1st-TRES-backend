@@ -1,8 +1,12 @@
 const dataSource = require("./dataSource");
+const queryRunner = dataSource.createQueryRunner();
 
 const addCart = async (user, products) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
   try {
-    const orderItemsResult = await dataSource.query(
+    const orderItemsResult = await queryRunner.query(
       `
       INSERT INTO order_items (
         order_price,
@@ -12,7 +16,7 @@ const addCart = async (user, products) => {
     `,
       [products.price, products.count, products.foodId]
     );
-    await dataSource.query(
+    await queryRunner.query(
       `
         INSERT INTO orders (
           user_id,
@@ -21,11 +25,17 @@ const addCart = async (user, products) => {
     `,
       [user.id, orderItemsResult.insertId]
     );
+
+    await queryRunner.commitTransaction();
+    return true;
   } catch (err) {
     console.log(err);
+    await queryRunner.rollbackTransaction();
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
+  } finally {
+    await queryRunner.release();
   }
 };
 
