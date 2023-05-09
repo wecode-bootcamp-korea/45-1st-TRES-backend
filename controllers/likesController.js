@@ -11,7 +11,6 @@ const CreateOrDeleteLike = catchAsync(async (req, res) => {
   }
 
   const userLikes = await likesService.CreateOrDeleteLike(userId, foodId);
-  console.log(userLikes.insertId);
 
   if (userLikes.insertId == 0)
     return res.status(200).json({ message: "likeCanceled" });
