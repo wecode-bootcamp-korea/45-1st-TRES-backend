@@ -1,7 +1,7 @@
 const likesService = require("../services/likesService");
 const { catchAsync } = require("../utils/error");
 
-const likes = catchAsync(async (req, res) => {
+const CreateOrDeleteLike = catchAsync(async (req, res) => {
   const { userId, foodId } = req.body;
 
   if (!userId || !foodId) {
@@ -10,14 +10,15 @@ const likes = catchAsync(async (req, res) => {
     throw error;
   }
 
-  const userLikes = await likesService.likes(userId, foodId);
+  const userLikes = await likesService.CreateOrDeleteLike(userId, foodId);
+  console.log(userLikes.insertId);
 
-  if (userLikes == true)
-    return res.status(201).json({ message: "likeCreated" });
+  if (userLikes.insertId == 0)
+    return res.status(200).json({ message: "likeCanceled" });
 
-  return res.status(201).json({ message: "likeCanceled" });
+  return res.status(201).json({ message: "likeCreated" });
 });
 
 module.exports = {
-  likes,
+  CreateOrDeleteLike,
 };

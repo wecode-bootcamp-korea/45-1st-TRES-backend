@@ -1,45 +1,57 @@
 const dataSource = require("./dataSource");
 
-const likes = async (userId, foodId) => {
+const likeExists = async (userId, foodId) => {
   try {
-    const [isExists] = await dataSource.query(
+    const [likeExists] = await dataSource.query(
       `
-                SELECT EXISTS (
-                    SELECT * FROM likes 
-                    WHERE (
-                      user_id = ? AND food_id = ?
-                    )
-                )
+          SELECT EXISTS (
+              SELECT * FROM likes 
+              WHERE (
+                user_id = ? AND food_id = ?
+              )
+          )
+      `,
+      [userId, foodId]
+    );
+    const [result] = Object.values(likeExists);
+    return result;
+  } catch (error) {
+    error = new Error("INVALID_DATA_INPUT");
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+const deleteLike = async (userId, foodId) => {
+  try {
+    return await dataSource.query(
+      `
+          DELETE FROM likes
+          WHERE user_id = ? AND food_id = ?
         `,
       [userId, foodId]
     );
+  } catch (error) {
+    error = new Error("INVALID_DATA_INPUT");
+    error.statusCode = 500;
+    throw error;
+  }
+};
 
-    console.log(isExists);
-
-    if (Object.values(isExists[0]) == 1) {
-      await dataSource.query(
-        `
-                DELETE FROM likes
-                WHERE user_id = ? AND food_id = ?
-          `,
-        [userId, foodId]
-      );
-      return false;
-    }
-
-    await dataSource.query(
+const createLike = async (userId, foodId) => {
+  try {
+    return await dataSource.query(
       `
-                INSERT INTO likes (
-                    user_id,
-                    food_id
-                ) VALUES (
-                    ?,
-                    ?
-                )
-          `,
+          INSERT INTO likes (
+              user_id,
+              food_id
+          ) VALUES (
+              ?,
+              ?
+          )
+        `,
       [userId, foodId]
     );
-    return true;
   } catch (error) {
     error = new Error("INVALID_DATA_INPUT");
     error.statusCode = 500;
@@ -48,5 +60,7 @@ const likes = async (userId, foodId) => {
 };
 
 module.exports = {
-  likes,
+  likeExists,
+  deleteLike,
+  createLike,
 };
