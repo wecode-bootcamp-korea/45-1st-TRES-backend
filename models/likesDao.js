@@ -14,7 +14,7 @@ const likeExists = async (userId, foodId) => {
       [userId, foodId]
     );
     const [result] = Object.values(likeExists);
-    return result;
+    return !!parseInt(result);
   } catch (error) {
     error = new Error("INVALID_DATA_INPUT");
     error.statusCode = 500;
