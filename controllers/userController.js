@@ -18,7 +18,7 @@ const userEmailCheck = catchAsync(async (req, res) => {
 
   const result = await userService.userEmailCheck(email);
 
-  if (!result) return res.status(400).json({ isEmailExist: false });
+  if (!result) return res.status(200).json({ isEmailExist: false });
 
   return res.status(200).json({ isEmailExist: true });
 });
