@@ -50,7 +50,7 @@ const getProductInfo = catchAsync(async (req, res) => {
   }
 
   const result = await productService.getProductInfo(foodId);
-  return res.status(200).json({ data: result });
+  return res.status(200).json(result);
 });
 
 module.exports = {

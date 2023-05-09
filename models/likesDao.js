@@ -2,7 +2,7 @@ const dataSource = require("./dataSource");
 
 const likes = async (userId, foodId) => {
   try {
-    const isExists = await dataSource.query(
+    const [isExists] = await dataSource.query(
       `
                 SELECT EXISTS (
                     SELECT * FROM likes 
@@ -13,6 +13,8 @@ const likes = async (userId, foodId) => {
         `,
       [userId, foodId]
     );
+
+    console.log(isExists);
 
     if (Object.values(isExists[0]) == 1) {
       await dataSource.query(
