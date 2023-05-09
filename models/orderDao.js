@@ -42,16 +42,8 @@ const checkDeleteQuery = async (food_id, userId) => {
 
 const deleteOrderItems = async (food_id, userId) => {
   const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
-  // await queryRunner.query(
-  //   `DELETE orders, order_items
-  //   FROM order_items
-  //   JOIN orders
-  //   ON order_items..id = orders.order_items_id
-  //   WHERE order_items.food_id IN (?)
-  //   AND orders.user_id = ?
-  //   `, [food_id, userId ]
-  // )
   await queryRunner.startTransaction();
 
   try{
@@ -74,46 +66,6 @@ const deleteOrderItems = async (food_id, userId) => {
   } finally {
     await queryRunner.release();
   }
-  // const connection = await dataSource.getConnection();
-  // console.log("dataSource is " + dataSource);
-  // console.log("connection is " + connection);
-  // try{
-  //   await connection.beginTransaction();
-  //   const result = await connection.query(
-  //     `DELETE orders, order_items
-  //     FROM order_items
-  //     JOIN orders
-  //     ON order_items..id = orders.order_items_id
-  //     WHERE order_items.food_id IN (?)
-  //     AND orders.user_id = ?
-  //     `, [food_id, userId ]
-  //   )
-  //   console.log(result);
-  //   return result;
-  // } catch (err) {
-  //   await connection.rollback();
-  //   const error = new Error("DataSource ERROR");
-  //   error.statusCode = 400;
-  //   throw error;
-
-  // } finally {
-  //   connection.release();
-  // }
-  // try {
-  //   return await dataSource.query(
-  //   `DELETE orders, order_items
-  //   FROM order_items
-  //   JOIN orders ON order_items.id = orders.order_items_id
-  //   WHERE order_items.food_id IN (?)
-  //   AND orders.user_id = ?
-  //   `, [ food_id, userId ]
-  //   )
-
-  // } catch (err) {
-  //   const error = new Error("DataSource Error");
-  //   error.statusCode = 400;
-  //   throw error;
-  // }
 };
 
 module.exports = { modifyOrderCount, checkDeleteQuery, deleteOrderItems };
