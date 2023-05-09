@@ -3,8 +3,8 @@ const { catchAsync } = require("../utils/error");
 
 const addCart = catchAsync(async (req, res) => {
   const user = req.user;
-  const [product] = req.body;
-  const result = await orderService.addCart(user, product);
+  const [products] = req.body;
+  const result = await orderService.addCart(user, products);
   if (!result) {
     error = new Error("ADD_CART_CONTROLLER_ERROR");
     error.statusCode = 400;

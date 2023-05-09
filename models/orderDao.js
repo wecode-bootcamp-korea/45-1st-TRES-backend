@@ -1,6 +1,6 @@
 const dataSource = require("./dataSource");
 
-const addCart = async (user, product) => {
+const addCart = async (user, products) => {
   try {
     const orderItemsResult = await dataSource.query(
       `
@@ -10,7 +10,7 @@ const addCart = async (user, product) => {
         food_id
       ) VALUES (?, ?, ?);
     `,
-      [product.price, product.count, product.foodId]
+      [products.price, products.count, products.foodId]
     );
     await dataSource.query(
       `
