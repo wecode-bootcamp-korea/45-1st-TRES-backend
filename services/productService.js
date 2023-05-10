@@ -29,7 +29,7 @@ const getAllProducts = async (
 };
 
 const getProductInfo = async (foodId) => {
-  const getProductInfo = await productDao.getProductInfo(foodId);
+  const [getProductInfo] = await productDao.getProductInfo(foodId);
 
   return getProductInfo;
 };

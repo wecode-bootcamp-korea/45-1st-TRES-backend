@@ -37,7 +37,7 @@ const getAllProducts = async (
 ) => {
   try {
     const baseQuery = `
-    SELECT
+    SELECT DISTINCT
           f.id,
           f.food,
           f.eng_food,
@@ -74,34 +74,50 @@ const getProductInfo = async (foodId) => {
   try {
     return await dataSource.query(
       `SELECT
-            f.id,
-            f.food,
-            f.eng_food,
-            f.price,
-            f.vegetarian,
-            ct.continent,
-            ct.eng_continent,
-            c.country,
-            c.eng_country,
-            f.spice_level,
-            f.description,
-            f.eng_description,
-            a.allergy,
-            a.eng_allergy,
-            m.meat,
-            m.eng_meat,
-            fi.food_image,
-            r.review
-       FROM foods f
-       LEFT JOIN food_images fi ON f.id = fi.food_id
-       LEFT JOIN meat_foods mf ON f.id = mf.food_id
-       LEFT JOIN meats m ON mf.meat_id = m.id
-       LEFT JOIN allergy_foods af ON f.id = af.food_id
-       LEFT JOIN allergies a ON a.id = af.allergy_id
-       LEFT JOIN reviews r ON r.food_id = f.id
-       LEFT JOIN countries c ON f.country_id = c.id
-       LEFT JOIN continents ct ON ct.id = c.continent_id
-       WHERE f.id = ?`,
+          f.id,
+          f.food,
+          f.eng_food,
+          f.price,
+          f.vegetarian,
+          ct.continent,
+          ct.eng_continent,
+          c.country,
+          c.eng_country,
+          f.spice_level,
+          f.description,
+          f.eng_description,
+          GROUP_CONCAT(DISTINCT a.allergy SEPARATOR ',') AS allergy,
+          GROUP_CONCAT(DISTINCT a.eng_allergy SEPARATOR ',') AS eng_allergy,
+          GROUP_CONCAT(DISTINCT m.meat SEPARATOR ',') AS meat,
+          GROUP_CONCAT(DISTINCT m.eng_meat SEPARATOR ',') AS eng_meat,
+          fi.food_image,
+          r.review
+      FROM foods f
+      LEFT JOIN food_images fi ON f.id = fi.food_id
+      LEFT JOIN meat_foods mf ON f.id = mf.food_id
+      LEFT JOIN meats m ON mf.meat_id = m.id
+      LEFT JOIN allergy_foods af ON f.id = af.food_id
+      LEFT JOIN allergies a ON a.id = af.allergy_id
+      LEFT JOIN reviews r ON r.food_id = f.id
+      LEFT JOIN countries c ON f.country_id = c.id
+      LEFT JOIN continents ct ON ct.id = c.continent_id
+      WHERE f.id = ?
+      GROUP BY
+          f.id,
+          f.food,
+          f.eng_food,
+          f.price, 
+          f.vegetarian,
+          ct.continent,
+          ct.eng_continent,
+          c.country,
+          c.eng_country,
+          f.spice_level,
+          f.description,
+          f.eng_description,
+          fi.food_image,
+          r.review
+`,
       [foodId]
     );
   } catch (error) {
