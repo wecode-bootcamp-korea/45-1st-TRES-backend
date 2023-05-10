@@ -21,23 +21,39 @@ const getCart = catchAsync(async (req, res) => {
     error.statusCode = 400;
     throw error;
   }
-  const renameResult = result.map((el) => ({
-    userId: el.user_id,
-    orderItemsId: el.order_items_id,
-    orderItemsId: el.id,
-    orderPrice: el.order_price,
-    orderCount: el.order_count,
-    foodId: el.food_id,
-    food: el.food,
-    engFood: el.eng_food,
-    countryId: el.country_id,
-    country: el.country,
-    continent: el.eng_continent,
-  }));
-  return res.status(200).json(renameResult);
+  return res.status(200).json(result);
 });
 
-module.exports = {
-  addCart,
-  getCart,
-};
+const modifyOrderCount = catchAsync(async (req, res) => {
+  const user = req.user;
+  const userId = user.id;
+  const { foodId, quantity } = req.body;
+
+  if (!foodId && !quantity) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  await orderService.modifyOrderCount(foodId, quantity, userId);
+  return res.status(200).json({ message: "ORDER MODIFIED" });
+});
+
+const deleteOrder = catchAsync(async (req, res) => {
+  const user = req.user;
+  const userId = user.id;
+  const { deleteOrderItem } = req.body;
+
+  if (!deleteOrderItem) {
+    const error = new Error("KEY_ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const result = await orderService.deleteOrder(deleteOrderItem, userId);
+  if (result) return res.status(200).json({ message: "ORDER DELETED" });
+
+  return res.status(400).json({ message: "NO MODIFICATIONS MADE" });
+});
+
+module.exports = { addCart, getCart, modifyOrderCount, deleteOrder };
