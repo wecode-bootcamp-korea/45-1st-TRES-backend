@@ -1,8 +1,7 @@
 const userService = require("../services/userService");
 const { catchAsync } = require("../utils/error");
 const {
-  emailValidationCheck,
-  passwordValidationCheck,
+  emailValidationCheck
 } = require("../utils/validationCheck");
 
 const userEmailCheck = catchAsync(async (req, res) => {
