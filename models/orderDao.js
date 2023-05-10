@@ -109,6 +109,7 @@ const checkDeleteQuery = async (deleteOrderItem, userId) => {
 };
 
 const deleteOrderItems = async (deleteOrderItem, userId) => {
+  console.log("in dao ", deleteOrderItem);
   const queryRunner = dataSource.createQueryRunner();
 
   await queryRunner.connect();
@@ -128,6 +129,7 @@ const deleteOrderItems = async (deleteOrderItem, userId) => {
 
     await queryRunner.commitTransaction();
   } catch (err) {
+    console.log(err);
     await queryRunner.rollbackTransaction();
     const error = new Error("Query Transaction failed... Rolling Back");
     error.statusCode = 400;

@@ -15,6 +15,9 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
 const deleteOrder = async (deleteOrderItem, userId) => {
 
   const isExist = await orderDao.checkDeleteQuery(deleteOrderItem, userId);
+  
+  console.log(deleteOrderItem);
+  console.log("in service ", deleteOrderItem);
 
   const inputLength = deleteOrderItem.length;
   const isExistLength = isExist.length;
@@ -22,7 +25,6 @@ const deleteOrder = async (deleteOrderItem, userId) => {
   if (inputLength !== isExistLength) return false;
 
   await orderDao.deleteOrderItems(deleteOrderItem, userId);
-  
   return true;
 };
 
