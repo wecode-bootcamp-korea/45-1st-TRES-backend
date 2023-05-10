@@ -35,13 +35,14 @@ const getProductInfo = async (foodId) => {
 };
 
 const getCategories = async() => {
+
   const result = await productDao.getCategories();
   let categories = [];
 
-  for(let i = 0; i<=result.length - 1; i++){
-    categories.push(result[i].categories);
-  }
-  
+  result.map((el)=>{
+    categories.push(el.categories);
+  })
+
   return categories;
 }
 

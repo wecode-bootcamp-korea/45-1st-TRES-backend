@@ -64,6 +64,7 @@ const getProductInfo = catchAsync(async (req, res) => {
 
 const getCategories = catchAsync(async (req, res) => {
   const categories = await productService.getCategories();
+  
   return res.status(200).json(categories);
 });
 

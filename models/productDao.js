@@ -5,10 +5,10 @@ const getRandomProducts = async (offset, limit) => {
   try {
     return await dataSource.query(
       `SELECT 
-      c.country, 
-      f.food, 
-      f.price, 
-      CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
+        c.country, 
+        f.food, 
+        f.price, 
+        CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
       FROM countries c
       JOIN foods f ON c.id = f.country_id
       JOIN food_images fi ON f.id = fi.food_id
@@ -38,11 +38,11 @@ const getAllProducts = async (
   try {
     const baseQuery = `
     SELECT
-          f.id,
-          f.food,
-          f.eng_food,
-          f.price,
-          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
+      f.id,
+      f.food,
+      f.eng_food,
+      f.price,
+      (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
     FROM foods f
     LEFT JOIN countries c ON c.id = f.country_id
     LEFT JOIN meat_foods mf ON f.id = mf.food_id
@@ -74,24 +74,24 @@ const getProductInfo = async (foodId) => {
   try {
     return await dataSource.query(
       `SELECT
-            f.id,
-            f.food,
-            f.eng_food,
-            f.price,
-            f.vegetarian,
-            ct.continent,
-            ct.eng_continent,
-            c.country,
-            c.eng_country,
-            f.spice_level,
-            f.description,
-            f.eng_description,
-            a.allergy,
-            a.eng_allergy,
-            m.meat,
-            m.eng_meat,
-            fi.food_image,
-            r.review
+        f.id,
+        f.food,
+        f.eng_food,
+        f.price,
+        f.vegetarian,
+        ct.continent,
+        ct.eng_continent,
+        c.country,
+        c.eng_country,
+        f.spice_level,
+        f.description,
+        f.eng_description,
+        a.allergy,
+        a.eng_allergy,
+        m.meat,
+        m.eng_meat,
+        fi.food_image,
+        r.review
        FROM foods f
        LEFT JOIN food_images fi ON f.id = fi.food_id
        LEFT JOIN meat_foods mf ON f.id = mf.food_id
@@ -128,8 +128,8 @@ const getCategories = async() => {
       GROUP BY co.id
       `
     );
-  }catch (error){
-    error = new Error("DataSource ERROR");
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
     throw error;
   }
