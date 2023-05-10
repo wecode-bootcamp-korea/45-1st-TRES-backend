@@ -20,7 +20,7 @@ const getRandomProducts = async (offset, limit) => {
     );
   } catch (err) {
     const error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
-    error.statusCode(400);
+    error.statusCode = 400;
     throw error;
   }
 };
