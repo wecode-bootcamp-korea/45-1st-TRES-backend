@@ -42,13 +42,30 @@ const getAllProducts = async (
           f.food,
           f.eng_food,
           f.price,
-          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
+          ct.id AS continent_id,
+          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count,
+          (SELECT JSON_ARRAYAGG(
+	                              JSON_OBJECT(
+		                                "id", co.id , 
+		                                "country", co.country
+	                              ))
+          FROM countries co 
+          WHERE continent_id = (
+                  SELECT co.continent_id 
+                  FROM continents c
+                  JOIN countries co on co.continent_id = c.id
+                  JOIN foods f on co.id = f.country_id
+                  WHERE f.id = ?
+                  )
+          )as countries
     FROM foods f
     LEFT JOIN countries c ON c.id = f.country_id
+    LEFT JOIN continents ct ON ct.id = c.continent_id
     LEFT JOIN meat_foods mf ON f.id = mf.food_id
     LEFT JOIN meats m ON mf.meat_id = m.id
     LEFT JOIN allergy_foods af ON f.id = af.food_id
     LEFT JOIN allergies a ON a.id = af.allergy_id
+    WHERE f.id = ?
     `;
     const whereCondition = builder.filterBuilder(
       countryId,
