@@ -5,10 +5,10 @@ const getRandomProducts = async (offset, limit) => {
   try {
     return await dataSource.query(
       `SELECT 
-      c.country, 
-      f.food, 
-      f.price, 
-      CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
+        c.country, 
+        f.food, 
+        f.price, 
+        CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
       FROM countries c
       JOIN foods f ON c.id = f.country_id
       JOIN food_images fi ON f.id = fi.food_id
@@ -158,9 +158,34 @@ const getProductInfo = async (foodId) => {
   }
 };
 
+const getCategories = async() => {
+  try {
+    return await dataSource.query(
+      `SELECT
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'id', c.id,
+          'continent', co.id,
+          'name', c.country,
+          'engName', c.eng_country
+        )
+      ) AS categories
+      FROM countries c
+      JOIN continents co ON co.id = c.continent_id
+      GROUP BY co.id
+      `
+    );
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
 module.exports = {
   getRandomProducts,
   getAllProducts,
   getCountries,
   getProductInfo,
+  getCategories,
 };

@@ -1,6 +1,5 @@
 const userService = require("../services/userService");
 const { catchAsync } = require("../utils/error");
-
 const {
   emailValidationCheck,
   passwordValidationCheck,
@@ -56,8 +55,6 @@ const signUp = catchAsync(async (req, res) => {
     birth,
     address,
   } = req.body;
-
-  await passwordValidationCheck(password);
 
   if (
     !email ||
