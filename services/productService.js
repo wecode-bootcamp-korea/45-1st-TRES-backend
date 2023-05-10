@@ -34,8 +34,17 @@ const getProductInfo = async (foodId) => {
   return getProductInfo;
 };
 
+const getCategories = async() => {
+  const result = await productDao.getCategories();
+
+  const categoryList = result.map(category => category.categories);
+  
+  return categoryList
+}
+
 module.exports = {
   getRandomProducts,
   getProductInfo,
   getAllProducts,
+  getCategories
 };
