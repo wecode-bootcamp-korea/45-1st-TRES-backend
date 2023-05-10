@@ -1,4 +1,5 @@
 const dataSource = require("./dataSource");
+const queryRunner = dataSource.createQueryRunner();
 
 const getUserByEmail = async (email) => {
   try {
@@ -48,8 +49,10 @@ const signUp = async (
   birth,
   address
 ) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
   try {
-    const addressResult = await dataSource.query(
+    const addressResult = await queryRunner.query(
       `
         INSERT INTO addresses (
             address
@@ -57,7 +60,7 @@ const signUp = async (
     `,
       [address]
     );
-    const userResult = await dataSource.query(
+    const userResult = await queryRunner.query(
       `
         INSERT INTO users (
             email,
@@ -84,7 +87,7 @@ const signUp = async (
 
     let countryResult = [];
     for (let i = 0; i < countries.length; i++) {
-      let countryId = await dataSource.query(
+      let countryId = await queryRunner.query(
         `
         SELECT id
         FROM countries
@@ -96,7 +99,7 @@ const signUp = async (
     }
 
     for (let i = 0; i < countries.length; i++) {
-      await dataSource.query(
+      await queryRunner.query(
         `
         INSERT INTO country_user(
           country_id,
@@ -106,10 +109,16 @@ const signUp = async (
         [countryResult[i], userResult.insertId]
       );
     }
+    await queryRunner.commitTransaction();
+    return;
   } catch (error) {
+    await queryRunner.rollbackTransaction();
+    console.log(error);
     error = new Error("INVALID_DATA_INPUT");
     error.statusCode = 400;
     throw error;
+  } finally {
+    await queryRunner.release();
   }
 };
 
