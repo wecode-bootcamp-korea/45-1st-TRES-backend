@@ -26,10 +26,9 @@ const getAllProducts = async (
   );
 
   const [getCountries] = await productDao.getCountries(countryId);
-  getAllProducts.push(getCountries);
-  console.log(getAllProducts);
+  getCountries["foods"] = getAllProducts;
 
-  return getAllProducts;
+  return getCountries;
 };
 
 const getProductInfo = async (foodId) => {

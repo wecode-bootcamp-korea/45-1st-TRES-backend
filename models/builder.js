@@ -10,11 +10,19 @@ function filterBuilder(countryId, spiceLevel, allergyId, meatId, vegetarian) {
   }
 
   if (allergyId) {
-    conditionArr.push(`a.id IN (${allergyId.join(",")})`);
+    let allergyArr = [];
+    allergyArr.push(allergyId);
+    console.log(allergyArr);
+    conditionArr.push(
+      `NOT EXISTS (SELECT id FROM allergies a WHERE ${allergyArr.join(",")} )`
+    );
   }
 
   if (meatId) {
-    conditionArr.push(`m.id IN (${meatId.join(",")})`);
+    let meatArr = [];
+    meatArr.push(meatId);
+    console.log(meatArr);
+    conditionArr.push(`m.id IN (${meatArr.join(",")})`);
   }
 
   if (vegetarian) {

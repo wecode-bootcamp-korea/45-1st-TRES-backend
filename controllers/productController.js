@@ -46,7 +46,7 @@ const getAllProducts = catchAsync(async (req, res) => {
     limit,
     offset
   );
-  return res.status(200).json({ data: result });
+  return res.status(200).json(result);
 });
 
 const getProductInfo = catchAsync(async (req, res) => {

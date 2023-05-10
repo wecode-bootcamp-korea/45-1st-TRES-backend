@@ -42,9 +42,12 @@ const getAllProducts = async (
           f.food,
           f.eng_food,
           f.price,
-          ct.id AS continent_id,
+          fi.food_image,
+          ct.continent AS continent,
+          c.country As country,
           (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
     FROM foods f
+    LEFT JOIN food_images fi ON fi.food_id = f.id
     LEFT JOIN countries c ON c.id = f.country_id
     LEFT JOIN continents ct ON ct.id = c.continent_id
     LEFT JOIN meat_foods mf ON f.id = mf.food_id
@@ -87,7 +90,7 @@ const getCountries = async (countryId) => {
       WHERE c.continent_id = (SELECT ct.id
                               FROM continents ct
                               JOIN countries c ON c.continent_id = ct.id
-                              WHERE c.id = 8)
+                              WHERE c.id = ?)
       `,
       [countryId]
     );
