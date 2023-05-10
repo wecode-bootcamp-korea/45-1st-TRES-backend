@@ -11,12 +11,9 @@ const getUserCartInfo = catchAsync(async (req, res) => {
     throw error;
   }
 
-  let foodArray = [];
-  for (let i = 0; i < result.length; i++) {
-    foodArray.push(result[i].food);
-  }
+  let foodArray = result.map((item) => item.food);
 
-  return res.status(200).json({
+  const getUserCartInfoResult = {
     userId: result[0].userId,
     email: result[0].email,
     lastName: result[0].lastName,
@@ -25,7 +22,9 @@ const getUserCartInfo = catchAsync(async (req, res) => {
     address: result[0].address,
     point: result[0].point,
     food: foodArray,
-  });
+  };
+
+  return res.status(200).json(getUserCartInfoResult);
 });
 
 const payment = catchAsync(async (req, res) => {
