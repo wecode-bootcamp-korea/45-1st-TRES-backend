@@ -52,20 +52,18 @@ const getCart = async (user) => {
       f.food food,
       f.eng_food engFood,
       f.country_id countryId,
+      f_i.food_image,
       ctr.id,
       ctr.country country,
       cti.id,
       cti.eng_continent continent
       FROM order_items o_i
-      JOIN orders o
-      ON o.order_items_id = o_i.id
-      JOIN foods f
-      ON f.id = o_i.food_id
-      JOIN countries ctr
-      ON ctr.id = f.country_id
-      JOIN continents cti
-      ON cti.id = ctr.continent_id
-      WHERE o.user_id = ? AND o.order_status_id = 1;
+      JOIN orders o ON o.order_items_id = o_i.id
+      JOIN foods f   ON f.id = o_i.food_id
+      JOIN countries ctr ON ctr.id = f.country_id
+      JOIN continents cti ON cti.id = ctr.continent_id
+      JOIN food_images f_i ON f.id = f_i.food_id
+      WHERE o.user_id = ? AND o_i.order_status_id = 1;
     `,
       [user.id]
     );
@@ -110,7 +108,6 @@ const checkDeleteQuery = async (food_id, userId) => {
       `,
       [userId, food_id]
     );
-
   } catch (err) {
     const error = new Error("DataSource Error");
     error.statusCode = 400;
