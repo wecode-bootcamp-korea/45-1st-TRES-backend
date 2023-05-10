@@ -22,6 +22,7 @@ const getUserCartInfo = catchAsync(async (req, res) => {
     lastName: result[0].lastName,
     firstName: result[0].firstName,
     phoneNumber: result[0].phoneNumber,
+    address: result[0].address,
     point: result[0].point,
     food: foodArray,
   });

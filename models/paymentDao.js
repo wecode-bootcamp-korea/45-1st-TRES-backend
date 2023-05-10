@@ -12,7 +12,7 @@ const getUserCartInfo = async (user) => {
       u.last_name lastName,
       u.phone_number phoneNumber,
       u.points point,
-      o.order_number orderNumber,
+      a.address,
       o.user_id,
       o.order_items_id,
       o_i.id,
@@ -84,10 +84,12 @@ const payment = async (user, point) => {
     );
     await queryRunner.query(
       `
-          UPDATE
-          orders
-          SET order_status_id = 2  ,  order_number = ?
-          WHERE user_id = ? AND order_status_id = 1
+      UPDATE
+      orders o
+      JOIN order_items o_i ON o.order_items_id = o_i.id
+      SET o_i.order_status_id = 2,
+      o.order_number = ?
+      WHERE o.user_id = 2 AND o_i.order_status_id = 1;
         `,
       [orderNumber, user.id]
     );
