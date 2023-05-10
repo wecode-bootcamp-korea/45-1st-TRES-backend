@@ -1,6 +1,5 @@
 const userService = require("../services/userService");
 const { catchAsync } = require("../utils/error");
-
 const {
   emailValidationCheck,
   passwordValidationCheck,
@@ -19,7 +18,7 @@ const userEmailCheck = catchAsync(async (req, res) => {
 
   const result = await userService.userEmailCheck(email);
 
-  if (!result) return res.status(400).json({ isEmailExist: false });
+  if (!result) return res.status(200).json({ isEmailExist: false });
 
   return res.status(200).json({ isEmailExist: true });
 });
@@ -56,8 +55,6 @@ const signUp = catchAsync(async (req, res) => {
     birth,
     address,
   } = req.body;
-
-  await passwordValidationCheck(password);
 
   if (
     !email ||
