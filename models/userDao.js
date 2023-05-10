@@ -43,7 +43,7 @@ const signUp = async (
   firstName,
   lastName,
   password,
-  countries,
+  countries = [],
   phoneNumber,
   gender,
   birth,
@@ -51,6 +51,17 @@ const signUp = async (
 ) => {
   await queryRunner.connect();
   await queryRunner.startTransaction();
+  console.log(
+    email,
+    firstName,
+    lastName,
+    password,
+    countries,
+    phoneNumber,
+    gender,
+    birth,
+    address
+  );
   try {
     const addressResult = await queryRunner.query(
       `
@@ -84,33 +95,38 @@ const signUp = async (
         birth,
       ]
     );
-
-    let countryResult = [];
-    for (let i = 0; i < countries.length; i++) {
-      let countryId = await queryRunner.query(
-        `
-        SELECT id
-        FROM countries
-        WHERE country = ?;
-        `,
-        [countries[i]]
+    if (countries.length > 0) {
+      const countryIds = await Promise.all(
+        countries.map(async (country) => {
+          const result = await queryRunner.query(
+            `
+            SELECT id
+            FROM countries
+            WHERE country = ?
+          `,
+            [country]
+          );
+          return result[0]?.id;
+        })
       );
-      countryResult.push(countryId[0]["id"]);
-    }
 
-    for (let i = 0; i < countries.length; i++) {
+      const values = countryIds.map((countryId) => [
+        countryId,
+        userResult.insertId,
+      ]);
+
       await queryRunner.query(
         `
-        INSERT INTO country_user(
-          country_id,
-          user_id
-        ) VALUES (?, ?);
-      `,
-        [countryResult[i], userResult.insertId]
+      INSERT INTO country_user (
+        country_id,
+        user_id
+      ) VALUES ?;
+    `,
+        [values]
       );
     }
     await queryRunner.commitTransaction();
-    return;
+    return true;
   } catch (error) {
     await queryRunner.rollbackTransaction();
     console.log(error);
