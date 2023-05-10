@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
-const { use } = require("../routes");
 
 const authorization = async (req, res, next) => {
   try {
