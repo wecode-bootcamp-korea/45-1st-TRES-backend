@@ -1,30 +1,21 @@
 function filterBuilder(countryId, spiceLevel, allergyId, meatId, vegetarian) {
   let conditionArr = [];
 
-  if (countryId) {
-    conditionArr.push(`f.country_id = ${countryId}`);
-  }
+  if (countryId) conditionArr.push(`f.country_id = ${countryId}`);
 
-  if (spiceLevel) {
-    conditionArr.push(`f.spice_level = ${spiceLevel}`);
-  }
+  if (spiceLevel) conditionArr.push(`f.spice_level = ${spiceLevel}`);
+  
 
-  if (allergyId) {
-    conditionArr.push(`a.id = ${allergyId}`);
-  }
+  if (allergyId) conditionArr.push(`a.id = ${allergyId}`);
 
-  if (meatId) {
-    conditionArr.push(`m.id = ${meatId}`);
-  }
+  if (meatId) conditionArr.push(`m.id = ${meatId}`);
 
-  if (vegetarian) {
-    conditionArr.push(`f.vegetarian = ${vegetarian}`);
-  }
+  if (vegetarian) conditionArr.push(`f.vegetarian = ${vegetarian}`);
 
   let whereCondition = "";
-  if (conditionArr.length > 0) {
-    whereCondition = `WHERE ${conditionArr.join(" AND ")}`;
-  }
+  
+  if (conditionArr.length > 0) whereCondition = `WHERE ${conditionArr.join(" AND ")}`;
+
   return whereCondition;
 }
 
