@@ -37,7 +37,7 @@ const getAllProducts = async (
 ) => {
   try {
     const baseQuery = `
-    SELECT
+    SELECT DISTINCT
           f.id,
           f.food,
           f.eng_food,
