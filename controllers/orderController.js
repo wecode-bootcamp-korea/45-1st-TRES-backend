@@ -43,7 +43,7 @@ const deleteOrder = catchAsync(async (req, res) => {
   const user = req.user;
   const userId = user.id;
   const { deleteOrderItem } = req.body;
-  
+
   if (!deleteOrderItem) {
     const error = new Error("KEY_ERROR");
     error.statusCode = 400;
@@ -51,6 +51,7 @@ const deleteOrder = catchAsync(async (req, res) => {
   }
 
   const result = await orderService.deleteOrder(deleteOrderItem, userId);
+  console.log(result);
   if (result) return res.status(200).json({ message: "ORDER DELETED" });
 
   return res.status(400).json({ message: "NO MODIFICATIONS MADE" });

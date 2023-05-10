@@ -34,6 +34,28 @@ const addCart = async (user, products) => {
   }
 };
 
+const checkDeleteQuery = async (deleteOrderItem, userId) => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT
+        oi.id,
+        o.user_id,
+        oi.order_price,
+        oi.order_count
+      FROM order_items oi
+      INNER JOIN orders o ON o.order_items_id = oi.id
+      WHERE o.user_id = ? AND oi.food_id IN (?)
+      `, [userId, deleteOrderItem]
+    );
+
+  } catch (err) {
+    const error = new Error("DATASOURCE ERROR");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 const getCart = async (user) => {
   try {
     return await dataSource.query(
@@ -86,50 +108,26 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
   }
 };
 
-const checkDeleteQuery = async (deleteOrderItem, userId) => {
-  try {
-    return await dataSource.query(
-      `
-      SELECT
-        oi.id,
-        o.user_id,
-        oi.order_price,
-        oi.order_count
-      FROM order_items oi
-      INNER JOIN orders o ON o.order_items_id = oi.id
-      WHERE o.user_id = ? AND oi.food_id IN (?)
-      `, [userId, deleteOrderItem]
-    );
-
-  } catch (err) {
-    const error = new Error("DATASOURCE ERROR");
-    error.statusCode = 400;
-    throw error;
-  }
-};
-
 const deleteOrderItems = async (deleteOrderItem, userId) => {
-  console.log("in dao ", deleteOrderItem);
-  const queryRunner = dataSource.createQueryRunner();
 
+  const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
-
   try {
-    await queryRunner.query(
+    console.log(deleteOrderItem);
+    console.log(userId)
+-   await queryRunner.query(
       `
-      DELETE orders, order_items
-      FROM order_items
-      JOIN orders
-      ON order_items.id = orders.order_items_id
-      WHERE order_items.food_id IN (?)
-      AND orders.user_id = ?
+      DELETE oi, o
+      FROM order_items oi
+      JOIN orders o ON oi.id = o.order_items_id
+      WHERE oi.food_id IN (?)
+      AND o.user_id = ?
       `, [deleteOrderItem, userId]
     );
 
     await queryRunner.commitTransaction();
   } catch (err) {
-    console.log(err);
     await queryRunner.rollbackTransaction();
     const error = new Error("Query Transaction failed... Rolling Back");
     error.statusCode = 400;
