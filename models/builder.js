@@ -1,10 +1,5 @@
 function filterBuilder(countryId, spiceLevel, allergyId, meatId, vegetarian) {
-  console.log(meatId);
-  console.log(meatId.length);
-  console.log(meatId[0]);
   let conditionArr = [];
-  let allergyArr = [];
-  let meatArr = [];
 
   if (countryId) {
     conditionArr.push(`f.country_id = ${countryId}`);
@@ -15,7 +10,7 @@ function filterBuilder(countryId, spiceLevel, allergyId, meatId, vegetarian) {
   }
 
   if (allergyId) {
-    conditionArr.push(`a.id = ${allergyId}`);
+    conditionArr.push(`a.id IN (${allergyId.join(",")})`);
   }
 
   if (meatId) {

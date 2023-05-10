@@ -43,21 +43,7 @@ const getAllProducts = async (
           f.eng_food,
           f.price,
           ct.id AS continent_id,
-          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count,
-          (SELECT JSON_ARRAYAGG(
-	                              JSON_OBJECT(
-		                                "id", co.id , 
-		                                "country", co.country
-	                              ))
-          FROM countries co 
-          WHERE continent_id = (
-                  SELECT co.continent_id 
-                  FROM continents c
-                  JOIN countries co on co.continent_id = c.id
-                  JOIN foods f on co.id = f.country_id
-                  WHERE f.id = ?
-                  )
-          )as countries
+          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
     FROM foods f
     LEFT JOIN countries c ON c.id = f.country_id
     LEFT JOIN continents ct ON ct.id = c.continent_id
@@ -65,7 +51,6 @@ const getAllProducts = async (
     LEFT JOIN meats m ON mf.meat_id = m.id
     LEFT JOIN allergy_foods af ON f.id = af.food_id
     LEFT JOIN allergies a ON a.id = af.allergy_id
-    WHERE f.id = ?
     `;
     const whereCondition = builder.filterBuilder(
       countryId,
@@ -80,6 +65,32 @@ const getAllProducts = async (
       `${baseQuery} ${whereCondition} ${sortQuery} ${limitQuery}`
     );
     return rooms;
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const getCountries = async (countryId) => {
+  try {
+    return await dataSource.query(
+      `SELECT
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+                "id", c.id , 
+                "country", c.country
+            )
+          ) countries
+      FROM countries c 
+      JOIN continents ct ON c.continent_id = ct.id
+      WHERE c.continent_id = (SELECT ct.id
+                              FROM continents ct
+                              JOIN countries c ON c.continent_id = ct.id
+                              WHERE c.id = 8)
+      `,
+      [countryId]
+    );
   } catch (error) {
     error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
@@ -134,7 +145,7 @@ const getProductInfo = async (foodId) => {
           f.eng_description,
           fi.food_image,
           r.review
-`,
+      `,
       [foodId]
     );
   } catch (error) {
@@ -147,5 +158,6 @@ const getProductInfo = async (foodId) => {
 module.exports = {
   getRandomProducts,
   getAllProducts,
+  getCountries,
   getProductInfo,
 };
