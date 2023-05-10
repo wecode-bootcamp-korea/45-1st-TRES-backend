@@ -29,13 +29,22 @@ const getAllProducts = async (
 };
 
 const getProductInfo = async (foodId) => {
-  const getProductInfo = await productDao.getProductInfo(foodId);
+  const [getProductInfo] = await productDao.getProductInfo(foodId);
 
   return getProductInfo;
 };
+
+const getCategories = async() => {
+  const result = await productDao.getCategories();
+
+  const categoryList = result.map(category => category.categories);
+  
+  return categoryList
+}
 
 module.exports = {
   getRandomProducts,
   getProductInfo,
   getAllProducts,
+  getCategories
 };
