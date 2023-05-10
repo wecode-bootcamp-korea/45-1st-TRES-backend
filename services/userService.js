@@ -53,7 +53,10 @@ const signUp = async (
 ) => {
   await emailValidationCheck(email);
   await passwordValidationCheck(password);
-  const hashedPassword = await bcrypt.hash(password, process.env.SALTROUND);
+  const hashedPassword = await bcrypt.hash(
+    password,
+    parseInt(process.env.SALTROUND)
+  );
 
   const signUp = await userDao.signUp(
     email,
