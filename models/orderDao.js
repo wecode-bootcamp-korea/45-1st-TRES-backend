@@ -98,19 +98,19 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
 
 const checkDeleteQuery = async (food_id, userId) => {
   try {
-    const isExist = await dataSource.query(
+    return await dataSource.query(
       `SELECT
-      oi.id,
-      o.user_id,
-      oi.order_price,
-      oi.order_count
+       oi.id,
+       o.user_id,
+       oi.order_price,
+       oi.order_count
       FROM order_items oi
       INNER JOIN orders o ON o.order_items_id = oi.id
       WHERE o.user_id = ? AND oi.food_id IN (?)
       `,
       [userId, food_id]
     );
-    return isExist;
+
   } catch (err) {
     const error = new Error("DataSource Error");
     error.statusCode = 400;
