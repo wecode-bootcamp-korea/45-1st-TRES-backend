@@ -22,6 +22,8 @@ const foodExists = async (userId, foodId) => {
 };
 
 const addCart = async (userId, foodId, count, price) => {
+  const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -58,11 +60,13 @@ const addCart = async (userId, foodId, count, price) => {
 };
 
 const updateFoodCount = async (userId, foodId, count) => {
+  const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
-    await dataSource.query(
+    await queryRunner.query(
       `
       UPDATE order_items oi
       JOIN orders o ON o.order_items_id = oi.id
@@ -74,7 +78,7 @@ const updateFoodCount = async (userId, foodId, count) => {
       [count, foodId, userId]
     );
 
-    await dataSource.query(
+    await queryRunner.query(
       `
       UPDATE order_items oi
       JOIN orders o ON o.order_items_id = oi.id
@@ -176,7 +180,6 @@ const checkDeleteQuery = async (deleteOrderItem, userId) => {
 };
 
 const deleteOrderItems = async (deleteOrderItem, userId) => {
-  console.log(deleteOrderItem);
   const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
