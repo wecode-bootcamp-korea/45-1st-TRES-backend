@@ -25,7 +25,10 @@ const getAllProducts = async (
     offset
   );
 
-  return getAllProducts;
+  const [getCountries] = await productDao.getCountries(countryId);
+  getCountries["foods"] = getAllProducts;
+
+  return getCountries;
 };
 
 const getProductInfo = async (foodId) => {

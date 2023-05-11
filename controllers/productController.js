@@ -2,7 +2,7 @@ const productService = require("../services/productService");
 const { catchAsync } = require("../utils/error");
 
 const getRandomProducts = catchAsync(async (req, res) => {
-  const { from, count } = req.body;
+  const { from, count } = req.query;
 
   if (!from || !count) {
     const error = new Error("KEY_ERROR");
@@ -46,7 +46,7 @@ const getAllProducts = catchAsync(async (req, res) => {
     limit,
     offset
   );
-  return res.status(200).json({ data: result });
+  return res.status(200).json(result);
 });
 
 const getProductInfo = catchAsync(async (req, res) => {
@@ -64,17 +64,13 @@ const getProductInfo = catchAsync(async (req, res) => {
 
 const getCategories = catchAsync(async (req, res) => {
   const categories = await productService.getCategories();
-  
+
   return res.status(200).json(categories);
 });
-
-
-
-
 
 module.exports = {
   getRandomProducts,
   getAllProducts,
   getProductInfo,
-  getCategories
+  getCategories,
 };

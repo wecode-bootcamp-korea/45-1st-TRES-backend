@@ -8,7 +8,7 @@ const getRandomProducts = async (offset, limit) => {
         c.country, 
         f.food, 
         f.price, 
-        CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
+        GROUP_CONCAT(fi.food_image SEPARATOR ',')AS food_images
       FROM countries c
       JOIN foods f ON c.id = f.country_id
       JOIN food_images fi ON f.id = fi.food_id
@@ -42,9 +42,14 @@ const getAllProducts = async (
           f.food,
           f.eng_food,
           f.price,
+          fi.food_image,
+          ct.continent AS continent,
+          c.country As country,
           (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
     FROM foods f
+    LEFT JOIN food_images fi ON fi.food_id = f.id
     LEFT JOIN countries c ON c.id = f.country_id
+    LEFT JOIN continents ct ON ct.id = c.continent_id
     LEFT JOIN meat_foods mf ON f.id = mf.food_id
     LEFT JOIN meats m ON mf.meat_id = m.id
     LEFT JOIN allergy_foods af ON f.id = af.food_id
@@ -63,6 +68,32 @@ const getAllProducts = async (
       `${baseQuery} ${whereCondition} ${sortQuery} ${limitQuery}`
     );
     return rooms;
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
+const getCountries = async (countryId) => {
+  try {
+    return await dataSource.query(
+      `SELECT
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+                "id", c.id , 
+                "country", c.country
+            )
+          ) countries
+      FROM countries c 
+      JOIN continents ct ON c.continent_id = ct.id
+      WHERE c.continent_id = (SELECT ct.id
+                              FROM continents ct
+                              JOIN countries c ON c.continent_id = ct.id
+                              WHERE c.id = ?)
+      `,
+      [countryId]
+    );
   } catch (error) {
     error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
@@ -117,7 +148,7 @@ const getProductInfo = async (foodId) => {
           f.eng_description,
           fi.food_image,
           r.review
-`,
+      `,
       [foodId]
     );
   } catch (error) {
@@ -127,7 +158,7 @@ const getProductInfo = async (foodId) => {
   }
 };
 
-const getCategories = async() => {
+const getCategories = async () => {
   try {
     return await dataSource.query(
       `SELECT
@@ -149,11 +180,12 @@ const getCategories = async() => {
     error.statusCode = 400;
     throw error;
   }
-}
+};
 
 module.exports = {
   getRandomProducts,
   getAllProducts,
+  getCountries,
   getProductInfo,
   getCategories,
 };
