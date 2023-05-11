@@ -6,25 +6,11 @@ const getUserCartInfo = catchAsync(async (req, res) => {
   const result = await paymentService.getUserCartInfo(user);
 
   if (!result) {
-    error = new Error("CONTROLLER!!");
-    error.statusCode = 400;
+    error = new Error("CART_NOT_FOUND!!");
+    error.statusCode = 404;
     throw error;
   }
-
-  let foodArray = result.map((item) => item.food);
-
-  const getUserCartInfoResult = {
-    userId: result[0].userId,
-    email: result[0].email,
-    lastName: result[0].lastName,
-    firstName: result[0].firstName,
-    phoneNumber: result[0].phoneNumber,
-    address: result[0].address,
-    point: result[0].point,
-    food: foodArray,
-  };
-
-  return res.status(200).json(getUserCartInfoResult);
+  return res.status(200).json(result);
 });
 
 const payment = catchAsync(async (req, res) => {

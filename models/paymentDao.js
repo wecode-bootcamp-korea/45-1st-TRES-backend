@@ -1,46 +1,53 @@
 const dataSource = require("./dataSource");
 const queryRunner = dataSource.createQueryRunner();
 
-const getUserCartInfo = async (user) => {
+const getUserInfo = async (user) => {
   try {
     return await dataSource.query(
       `
       SELECT
       u.id userId,
       u.email,
-      u.first_name firstName,
-      u.last_name lastName,
-      u.phone_number phoneNumber,
-      u.points point,
-      a.address,
-      o.user_id,
-      o.order_items_id,
-      o_i.id,
-      o_i.food_id,
-      f.country_id,
-      c.id,
-      c.country,
-        JSON_OBJECT(
-          'foodId', f.id,
-          'foodName', f.food,
-          'foodNameEng', f.eng_food,
-          'country', c.country,
-          'quantity', o_i.order_count,
-          'price', o_i.order_price
-        ) AS food
-       FROM users u
-      JOIN addresses a ON a.id = u.address_id
-      JOIN orders o ON o.user_id = u.id
-      JOIN order_items o_i ON o.order_items_id = o_i.id
-      JOIN foods f ON f.id = o_i.food_id
-      JOIN countries c ON f.country_id = c.id
-      WHERE u.id = ?
-      GROUP BY u.id, o.order_number, o.order_items_id, o_i.id, o_i.food_id, f.country_id, c.id;
+      u.last_name,
+      u.first_name,
+      u.phone_number,
+      u.points,
+      a.address
+      FROM addresses a
+      JOIN users u ON a.id = u.id
+      WHERE u.id = ?;
     `,
       [user.id]
     );
-  } catch (error) {
-    error = new Error("DATA_NOT_FOUND");
+  } catch (err) {
+    error = new Error("USER_DATA_NOT_FOUND");
+    error.statusCode = 500;
+    return error;
+  }
+};
+
+const getCartFoodInfo = async (user) => {
+  try {
+    return await dataSource.query(
+      `
+      SELECT
+      f.id,
+      f.food foodKrName,
+      f.eng_food foodEngName,
+      c.country country,
+      o_i.order_price,
+      o_i.order_count quantitiy
+      FROM users u
+      JOIN orders o ON u.id = o.user_id
+      JOIN order_items o_i ON o_i.id = o.order_items_id
+      JOIN foods f ON f.id = o_i.food_id
+      JOIN countries c ON c.id = f.country_id
+      WHERE u.id = ?;
+    `,
+      [user.id]
+    );
+  } catch (err) {
+    error = new Error("CART_DATA_NOT_FOUND");
     error.statusCode = 500;
     return error;
   }
@@ -117,7 +124,9 @@ const payment = async (user, point) => {
 };
 
 module.exports = {
-  getUserCartInfo,
+  // getUserCartInfo,
+  getUserInfo,
+  getCartFoodInfo,
   checkPoint,
   payment,
 };
