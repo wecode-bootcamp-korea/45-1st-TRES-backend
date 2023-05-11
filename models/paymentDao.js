@@ -42,7 +42,7 @@ const getCartFoodInfo = async (user) => {
       JOIN order_items o_i ON o_i.id = o.order_items_id
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON c.id = f.country_id
-      WHERE u.id = ?;
+      WHERE u.id = ? AND o_i.order_status_id = 1;
     `,
       [user.id]
     );
@@ -96,7 +96,7 @@ const payment = async (user, point) => {
       JOIN order_items o_i ON o.order_items_id = o_i.id
       SET o_i.order_status_id = 2,
       o.order_number = ?
-      WHERE o.user_id = 2 AND o_i.order_status_id = 1;
+      WHERE o.user_id = ? AND o_i.order_status_id = 1;
         `,
       [orderNumber, user.id]
     );
