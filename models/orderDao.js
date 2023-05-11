@@ -1,5 +1,4 @@
 const dataSource = require("./dataSource");
-const queryRunner = dataSource.createQueryRunner();
 
 const foodExists = async (userId, foodId) => {
   try {
@@ -155,7 +154,7 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
   }
 };
 
-const checkDeleteQuery = async (food_id, userId) => {
+const checkDeleteQuery = async (deleteOrderItem, userId) => {
   try {
     return await dataSource.query(
       `SELECT
@@ -167,7 +166,7 @@ const checkDeleteQuery = async (food_id, userId) => {
       INNER JOIN orders o ON o.order_items_id = oi.id
       WHERE o.user_id = ? AND oi.food_id IN (?)
       `,
-      [userId, food_id]
+      [userId, deleteOrderItem]
     );
   } catch (error) {
     error = new Error("DataSource Error");
@@ -176,20 +175,28 @@ const checkDeleteQuery = async (food_id, userId) => {
   }
 };
 
-const deleteOrderItems = async (food_id, userId) => {
+const deleteOrderItems = async (deleteOrderItem, userId) => {
+  console.log(deleteOrderItem);
+  const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
-
   try {
     await queryRunner.query(
-      `DELETE orders, order_items
-      FROM order_items
-      JOIN orders
-      ON order_items.id = orders.order_items_id
-      WHERE order_items.food_id IN (?)
-      AND orders.user_id = ?
+      `
+      DELETE FROM orders
+      WHERE order_items_id IN (
+        SELECT id FROM order_items WHERE food_id IN (${deleteOrderItem})
+      ) AND user_id = ?
       `,
-      [food_id, userId]
+      [userId]
+    );
+
+    await queryRunner.query(
+      `
+      DELETE FROM order_items
+      WHERE food_id IN (${deleteOrderItem})
+      `,
+      [userId]
     );
 
     await queryRunner.commitTransaction();
