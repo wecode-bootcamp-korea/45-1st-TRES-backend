@@ -21,11 +21,17 @@ const getUserCartInfo = async (user) => {
 
 const payment = async (userId, point, address) => {
   const userAddressInDB = await paymentDao.checkAddress(userId);
-  if(address !== userAddressInDB) await paymentDao.updateAddress(userId, address)
+
+  if(address !== userAddressInDB) {
+    await paymentDao.updateAddress(userId, address)
+  }
 
   const userPoints = await paymentDao.checkPoint(userId);
-  if (userPoints > point) return await paymentDao.payment(userId, point, address);
-  
+
+  if (userPoints > point) {
+    return await paymentDao.payment(userId, point);
+  }
+
   const error = new Error("NOT_ENOUGH_POINT");
   error.statusCode = 409;
   throw error;

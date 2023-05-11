@@ -1,5 +1,4 @@
 const dataSource = require("./dataSource");
-const queryRunner = dataSource.createQueryRunner();
 
 const getUserInfo = async (user) => {
   try {
@@ -21,7 +20,7 @@ const getUserInfo = async (user) => {
     );
   } catch (err) {
     error = new Error("USER_DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 };
@@ -47,9 +46,9 @@ const getCartFoodInfo = async (user) => {
       [user.id]
     );
   } catch (err) {
-    error = new Error("CART_DATA_NOT_FOUND");
-    error.statusCode = 500;
-    return error;
+    err = new Error("CART_DATA_NOT_FOUND");
+    err.statusCode = 400;
+    return err;
   }
 };
 
@@ -59,23 +58,24 @@ const checkAddress = async (userId) => {
       `
       SELECT
       u.id,
+      a.id,
       a.address
       FROM users u
       JOIN addresses a ON u.address_id = a.id
-      WHERE users.id = ?
+      WHERE u.id = ?
       `, [userId]
     );
     return address[0].address;
   } catch (error) {
     error = new Error("DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 }
 
 const updateAddress = async(userId, address) => {
   try {
-    return await dataSource.query(
+    await dataSource.query(
       `
       UPDATE addresses a
       JOIN users u ON u.address_id = a.id
@@ -85,7 +85,7 @@ const updateAddress = async(userId, address) => {
     );
   } catch (error) {
     error = new Error("DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 }
@@ -104,12 +104,13 @@ const checkPoint = async (userId) => {
     return result[0].points;
   } catch (error) {
     error = new Error("DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 };
 
 const payment = async (userId, point) => {
+  const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -151,7 +152,7 @@ const payment = async (userId, point) => {
     await queryRunner.rollbackTransaction();
     console.log(err);
     err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   } finally {
     await queryRunner.release();
@@ -159,7 +160,6 @@ const payment = async (userId, point) => {
 };
 
 module.exports = {
-  // getUserCartInfo,
   checkAddress,
   updateAddress,
   getUserInfo,
