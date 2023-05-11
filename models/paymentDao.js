@@ -7,9 +7,9 @@ const getUserInfo = async (user) => {
       SELECT
       u.id userId,
       u.email,
-      u.last_name,
-      u.first_name,
-      u.phone_number,
+      u.last_name lastName,
+      u.first_name firstName,
+      u.phone_number phoneNumber,
       u.points,
       a.address
       FROM addresses a

@@ -3,8 +3,7 @@ const { catchAsync } = require("../utils/error");
 
 const getUserCartInfo = catchAsync(async (req, res) => {
   const user = req.user;
-  const foodIds = req.body;
-
+  const foodIds = req.body.foodId;
   const result = await paymentService.getUserCartInfo(user, foodIds);
 
   if (!result) {
