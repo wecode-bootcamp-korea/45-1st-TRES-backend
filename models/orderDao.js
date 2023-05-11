@@ -170,19 +170,25 @@ const checkDeleteQuery = async (deleteOrderItem, userId) => {
 };
 
 const deleteOrderItems = async (deleteOrderItem, userId) => {
+  console.log(deleteOrderItem);
   const queryRunner = dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
-
   try {
     await queryRunner.query(
-      `DELETE orders, order_items
-      FROM order_items
-      JOIN orders
-      ON order_items.id = orders.order_items_id
-      WHERE order_items.food_id IN (?)
-      AND orders.user_id = ?
-      `, [deleteOrderItem, userId]
+      `
+      DELETE FROM orders
+      WHERE order_items_id IN (
+        SELECT id FROM order_items WHERE food_id IN (${deleteOrderItem})
+      ) AND user_id = ?
+      `, [userId]
+    );
+    
+    await queryRunner.query(
+      `
+      DELETE FROM order_items
+      WHERE food_id IN (${deleteOrderItem})
+      `, [userId]
     );
 
     await queryRunner.commitTransaction();
