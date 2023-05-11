@@ -1,13 +1,13 @@
 const paymentDao = require("../models/paymentDao");
 
-const getUserCartInfo = async (user) => {
+const getUserCartInfo = async (user, foodIds) => {
   const userInfoResult = await paymentDao.getUserInfo(user);
   if (!userInfoResult) {
     const error = new Error("USER_INFO_NOT_FOUND");
     error.statusCode = 409;
     throw error;
   }
-  const foodInfoResult = await paymentDao.getCartFoodInfo(user);
+  const foodInfoResult = await paymentDao.getCartFoodInfo(user, foodIds);
   if (!foodInfoResult) {
     const error = new Error("FOOD_INFO_NOT_FOUND");
     error.statusCode = 409;

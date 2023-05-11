@@ -1,5 +1,4 @@
 const dataSource = require("./dataSource");
-const queryRunner = dataSource.createQueryRunner();
 
 const getUserByEmail = async (email) => {
   try {
@@ -49,6 +48,8 @@ const signUp = async (
   birth,
   address
 ) => {
+  const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
   console.log(
