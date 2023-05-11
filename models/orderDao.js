@@ -60,7 +60,7 @@ const updateFoodCount = async (userId, foodId, count) => {
 
   await queryRunner.startTransaction();
   try{
-    await dataSource.query(
+    await queryRunner.query(
       `
       UPDATE order_items oi
       JOIN orders o ON o.order_items_id = oi.id
@@ -71,7 +71,7 @@ const updateFoodCount = async (userId, foodId, count) => {
       `, [count, foodId, userId]
     );
 
-    await dataSource.query(
+    await queryRunner.query(
       `
       UPDATE order_items oi
       JOIN orders o ON o.order_items_id = oi.id
