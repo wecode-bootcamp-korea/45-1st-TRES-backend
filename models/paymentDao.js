@@ -26,18 +26,8 @@ const getUserInfo = async (user) => {
 };
 
 const getCartFoodInfo = async (user, foodIds) => {
-  console.log(foodIds, user.id);
   try {
     const queryRunner = dataSource.createQueryRunner();
-    await queryRunner.query(
-      `
-          UPDATE
-          order_itmes
-          SET order_status_id = 2
-          WHERE food_id IN (?);        
-          `,
-      [foodIds]
-    );
 
     return await queryRunner.query(
       `
@@ -53,9 +43,9 @@ const getCartFoodInfo = async (user, foodIds) => {
       JOIN order_items o_i ON o_i.id = o.order_items_id
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON c.id = f.country_id
-      WHERE u.id = ? AND o_i.order_status_id = 2;
+      WHERE u.id = ? AND o_i.order_status_id = 1 AND o_i.food_id IN (?);
     `,
-      [user.id]
+      [user.id, foodIds]
     );
   } catch (err) {
     err = new Error("CART_DATA_NOT_FOUND");
