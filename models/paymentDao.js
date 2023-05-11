@@ -20,7 +20,7 @@ const getUserInfo = async (user) => {
     );
   } catch (err) {
     error = new Error("USER_DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 };
@@ -58,15 +58,55 @@ const getCartFoodInfo = async (user, foodIds) => {
       [user.id]
     );
   } catch (err) {
-    error = new Error("CART_DATA_NOT_FOUND");
-    error.statusCode = 500;
+    err = new Error("CART_DATA_NOT_FOUND");
+    err.statusCode = 400;
+    return err;
+  }
+};
+
+const checkAddress = async (userId) => {
+  try {
+    const address = await dataSource.query(
+      `
+      SELECT
+      u.id,
+      a.id,
+      a.address
+      FROM users u
+      JOIN addresses a ON u.address_id = a.id
+      WHERE u.id = ?
+      `,
+      [userId]
+    );
+    return address[0].address;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
     return error;
   }
 };
 
-const checkPoint = async (user) => {
+const updateAddress = async (userId, address) => {
   try {
-    return await dataSource.query(
+    await dataSource.query(
+      `
+      UPDATE addresses a
+      JOIN users u ON u.address_id = a.id
+      SET a.address = ?
+      WHERE u.id = ?
+      `,
+      [address, userId]
+    );
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    return error;
+  }
+};
+
+const checkPoint = async (userId) => {
+  try {
+    const result = await dataSource.query(
       `
       SELECT
       u.id,
@@ -74,19 +114,17 @@ const checkPoint = async (user) => {
       FROM users u
       WHERE u.id = ?
     `,
-      [user.id]
+      [userId]
     );
+    return result[0].points;
   } catch (error) {
-    console.log(err);
     error = new Error("DATA_NOT_FOUND");
-    error.statusCode = 500;
+    error.statusCode = 400;
     return error;
   }
 };
 
-const payment = async (user, point) => {
-  const queryRunner = dataSource.createQueryRunner();
-
+const payment = async (userId, point) => {
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -100,7 +138,7 @@ const payment = async (user, point) => {
             SET points = u.points - ?
             WHERE id = ?
         `,
-      [point, user.id]
+      [point, userId]
     );
     await queryRunner.query(
       `
@@ -109,9 +147,9 @@ const payment = async (user, point) => {
       JOIN order_items o_i ON o.order_items_id = o_i.id
       SET o_i.order_status_id = 2,
       o.order_number = ?
-      WHERE o.user_id = ? AND o_i.order_status_id = 1;
+      WHERE o.user_id = 2 AND o_i.order_status_id = 1;
         `,
-      [orderNumber, user.id]
+      [orderNumber, userId]
     );
 
     const userFinalPoint = await queryRunner.query(
@@ -121,15 +159,16 @@ const payment = async (user, point) => {
       FROM users u
       WHERE u.id = ?
     `,
-      [user.id]
+      [userId]
     );
+
     await queryRunner.commitTransaction();
     return userFinalPoint;
   } catch (err) {
     await queryRunner.rollbackTransaction();
     console.log(err);
     err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
+    err.statusCode = 400;
     throw err;
   } finally {
     await queryRunner.release();
@@ -137,7 +176,8 @@ const payment = async (user, point) => {
 };
 
 module.exports = {
-  // getUserCartInfo,
+  checkAddress,
+  updateAddress,
   getUserInfo,
   getCartFoodInfo,
   checkPoint,

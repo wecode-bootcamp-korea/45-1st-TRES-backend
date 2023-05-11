@@ -13,16 +13,25 @@ const getUserCartInfo = async (user, foodIds) => {
     error.statusCode = 409;
     throw error;
   }
+
   userInfoResult[0].food = foodInfoResult;
 
   return userInfoResult;
 };
 
-const payment = async (user, point) => {
-  const result = await paymentDao.checkPoint(user);
+const payment = async (userId, point, address) => {
+  const userAddressInDB = await paymentDao.checkAddress(userId);
 
-  const userPoints = result[0].points;
-  if (userPoints > point) return await paymentDao.payment(user, point);
+  if(address !== userAddressInDB) {
+    await paymentDao.updateAddress(userId, address)
+  }
+
+  const userPoints = await paymentDao.checkPoint(userId);
+
+  if (userPoints > point) {
+    return await paymentDao.payment(userId, point);
+  }
+
   const error = new Error("NOT_ENOUGH_POINT");
   error.statusCode = 409;
   throw error;
