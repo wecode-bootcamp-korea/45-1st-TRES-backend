@@ -1,5 +1,4 @@
 const dataSource = require("./dataSource");
-const queryRunner = dataSource.createQueryRunner();
 
 const getUserInfo = async (user) => {
   try {
@@ -26,9 +25,21 @@ const getUserInfo = async (user) => {
   }
 };
 
-const getCartFoodInfo = async (user) => {
+const getCartFoodInfo = async (user, foodIds) => {
+  console.log(foodIds, user.id);
   try {
-    return await dataSource.query(
+    const queryRunner = dataSource.createQueryRunner();
+    await queryRunner.query(
+      `
+          UPDATE
+          order_itmes
+          SET order_status_id = 2
+          WHERE food_id IN (?);        
+          `,
+      [foodIds]
+    );
+
+    return await queryRunner.query(
       `
       SELECT
       f.id,
@@ -42,7 +53,7 @@ const getCartFoodInfo = async (user) => {
       JOIN order_items o_i ON o_i.id = o.order_items_id
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON c.id = f.country_id
-      WHERE u.id = ? AND o_i.order_status_id = 1;
+      WHERE u.id = ? AND o_i.order_status_id = 2;
     `,
       [user.id]
     );
@@ -74,6 +85,8 @@ const checkPoint = async (user) => {
 };
 
 const payment = async (user, point) => {
+  const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
