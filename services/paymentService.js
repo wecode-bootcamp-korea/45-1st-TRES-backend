@@ -1,7 +1,7 @@
 const paymentDao = require("../models/paymentDao");
 
-const getUserCartInfo = async (user, foodIds) => {
-  const userInfoResult = await paymentDao.getUserInfo(user);
+const getUserCartInfo = async (userId, foodId) => {
+  const userInfoResult = await paymentDao.getUserInfo(userId);
 
   if (!userInfoResult) {
     const error = new Error("USER_INFO_NOT_FOUND");
@@ -9,7 +9,7 @@ const getUserCartInfo = async (user, foodIds) => {
     throw error;
   }
 
-  const foodInfoResult = await paymentDao.getCartFoodInfo(user, foodIds);
+  const foodInfoResult = await paymentDao.getCartFoodInfo(userId, foodId);
 
   if (!foodInfoResult) {
     const error = new Error("FOOD_INFO_NOT_FOUND");

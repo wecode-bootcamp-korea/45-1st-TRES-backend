@@ -36,25 +36,26 @@ const getAllProducts = async (
   offset
 ) => {
   try {
-    const baseQuery = `
-    SELECT DISTINCT
-          f.id,
-          f.food,
-          f.eng_food,
-          f.price,
-          fi.food_image,
-          ct.continent AS continent,
-          c.country As country,
-          (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
-    FROM foods f
-    LEFT JOIN food_images fi ON fi.food_id = f.id
-    LEFT JOIN countries c ON c.id = f.country_id
-    LEFT JOIN continents ct ON ct.id = c.continent_id
-    LEFT JOIN meat_foods mf ON f.id = mf.food_id
-    LEFT JOIN meats m ON mf.meat_id = m.id
-    LEFT JOIN allergy_foods af ON f.id = af.food_id
-    LEFT JOIN allergies a ON a.id = af.allergy_id
-    `;
+    const baseQuery = 
+      `
+      SELECT DISTINCT
+        f.id,
+        f.food,
+        f.eng_food,
+        f.price,
+        fi.food_image,
+        ct.continent AS continent,
+        c.country As country,
+        (SELECT COUNT(*) FROM likes l WHERE l.food_id = f.id) likes_count
+      FROM foods f
+      LEFT JOIN food_images fi ON fi.food_id = f.id
+      LEFT JOIN countries c ON c.id = f.country_id
+      LEFT JOIN continents ct ON ct.id = c.continent_id
+      LEFT JOIN meat_foods mf ON f.id = mf.food_id
+      LEFT JOIN meats m ON mf.meat_id = m.id
+      LEFT JOIN allergy_foods af ON f.id = af.food_id
+      LEFT JOIN allergies a ON a.id = af.allergy_id
+      `;
 
     const whereCondition = builder.filterBuilder(
       countryId,
@@ -73,57 +74,56 @@ const getAllProducts = async (
     error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
     throw error;
-  }
+  };
 };
 
 const getCountries = async (countryId) => {
   try {
     return await dataSource.query(
       `SELECT
-          JSON_ARRAYAGG(
-            JSON_OBJECT(
-                "id", c.id , 
-                "country", c.country
-            )
-          ) countries
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "id", c.id , 
+            "country", c.country
+          )
+        ) countries
       FROM countries c 
       JOIN continents ct ON c.continent_id = ct.id
       WHERE c.continent_id = (SELECT ct.id
                               FROM continents ct
                               JOIN countries c ON c.continent_id = ct.id
                               WHERE c.id = ?)
-      `,
-      [countryId]
+      `, [countryId]
     );
   } catch (error) {
     error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode = 400;
     throw error;
-  }
+  };
 };
 
 const getProductInfo = async (foodId) => {
   try {
     return await dataSource.query(
       `SELECT
-          f.id,
-          f.food,
-          f.eng_food,
-          f.price,
-          f.vegetarian,
-          ct.continent,
-          ct.eng_continent,
-          c.country,
-          c.eng_country,
-          f.spice_level,
-          f.description,
-          f.eng_description,
-          GROUP_CONCAT(DISTINCT a.allergy SEPARATOR ',') AS allergy,
-          GROUP_CONCAT(DISTINCT a.eng_allergy SEPARATOR ',') AS eng_allergy,
-          GROUP_CONCAT(DISTINCT m.meat SEPARATOR ',') AS meat,
-          GROUP_CONCAT(DISTINCT m.eng_meat SEPARATOR ',') AS eng_meat,
-          fi.food_image,
-          r.review
+        f.id,
+        f.food,
+        f.eng_food,
+        f.price,
+        f.vegetarian,
+        ct.continent,
+        ct.eng_continent,
+        c.country,
+        c.eng_country,
+        f.spice_level,
+        f.description,
+        f.eng_description,
+        GROUP_CONCAT(DISTINCT a.allergy SEPARATOR ',') AS allergy,
+        GROUP_CONCAT(DISTINCT a.eng_allergy SEPARATOR ',') AS eng_allergy,
+        GROUP_CONCAT(DISTINCT m.meat SEPARATOR ',') AS meat,
+        GROUP_CONCAT(DISTINCT m.eng_meat SEPARATOR ',') AS eng_meat,
+        fi.food_image,
+        r.review
       FROM foods f
       LEFT JOIN food_images fi ON f.id = fi.food_id
       LEFT JOIN meat_foods mf ON f.id = mf.food_id
@@ -135,22 +135,21 @@ const getProductInfo = async (foodId) => {
       LEFT JOIN continents ct ON ct.id = c.continent_id
       WHERE f.id = ?
       GROUP BY
-          f.id,
-          f.food,
-          f.eng_food,
-          f.price, 
-          f.vegetarian,
-          ct.continent,
-          ct.eng_continent,
-          c.country,
-          c.eng_country,
-          f.spice_level,
-          f.description,
-          f.eng_description,
-          fi.food_image,
-          r.review
-      `,
-      [foodId]
+        f.id,
+        f.food,
+        f.eng_food,
+        f.price, 
+        f.vegetarian,
+        ct.continent,
+        ct.eng_continent,
+        c.country,
+        c.eng_country,
+        f.spice_level,
+        f.description,
+        f.eng_description,
+        fi.food_image,
+        r.review
+      `, [foodId]
     );
   } catch (error) {
     error = new Error("FAILED_TO_BUILD_FILTER_QUERY");

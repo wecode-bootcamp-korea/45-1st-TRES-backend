@@ -1,26 +1,24 @@
 const orderDao = require("../models/orderDao");
 
-const addCart = async (user, products) => {
+const addCart = async (userId, products) => {
   try {
-    const userId = user.id;
     const foodId = products.foodId;
     const count = products.count;
     const price = products.price;
     const foodExists = await orderDao.foodExists(userId, foodId);
 
-    if (foodExists)
-      return await orderDao.updateFoodCount(userId, foodId, count);
-
+    if (foodExists) await orderDao.updateFoodCount(userId, foodId, count);
+   
     return await orderDao.addCart(userId, foodId, count, price);
   } catch (error) {
-    err = new Error("NOT ABLE TO ADD TO CART");
-    err.statusCode = 400;
-    throw err;
-  }
+    error = new Error("NOT ABLE TO ADD TO CART");
+    error.statusCode = 400;
+    throw error;
+  };
 };
 
-const getCart = async (user) => {
-  return await orderDao.getCart(user);
+const getCart = async (userId) => {
+  return await orderDao.getCart(userId);
 };
 
 const modifyOrderCount = async (foodId, quantity, userId) => {
@@ -28,16 +26,24 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
 };
 
 const deleteOrder = async (deleteOrderItem, userId) => {
-  const isExist = await orderDao.checkDeleteQuery(deleteOrderItem, userId);
+  try{
+    const isExist = await orderDao.checkDeleteQuery(deleteOrderItem, userId);
 
-  const inputLength = deleteOrderItem.length;
-  const isExistLength = isExist.length;
-
-  if (inputLength !== isExistLength) return false;
-
-  await orderDao.deleteOrderItems(deleteOrderItem, userId);
-
-  return true;
+    const inputLength = deleteOrderItem.length;
+    const isExistLength = isExist.length;
+  
+    if (inputLength !== isExistLength) return false;
+  
+    await orderDao.deleteOrderItems(deleteOrderItem, userId);
+  
+    return true;
+      
+  } catch (error) {
+    console.log(error);
+    err = new Error("NOT ABLE TO ADD TO CART");
+    err.statusCode = 400;
+    throw err;
+  };
 };
 
 module.exports = { modifyOrderCount, deleteOrder, addCart, getCart };

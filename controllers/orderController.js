@@ -2,32 +2,32 @@ const orderService = require("../services/orderService");
 const { catchAsync } = require("../utils/error");
 
 const addCart = catchAsync(async (req, res) => {
-  const user = req.user;
+  const userId = req.user.id;
   const products = req.body;
-  const result = await orderService.addCart(user, products);
+  const result = await orderService.addCart(userId, products);
+
   if (!result) {
     error = new Error("ADD_CART_CONTROLLER_ERROR");
     error.statusCode = 400;
     throw error;
-  }
+  };
   return res.status(200).json({ message: "ADD_CART_SUCCESS" });
 });
 
 const getCart = catchAsync(async (req, res) => {
-  const user = req.user;
-  const result = await orderService.getCart(user);
+  const userId = req.user.id;
+  const result = await orderService.getCart(userId);
   if (!result) {
     error = new Error("GET_CART_CONTROLLER_ERROR");
     error.statusCode = 400;
     throw error;
-  }
+  };
   return res.status(200).json(result);
 });
 
 const modifyOrderCount = catchAsync(async (req, res) => {
-  const user = req.user;
-  const userId = user.id;
-  const { foodId, quantity } = req.body;
+  const userId = req.user.id;
+    const { foodId, quantity } = req.body;
 
   if (!foodId && !quantity) {
     const error = new Error("KEY_ERROR");
@@ -43,7 +43,7 @@ const modifyOrderCount = catchAsync(async (req, res) => {
 const deleteOrder = catchAsync(async (req, res) => {
   const userId = req.user.id;
   const deleteOrderItem = req.query.foodId.split(',');
-  
+
   if (!deleteOrderItem) {
     const error = new Error("KEY_ERROR");
     error.statusCode = 400;

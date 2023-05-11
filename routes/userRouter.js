@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post("/email-check", userController.userEmailCheck);
 router.post("/login", userController.login);
-router.get("/", userController.getCountriesList);
-router.post("/", userController.signUp);
+router.get("", userController.getCountriesList);
+router.post("", userController.signUp);
 
 module.exports = { router };
