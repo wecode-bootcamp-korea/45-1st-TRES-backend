@@ -130,7 +130,6 @@ const signUp = async (
     return true;
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    console.log(error);
     error = new Error("INVALID_DATA_INPUT");
     error.statusCode = 400;
     throw error;

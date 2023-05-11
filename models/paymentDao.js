@@ -18,7 +18,7 @@ const getUserInfo = async (user) => {
     `,
       [user.id]
     );
-  } catch (err) {
+  } catch (error) {
     error = new Error("USER_DATA_NOT_FOUND");
     error.statusCode = 400;
     return error;
@@ -27,9 +27,7 @@ const getUserInfo = async (user) => {
 
 const getCartFoodInfo = async (user, foodIds) => {
   try {
-    const queryRunner = dataSource.createQueryRunner();
-
-    return await queryRunner.query(
+    return await dataSource.query(
       `
       SELECT
       f.id,
@@ -47,10 +45,10 @@ const getCartFoodInfo = async (user, foodIds) => {
     `,
       [user.id, foodIds]
     );
-  } catch (err) {
-    err = new Error("CART_DATA_NOT_FOUND");
-    err.statusCode = 400;
-    return err;
+  } catch (error) {
+    error = new Error("CART_DATA_NOT_FOUND");
+    error.statusCode = 400;
+    return error;
   }
 };
 
@@ -115,6 +113,8 @@ const checkPoint = async (userId) => {
 };
 
 const payment = async (userId, point) => {
+  const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -130,6 +130,7 @@ const payment = async (userId, point) => {
         `,
       [point, userId]
     );
+
     await queryRunner.query(
       `
       UPDATE
@@ -137,7 +138,7 @@ const payment = async (userId, point) => {
       JOIN order_items o_i ON o.order_items_id = o_i.id
       SET o_i.order_status_id = 2,
       o.order_number = ?
-      WHERE o.user_id = 2 AND o_i.order_status_id = 1;
+      WHERE o.user_id = ? AND o_i.order_status_id = 1;
         `,
       [orderNumber, userId]
     );
@@ -154,12 +155,11 @@ const payment = async (userId, point) => {
 
     await queryRunner.commitTransaction();
     return userFinalPoint;
-  } catch (err) {
+  } catch (error) {
     await queryRunner.rollbackTransaction();
-    console.log(err);
-    err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 400;
-    throw err;
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 400;
+    throw error;
   } finally {
     await queryRunner.release();
   }

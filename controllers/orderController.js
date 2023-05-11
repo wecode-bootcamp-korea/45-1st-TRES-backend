@@ -36,6 +36,7 @@ const modifyOrderCount = catchAsync(async (req, res) => {
   }
 
   await orderService.modifyOrderCount(foodId, quantity, userId);
+
   return res.status(200).json({ message: "ORDER MODIFIED" });
 });
 
@@ -51,6 +52,7 @@ const deleteOrder = catchAsync(async (req, res) => {
   }
 
   const result = await orderService.deleteOrder(deleteOrderItem, userId);
+
   if (result) return res.status(200).json({ message: "ORDER DELETED" });
 
   return res.status(400).json({ message: "NO MODIFICATIONS MADE" });

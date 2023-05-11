@@ -71,6 +71,8 @@ const signUp = catchAsync(async (req, res) => {
     throw error;
   }
 
+  await passwordValidationCheck(password);
+
   await userService.signUp(
     email,
     firstName,
