@@ -34,7 +34,7 @@ const getCartFoodInfo = async (user, foodIds) => {
       f.food foodKrName,
       f.eng_food foodEngName,
       c.country country,
-      o_i.order_price,
+      o_i.order_price orderPrice,
       o_i.order_count quantitiy
       FROM users u
       JOIN orders o ON u.id = o.user_id
