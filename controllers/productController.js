@@ -14,7 +14,9 @@ const getRandomProducts = catchAsync(async (req, res) => {
   const DEFAULT_LIMIT = 10;
   const offset = from ? from : DEFAULT_OFFSET;
   const limit = count ? count : DEFAULT_LIMIT;
+
   const mainPage = await productService.getRandomProducts(offset, limit);
+
   return res.status(200).json({ mainPage });
 });
 
@@ -59,6 +61,7 @@ const getProductInfo = catchAsync(async (req, res) => {
   }
 
   const result = await productService.getProductInfo(foodId);
+
   return res.status(200).json(result);
 });
 

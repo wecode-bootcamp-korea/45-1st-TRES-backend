@@ -18,8 +18,8 @@ const getRandomProducts = async (offset, limit) => {
       OFFSET ${offset}
       `
     );
-  } catch (err) {
-    const error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+  } catch (error) {
+    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
     error.statusCode(400);
     throw error;
   }
@@ -55,6 +55,7 @@ const getAllProducts = async (
     LEFT JOIN allergy_foods af ON f.id = af.food_id
     LEFT JOIN allergies a ON a.id = af.allergy_id
     `;
+
     const whereCondition = builder.filterBuilder(
       countryId,
       spiceLevel,

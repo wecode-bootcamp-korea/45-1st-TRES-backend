@@ -5,6 +5,4 @@ const router = express.Router();
 
 router.post("", likesController.createOrDeleteLike);
 
-module.exports = {
-  router,
-};
+module.exports = { router };
