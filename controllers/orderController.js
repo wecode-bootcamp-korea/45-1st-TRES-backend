@@ -40,10 +40,9 @@ const modifyOrderCount = catchAsync(async (req, res) => {
 });
 
 const deleteOrder = catchAsync(async (req, res) => {
-  const user = req.user;
-  const userId = user.id;
-  const { deleteOrderItem } = req.body;
-
+  const userId = req.user.id;
+  const deleteOrderItem = req.query.foodId.split(',');
+  
   if (!deleteOrderItem) {
     const error = new Error("KEY_ERROR");
     error.statusCode = 400;
