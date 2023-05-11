@@ -7,9 +7,9 @@ const getUserInfo = async (user) => {
       SELECT
       u.id userId,
       u.email,
-      u.last_name,
-      u.first_name,
-      u.phone_number,
+      u.last_name lastName,
+      u.first_name firstName,
+      u.phone_number phoneNumber,
       u.points,
       a.address
       FROM addresses a
@@ -34,13 +34,18 @@ const getCartFoodInfo = async (user, foodIds) => {
       f.food foodKrName,
       f.eng_food foodEngName,
       c.country country,
-      o_i.order_price,
-      o_i.order_count quantitiy
+      o_i.order_price orderPrice,
+      o_i.order_count quantity,
+      f_i.food_image foodImage,
+      cti.eng_continent continent
       FROM users u
       JOIN orders o ON u.id = o.user_id
       JOIN order_items o_i ON o_i.id = o.order_items_id
       JOIN foods f ON f.id = o_i.food_id
       JOIN countries c ON c.id = f.country_id
+      JOIN food_images f_i ON f_i.food_id = f.id
+      JOIN countries ctr ON f.country_id = ctr.id
+	    JOIN continents cti ON cti.id = ctr.continent_id
       WHERE u.id = ? AND o_i.order_status_id = 1 AND o_i.food_id IN (?);
     `,
       [user.id, foodIds]
