@@ -53,27 +53,63 @@ const getCartFoodInfo = async (user) => {
   }
 };
 
-const checkPoint = async (user) => {
+const checkAddress = async (userId) => {
+  try {
+    const address = await dataSource.query(
+      `
+      SELECT
+      u.id,
+      a.address
+      FROM users u
+      JOIN addresses a ON u.address_id = a.id
+      WHERE users.id = ?
+      `, [userId]
+    );
+    return address[0].address;
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 500;
+    return error;
+  }
+}
+
+const updateAddress = async(userId, address) => {
   try {
     return await dataSource.query(
+      `
+      UPDATE addresses a
+      JOIN users u ON u.address_id = a.id
+      SET a.address = ?
+      WHERE u.id = ?
+      `, [address, userId]
+    );
+  } catch (error) {
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 500;
+    return error;
+  }
+}
+
+const checkPoint = async (userId) => {
+  try {
+    const result = await dataSource.query(
       `
       SELECT
       u.id,
       u.points
       FROM users u
       WHERE u.id = ?
-    `,
-      [user.id]
+    `, [userId]
     );
+    return result[0].points;
   } catch (error) {
-    console.log(err);
     error = new Error("DATA_NOT_FOUND");
     error.statusCode = 500;
     return error;
   }
 };
 
-const payment = async (user, point) => {
+const payment = async (userId, point) => {
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -87,7 +123,7 @@ const payment = async (user, point) => {
             SET points = u.points - ?
             WHERE id = ?
         `,
-      [point, user.id]
+      [point, userId]
     );
     await queryRunner.query(
       `
@@ -97,8 +133,7 @@ const payment = async (user, point) => {
       SET o_i.order_status_id = 2,
       o.order_number = ?
       WHERE o.user_id = 2 AND o_i.order_status_id = 1;
-        `,
-      [orderNumber, user.id]
+        `, [orderNumber, userId]
     );
 
     const userFinalPoint = await queryRunner.query(
@@ -107,9 +142,9 @@ const payment = async (user, point) => {
       u.points
       FROM users u
       WHERE u.id = ?
-    `,
-      [user.id]
+    `, [userId]
     );
+
     await queryRunner.commitTransaction();
     return userFinalPoint;
   } catch (err) {
@@ -125,6 +160,8 @@ const payment = async (user, point) => {
 
 module.exports = {
   // getUserCartInfo,
+  checkAddress,
+  updateAddress,
   getUserInfo,
   getCartFoodInfo,
   checkPoint,
