@@ -48,7 +48,6 @@ const addCart = async (userId, foodId, count, price) => {
     await queryRunner.commitTransaction();
     return true;
   } catch (err) {
-    console.log(err);
     await queryRunner.rollbackTransaction();
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
@@ -85,7 +84,6 @@ const updateFoodCount = async (userId, foodId, count) => {
     await queryRunner.commitTransaction();
     return true;
   } catch (error) {
-    console.log(error);
     await queryRunner.rollbackTransaction();
     error = new Error("DATASOURCE ERROR");
     error.statusCode = 500;
@@ -126,7 +124,6 @@ const getCart = async (user) => {
       [user.id]
     );
   } catch (err) {
-    console.log(err);
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
