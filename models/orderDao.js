@@ -1,7 +1,26 @@
 const dataSource = require("./dataSource");
 const queryRunner = dataSource.createQueryRunner();
 
-const addCart = async (user, products) => {
+const foodExists = async(userId, foodId) => {
+  try {
+    const [foodExists] = await dataSource.query(
+      `
+      SELECT EXISTS (
+        SELECT * FROM order_items oi
+        JOIN orders o ON o.order_items_id = oi.id
+        WHERE user_id = ? AND food_id = ?
+      )`, [userId, foodId]
+    );
+    const [result] = Object.values(foodExists);
+    return !!parseInt(result);
+  } catch (error) {
+    error = new Error("DATASOURCE ERROR");
+    error.statusCode = 500;
+    throw error;
+  }
+}
+
+const addCart = async (userId, foodId, count, price) => {
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -14,7 +33,7 @@ const addCart = async (user, products) => {
         food_id
       ) VALUES (?, ?, ?);
     `,
-      [products.price, products.count, products.foodId]
+      [price, count, foodId]
     );
     await queryRunner.query(
       `
@@ -23,19 +42,56 @@ const addCart = async (user, products) => {
           order_items_id
         ) VALUES (?, ?);
     `,
-      [user.id, orderItemsResult.insertId]
+      [userId, orderItemsResult.insertId]
     );
 
     await queryRunner.commitTransaction();
     return true;
   } catch (err) {
-    console.log(err);
     await queryRunner.rollbackTransaction();
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
   }
 };
+
+const updateFoodCount = async (userId, foodId, count) => {
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
+  try{
+    await dataSource.query(
+      `
+      UPDATE order_items oi
+      JOIN orders o ON o.order_items_id = oi.id
+      JOIN foods f ON f.id = oi.food_id
+      SET oi.order_count = oi.order_count + ?
+      WHERE oi.food_id = ?
+      AND o.user_id = ?
+      `, [count, foodId, userId]
+    );
+
+    await dataSource.query(
+      `
+      UPDATE order_items oi
+      JOIN orders o ON o.order_items_id = oi.id
+      JOIN foods ON foods.id = oi.food_id
+      SET oi.order_price = oi.order_count * foods.price
+      WHERE oi.food_id = ?
+      AND o.user_id = ?
+      `, [foodId, userId]
+    );
+    await queryRunner.commitTransaction();
+    return true;
+  } catch (error) {
+    await queryRunner.rollbackTransaction();
+    error = new Error("DATASOURCE ERROR");
+    error.statusCode = 500;
+    throw error;
+  } finally {
+    await queryRunner.release();
+  }
+}
 
 const getCart = async (user) => {
   try {
@@ -68,7 +124,6 @@ const getCart = async (user) => {
       [user.id]
     );
   } catch (err) {
-    console.log(err);
     err = new Error("DATA_NOT_FOUND");
     err.statusCode = 500;
     throw err;
@@ -116,8 +171,6 @@ const checkDeleteQuery = async (food_id, userId) => {
 };
 
 const deleteOrderItems = async (food_id, userId) => {
-  const queryRunner = dataSource.createQueryRunner();
-
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
@@ -145,7 +198,9 @@ const deleteOrderItems = async (food_id, userId) => {
 };
 
 module.exports = {
+  foodExists,
   addCart,
+  updateFoodCount,
   getCart,
   modifyOrderCount,
   checkDeleteQuery,
