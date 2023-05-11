@@ -8,7 +8,7 @@ const getRandomProducts = async (offset, limit) => {
         c.country, 
         f.food, 
         f.price, 
-        CONCAT('[', GROUP_CONCAT(fi.food_image SEPARATOR ','), ']') AS food_images
+        GROUP_CONCAT(fi.food_image SEPARATOR ',')AS food_images
       FROM countries c
       JOIN foods f ON c.id = f.country_id
       JOIN food_images fi ON f.id = fi.food_id
@@ -158,7 +158,7 @@ const getProductInfo = async (foodId) => {
   }
 };
 
-const getCategories = async() => {
+const getCategories = async () => {
   try {
     return await dataSource.query(
       `SELECT
@@ -180,7 +180,7 @@ const getCategories = async() => {
     error.statusCode = 400;
     throw error;
   }
-}
+};
 
 module.exports = {
   getRandomProducts,
