@@ -38,6 +38,7 @@ const addCart = async (userId, foodId, count, price) => {
     `,
       [price, count, foodId]
     );
+    console.log(orderItemsResult.insertId);
 
     await queryRunner.query(
       `
@@ -53,9 +54,9 @@ const addCart = async (userId, foodId, count, price) => {
     return true;
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
-    throw err;
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 500;
+    throw error;
   }
 };
 

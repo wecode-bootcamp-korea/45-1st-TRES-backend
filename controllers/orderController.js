@@ -5,6 +5,7 @@ const addCart = catchAsync(async (req, res) => {
   const user = req.user;
   const products = req.body;
   const result = await orderService.addCart(user, products);
+  console.log(result);
   if (!result) {
     error = new Error("ADD_CART_CONTROLLER_ERROR");
     error.statusCode = 400;
@@ -42,8 +43,8 @@ const modifyOrderCount = catchAsync(async (req, res) => {
 
 const deleteOrder = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const deleteOrderItem = req.query.foodId.split(',');
-  
+  const deleteOrderItem = req.query.foodId.split(",");
+
   if (!deleteOrderItem) {
     const error = new Error("KEY_ERROR");
     error.statusCode = 400;

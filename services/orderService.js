@@ -8,8 +8,9 @@ const addCart = async (user, products) => {
     const price = products.price;
     const foodExists = await orderDao.foodExists(userId, foodId);
 
-    if (foodExists)
+    if (foodExists) {
       return await orderDao.updateFoodCount(userId, foodId, count);
+    }
 
     return await orderDao.addCart(userId, foodId, count, price);
   } catch (error) {
