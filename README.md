@@ -15,7 +15,7 @@
 - <a href="https://github.com/msj102525">문승종<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
 - <a href="https://github.com/haaazzi">하지현<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
   
-
+#CC6699
 <div align="center"><h1>STACKS</h1></div>
   </br>
 <div align="center">FRONTEND</div>
@@ -24,6 +24,8 @@
     <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
     <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
     <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+      <img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=red"> 
+
   </div>
 </br>
 <div align="center">BACKEND</div>
@@ -45,8 +47,22 @@
   <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
 </div>
 </br>
-<div align="center">
+
+------------------------------------------------------------------------------------------------------------
+##About TRES 
+<div>
+  <h1>True Ramen Execute Statement</h1>
+  <h2>Execute Statement if(Ramen) it is True</h2>
+  <h2>참이라면 실행하라 라는 의미를 가지고 있습니다.</h2>
+</div>
+
+<div>
   
 </div>
+
+
+
+
+
 
 
