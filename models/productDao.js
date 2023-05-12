@@ -19,7 +19,7 @@ const getRandomProducts = async (offset, limit) => {
       `
     );
   } catch (error) {
-    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode(400);
     throw error;
   }
@@ -96,7 +96,7 @@ const getCountries = async (countryId) => {
       `, [countryId]
     );
   } catch (error) {
-    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
   };
@@ -176,7 +176,7 @@ const getCategories = async () => {
       `
     );
   } catch (error) {
-    error = new Error("FAILED_TO_BUILD_FILTER_QUERY");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
   }

@@ -1,10 +1,7 @@
 const orderDao = require("../models/orderDao");
 
-const addCart = async (userId, products) => {
+const addCart = async (userId, foodId, count, price) => {
   try {
-    const foodId = products.foodId;
-    const count = products.count;
-    const price = products.price;
     const foodExists = await orderDao.foodExists(userId, foodId);
 
     if (foodExists) await orderDao.updateFoodCount(userId, foodId, count);
