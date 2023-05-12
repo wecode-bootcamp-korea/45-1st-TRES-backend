@@ -14,7 +14,7 @@ const getUserByEmail = async (email) => {
       [email]
     );
   } catch (error) {
-    error = new Error("DATA_NOT_FOUND");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -31,7 +31,7 @@ const getCountriesList = async (req, res) => {
     ORDER BY country;
   `);
   } catch (error) {
-    error = new Error("DATA_NOT_FOUND");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
   }
@@ -62,19 +62,20 @@ const signUp = async (
     `,
       [address]
     );
+
     const userResult = await queryRunner.query(
       `
-        INSERT INTO users (
-            email,
-            first_name,
-            last_name,
-            password,
-            address_id,
-            phone_number,
-            gender,
-            birth_date
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    `,
+      INSERT INTO users (
+        email,
+        first_name,
+        last_name,
+        password,
+        address_id,
+        phone_number,
+        gender,
+        birth_date
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      `,
       [
         email,
         firstName,
@@ -86,6 +87,7 @@ const signUp = async (
         birth,
       ]
     );
+
     if (countries.length > 0) {
       const countryIds = await Promise.all(
         countries.map(async (country) => {
@@ -108,19 +110,18 @@ const signUp = async (
 
       await queryRunner.query(
         `
-      INSERT INTO country_user (
-        country_id,
-        user_id
-      ) VALUES ?;
-    `,
-        [values]
+        INSERT INTO country_user (
+          country_id,
+          user_id
+        ) VALUES ?;
+        `, [values]
       );
     }
     await queryRunner.commitTransaction();
     return true;
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    error = new Error("INVALID_DATA_INPUT");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
   } finally {
@@ -133,23 +134,22 @@ const getUserById = async (userId) => {
     return await dataSource.query(
       `
       SELECT
-      id,
-      email,
-      first_name,
-      last_name,
-      address_id,
-      phone_number,
-      points
+        id,
+        email,
+        first_name,
+        last_name,
+        address_id,
+        phone_number,
+        points
       FROM users
       WHERE id = ?;
-    `,
-      [userId]
+      `, [userId]
     );
   } catch (error) {
-    error = new Error("USER_NOT_FOUND");
+    error = new Error("DATASOURCE ERROR");
     error.statusCode = 400;
     throw error;
-  }
+  };
 };
 
 module.exports = {
