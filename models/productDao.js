@@ -7,12 +7,13 @@ const getRandomProducts = async (offset, limit) => {
       `SELECT 
         c.country, 
         f.food, 
-        f.price, 
+        f.price,
+        f.id,
         GROUP_CONCAT(fi.food_image SEPARATOR ',')AS food_images
       FROM countries c
       JOIN foods f ON c.id = f.country_id
       JOIN food_images fi ON f.id = fi.food_id
-      GROUP BY c.country, f.food, f.price
+      GROUP BY c.country, f.food, f.price, f.id
       ORDER BY RAND()
       LIMIT ${limit}
       OFFSET ${offset}
