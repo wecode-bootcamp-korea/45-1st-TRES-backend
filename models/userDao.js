@@ -52,17 +52,7 @@ const signUp = async (
 
   await queryRunner.connect();
   await queryRunner.startTransaction();
-  console.log(
-    email,
-    firstName,
-    lastName,
-    password,
-    countries,
-    phoneNumber,
-    gender,
-    birth,
-    address
-  );
+
   try {
     const addressResult = await queryRunner.query(
       `

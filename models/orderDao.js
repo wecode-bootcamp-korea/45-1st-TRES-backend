@@ -53,9 +53,11 @@ const addCart = async (userId, foodId, count, price) => {
     return true;
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    err = new Error("DATA_NOT_FOUND");
-    err.statusCode = 500;
-    throw err;
+    error = new Error("DATA_NOT_FOUND");
+    error.statusCode = 500;
+    throw error;
+  } finally {
+    await queryRunner.release();
   }
 };
 
@@ -107,27 +109,23 @@ const getCart = async (user) => {
     return await dataSource.query(
       `
       SELECT
-      o.user_id userId,
-      o.order_items_id orderItemsId,
-      o_i.id orderItemsId,
+      u.id userId,
       o_i.order_price orderPrice,
       o_i.order_count orderCount,
       o_i.food_id foodId,
       f.id,
       f.food food,
       f.eng_food engFood,
-      f.country_id countryId,
       f_i.food_image,
-      ctr.id,
       ctr.country country,
-      cti.id,
       cti.eng_continent continent
-      FROM order_items o_i
-      JOIN orders o ON o.order_items_id = o_i.id
-      JOIN foods f   ON f.id = o_i.food_id
-      JOIN countries ctr ON ctr.id = f.country_id
-      JOIN continents cti ON cti.id = ctr.continent_id
-      JOIN food_images f_i ON f.id = f_i.food_id
+      FROM users u
+      JOIN orders o ON o.user_id = u.id
+      JOIN order_items o_i ON o.order_items_id = o_i.id
+      JOIN foods f ON f.id = o_i.food_id
+	    JOIN food_images f_i ON f_i.food_id = f.id
+      JOIN countries ctr ON f.country_id = ctr.id
+      JOIN continents cti ON cti.id  = ctr.continent_id
       WHERE o.user_id = ? AND o_i.order_status_id = 1;
     `,
       [user.id]
