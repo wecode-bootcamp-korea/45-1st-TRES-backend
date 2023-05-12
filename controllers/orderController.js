@@ -51,7 +51,7 @@ const modifyOrderCount = catchAsync(async (req, res) => {
 
 const deleteOrder = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const deleteOrderItem = req.query.foodId.split(',');
+  const deleteOrderItem = req.query.foodId.split(",");
 
   if (!deleteOrderItem) {
     const error = new Error("KEY_ERROR");

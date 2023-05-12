@@ -31,15 +31,15 @@ const addCart = async (userId, foodId, count, price) => {
         order_count,
         food_id
       ) VALUES (?, ?, ?);
-    `, [price, count, foodId]
+      `, [price, count, foodId]
     );
     await queryRunner.query(
       `
-        INSERT INTO orders (
-          user_id,
-          order_items_id
-        ) VALUES (?, ?);
-    `, [userId, orderItemsResult.insertId]
+      INSERT INTO orders (
+        user_id,
+        order_items_id
+      ) VALUES (?, ?);
+      `, [userId, orderItemsResult.insertId]
     );
 
     await queryRunner.commitTransaction();
@@ -59,7 +59,8 @@ const updateFoodCount = async (userId, foodId, count) => {
   await queryRunner.connect();
 
   await queryRunner.startTransaction();
-  try{
+
+  try {
     await queryRunner.query(
       `
       UPDATE order_items oi
@@ -99,30 +100,25 @@ const getCart = async (userId) => {
     return await dataSource.query(
       `
       SELECT
-        o.user_id userId,
-        o.order_items_id orderItemsId,
-        oi.id orderItemsId,
+        u.id userId,
         oi.order_price orderPrice,
         oi.order_count orderCount,
         oi.food_id foodId,
         f.id,
         f.food food,
         f.eng_food engFood,
-        f.country_id countryId,
-        f_i.food_image,
-        c.id,
+        fi.food_image,
         c.country country,
-        co.id,
         co.eng_continent continent
       FROM users u
       JOIN orders o ON o.user_id = u.id
-      JOIN order_items o_i ON o.order_items_id = o_i.id
-      JOIN foods f ON f.id = o_i.food_id
-      JOIN food_images f_i ON f_i.food_id = f.id
-      JOIN countries ctr ON f.country_id = ctr.id
-      JOIN continents cti ON cti.id  = ctr.continent_id
-      WHERE o.user_id = ? AND o_i.order_status_id = 1;
-    `, [userId]
+      JOIN order_items oi ON o.order_items_id = oi.id
+      JOIN foods f ON f.id = oi.food_id
+	    JOIN food_images fi ON fi.food_id = f.id
+      JOIN countries c ON f.country_id = c.id
+      JOIN continents co ON co.id  = c.continent_id
+      WHERE o.user_id = ? AND oi.order_status_id = 1;
+      `, [userId]
     );
   } catch (err) {
     err = new Error("DATA_NOT_FOUND");
@@ -134,13 +130,14 @@ const getCart = async (userId) => {
 const modifyOrderCount = async (foodId, quantity, userId) => {
   try {
     return await dataSource.query(
-      `UPDATE order_items
+      `
+      UPDATE order_items
       JOIN orders ON orders.order_items_id = order_items.id
       JOIN foods ON foods.id = order_items.food_id
       SET order_items.order_count = ?, order_items.order_price = foods.price * ?
       WHERE order_items.food_id = ?
       AND orders.user_id = ?
-    `, [quantity, quantity, foodId, userId]
+      `, [quantity, quantity, foodId, userId]
     );
   } catch (error) {
     error = new Error("DATASOURCE ERROR");
@@ -174,6 +171,7 @@ const deleteOrderItems = async (deleteOrderItem, userId) => {
   await queryRunner.connect();
 
   await queryRunner.startTransaction();
+  
   try {
     await queryRunner.query(
       `
