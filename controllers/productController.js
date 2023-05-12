@@ -12,6 +12,7 @@ const getRandomProducts = catchAsync(async (req, res) => {
 
   const DEFAULT_OFFSET = 1;
   const DEFAULT_LIMIT = 10;
+  
   const offset = from ? from : DEFAULT_OFFSET;
   const limit = count ? count : DEFAULT_LIMIT;
 
