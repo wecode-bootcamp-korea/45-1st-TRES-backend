@@ -1,4 +1,5 @@
 const dataSource = require("./dataSource");
+const orderStatusEnum = require("./enum");
 
 const foodExists = async(userId, foodId) => {
   try {
@@ -21,8 +22,10 @@ const foodExists = async(userId, foodId) => {
 
 const addCart = async (userId, foodId, count, price) => {
   const queryRunner = dataSource.createQueryRunner();
+
   await queryRunner.connect();
   await queryRunner.startTransaction();
+
   try {
     const orderItemsResult = await queryRunner.query(
       `
@@ -117,7 +120,7 @@ const getCart = async (userId) => {
 	    JOIN food_images fi ON fi.food_id = f.id
       JOIN countries c ON f.country_id = c.id
       JOIN continents co ON co.id  = c.continent_id
-      WHERE o.user_id = ? AND oi.order_status_id = 1;
+      WHERE o.user_id = ? AND oi.order_status_id = ${orderStatusEnum.PENDING};
       `, [userId]
     );
   } catch (err) {
@@ -171,7 +174,7 @@ const deleteOrderItems = async (deleteOrderItem, userId) => {
   await queryRunner.connect();
 
   await queryRunner.startTransaction();
-  
+
   try {
     await queryRunner.query(
       `
