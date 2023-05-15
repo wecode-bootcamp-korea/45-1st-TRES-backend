@@ -110,7 +110,7 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 <br>
 <h2>장바구니</h2>
-<img src=web-images/payment.jpg>
+<img src=web-images/cart.jpg>
 장바구니에 추가한 음식을 나열해서 목록으로 보여주고 제품목록에서 구매하려는 제품을 선택 시 제품들의 총 금액을 보여줍니다. 그리고 추천 제품 목록에서 추천하는 음식을 보여줍니다.<br>
 <br>
 [FE]<br>
