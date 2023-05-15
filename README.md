@@ -76,7 +76,7 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 <br>
 <h2>메인페이지/네비게이션 바</h2>
 <img src=web-images/main.jpg>
-![메인_대륙캐러셀](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/2b2adf7e-9ce5-4f67-bab5-cf023afa263a)
+https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/2b2adf7e-9ce5-4f67-bab5-cf023afa263a
 큰 카테고리들을 통하거나, 배너를 통해 상세 페이지로 넘어갈 수 있습니다. 로그인 상태를 알려 줍니다.<br>
 <br>
 [FE]<br>
