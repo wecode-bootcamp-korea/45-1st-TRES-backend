@@ -1,7 +1,7 @@
 const dataSource = require("./dataSource");
 const orderStatusEnum = require("./enum");
 
-const foodExists = async(userId, foodId) => {
+const foodExists = async (userId, foodId) => {
   try {
     const [foodExists] = await dataSource.query(
       `
@@ -9,7 +9,8 @@ const foodExists = async(userId, foodId) => {
         SELECT * FROM order_items oi
         JOIN orders o ON o.order_items_id = oi.id
         WHERE user_id = ? AND food_id = ?
-      )`, [userId, foodId]
+      )`,
+      [userId, foodId]
     );
     const [result] = Object.values(foodExists);
     return !!parseInt(result);
@@ -18,7 +19,7 @@ const foodExists = async(userId, foodId) => {
     error.statusCode = 400;
     throw error;
   }
-}
+};
 
 const addCart = async (userId, foodId, count, price) => {
   const queryRunner = dataSource.createQueryRunner();
@@ -34,7 +35,8 @@ const addCart = async (userId, foodId, count, price) => {
         order_count,
         food_id
       ) VALUES (?, ?, ?);
-      `, [price, count, foodId]
+      `,
+      [price, count, foodId]
     );
     await queryRunner.query(
       `
@@ -42,7 +44,8 @@ const addCart = async (userId, foodId, count, price) => {
         user_id,
         order_items_id
       ) VALUES (?, ?);
-      `, [userId, orderItemsResult.insertId]
+      `,
+      [userId, orderItemsResult.insertId]
     );
 
     await queryRunner.commitTransaction();
@@ -72,7 +75,8 @@ const updateFoodCount = async (userId, foodId, count) => {
       SET oi.order_count = oi.order_count + ?
       WHERE oi.food_id = ?
       AND o.user_id = ?
-      `, [count, foodId, userId]
+      `,
+      [count, foodId, userId]
     );
 
     await queryRunner.query(
@@ -83,9 +87,10 @@ const updateFoodCount = async (userId, foodId, count) => {
       SET oi.order_price = oi.order_count * foods.price
       WHERE oi.food_id = ?
       AND o.user_id = ?
-      `, [foodId, userId]
+      `,
+      [foodId, userId]
     );
-    
+
     await queryRunner.commitTransaction();
     return true;
   } catch (error) {
@@ -96,7 +101,7 @@ const updateFoodCount = async (userId, foodId, count) => {
   } finally {
     await queryRunner.release();
   }
-}
+};
 
 const getCart = async (userId) => {
   try {
@@ -121,7 +126,8 @@ const getCart = async (userId) => {
       JOIN countries c ON f.country_id = c.id
       JOIN continents co ON co.id  = c.continent_id
       WHERE o.user_id = ? AND oi.order_status_id = ${orderStatusEnum.PENDING};
-      `, [userId]
+      `,
+      [userId]
     );
   } catch (err) {
     err = new Error("DATA_NOT_FOUND");
@@ -140,7 +146,8 @@ const modifyOrderCount = async (foodId, quantity, userId) => {
       SET order_items.order_count = ?, order_items.order_price = foods.price * ?
       WHERE order_items.food_id = ?
       AND orders.user_id = ?
-      `, [quantity, quantity, foodId, userId]
+      `,
+      [quantity, quantity, foodId, userId]
     );
   } catch (error) {
     error = new Error("DATASOURCE ERROR");
@@ -160,7 +167,8 @@ const checkDeleteQuery = async (deleteOrderItem, userId) => {
       FROM order_items oi
       INNER JOIN orders o ON o.order_items_id = oi.id
       WHERE o.user_id = ? AND oi.food_id IN (?)
-      `, [userId, deleteOrderItem]
+      `,
+      [userId, deleteOrderItem]
     );
   } catch (error) {
     error = new Error("DATASOURCE ERROR");
@@ -182,14 +190,16 @@ const deleteOrderItems = async (deleteOrderItem, userId) => {
       WHERE order_items_id IN (
         SELECT id FROM order_items WHERE food_id IN (${deleteOrderItem})
       ) AND user_id = ?
-      `, [userId]
+      `,
+      [userId]
     );
-    
+
     await queryRunner.query(
       `
       DELETE FROM order_items
       WHERE food_id IN (${deleteOrderItem})
-      `, [userId]
+      `,
+      [userId]
     );
 
     await queryRunner.commitTransaction();
