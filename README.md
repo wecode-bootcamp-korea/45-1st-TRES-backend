@@ -74,7 +74,7 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 저장되어 있는 여러가지 정보를 바탕으로 추천 상품, 주문 시 배송지 불러오기, 메인페이지 상단 회원 닉네임 띄우기 등 다양한 기능으로 이어질 수 있다.
 <br>
 <br>
-![메인_대륙캐러셀](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/dd1f10e6-2207-4f8c-abdc-4a9a548c541b)
+![메인_대륙캐러셀](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/bdc349c4-7102-4029-b270-6ed8619e6640)
 <h2>메인페이지/네비게이션 바</h2>
 <img src=web-images/main.jpg>
 큰 카테고리들을 통하거나, 배너를 통해 상세 페이지로 넘어갈 수 있습니다. 로그인 상태를 알려 줍니다.<br>
