@@ -100,6 +100,7 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 <br>
 <h2>상품 상세</h2>
+![언어변경](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/35baeca4-ebe0-45e7-af8f-aa372141af95)
 <img src=web-images/product_detail.jpg>
 이름,가격,알러지 여부, 채식여부, 상품의 대한 설명 등과 같은 정보들을 상세 페이지에서 표시함으로, 사용자들은 정확한 정보를 통해 상품에 대한 구매 의사 결정. <br>
 <br>
