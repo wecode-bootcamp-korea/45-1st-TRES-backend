@@ -5,16 +5,18 @@
 </div>
 
 ## FrontEnd
+
 - <a href="https://github.com/Taywony">김태원<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/hongyeollee"/></a>
 - <a href="https://github.com/jeonga-yeon">연정아<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/hongyeollee"/></a>
 - <a href="https://github.com/min2oyo">양진민<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/hongyeollee"/></a>
 - <a href="https://github.com/jeonseungbeom">전승범<img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white&link=https://github.com/hongyeollee"/></a>
 
 ## BackEnd
+
 - <a href="https://github.com/innichang">장인석(Inseok Chang)<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
 - <a href="https://github.com/msj102525">문승종<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
 - <a href="https://github.com/haaazzi">하지현(Jihyeon Ha)<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
-  
+
 <div align="center"><h1>STACKS</h1></div>
   </br>
 <div align="center">FRONTEND</div>
@@ -23,7 +25,7 @@
     <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
     <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
     <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
-      <img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=red"> 
+      <img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=sass&logoColor=red">
 
   </div>
 </br>
@@ -47,7 +49,8 @@
 </div>
 </br>
 
-------------------------------------------------------------------------------------------------------------
+---
+
 <h2>About TRES</h2> 
 <div>
   <h1>True Ramen Execute Statement</h1>
@@ -132,11 +135,3 @@ DB가 주문 물품을 담아놓는 order_items 테이블, 주문 내역을 담�
 [BE]<br>
 프론트에서 이미 한번 계산을 통해 걸러 들어온 데이터를 더 확실하게 처리하기 위해, 백에서 한번더 보유 포인트와, 결제비용을 비교해서, 가능치 않으면 불가능 메시지 출력, 계산이 가능하면 Transaction을 이용한 처리. Transaction 중 에러 발생시, 모든 결제에 대한 동작 및 정보가 소멸.  
 <br>
-
-
-
-
-
-
-
-
