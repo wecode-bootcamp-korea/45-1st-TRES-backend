@@ -13,7 +13,7 @@
 ## BackEnd
 - <a href="https://github.com/innichang">장인석(Inseok Chang)<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
 - <a href="https://github.com/msj102525">문승종<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
-- <a href="https://github.com/haaazzi">하지현<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
+- <a href="https://github.com/haaazzi">하지현(Jihyeon Ha)<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></a>
   
 <div align="center"><h1>STACKS</h1></div>
   </br>
