@@ -65,7 +65,12 @@
 <br>
 <br>
 <h2>로그인/회원가입</h2>
-<img src=web-images/login.jpg>
+<!-- <img src=web-images/login.jpg> -->
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/bc94544a-5166-4913-a9d0-7552d5112171"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/4e13ddb4-9ce6-422b-aa7a-73a35516cdb4"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/0928bb94-dc16-4e7a-82ed-e5fab387019a"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/14365785-e9c0-4010-9017-7dbc12907d5c"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/2f5f5cfe-2ac3-4a48-9293-673c973926e9"></img><br>
 이메일 입력을 통한 회원가입 또는 로그인으로 이어집니다. 회원가입 도중 선호하는 음식의 국가를 선택하여 미래에 웹사이트를 이용할때, 그에 맞는 추천 음식의 대한 정보를 전달 받습니다.<br>
 <br>
 [FE]<br>
@@ -78,8 +83,12 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 <br>
 <br>
 <h2>메인페이지/네비게이션 바</h2>
-<img src=web-images/main.jpg>
+<!-- <img src=web-images/main.jpg> -->
 큰 카테고리들을 통하거나, 배너를 통해 상세 페이지로 넘어갈 수 있습니다. 로그인 상태를 알려 줍니다.<br>
+<img width="1200" alt="로그인전" src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/e7b0b915-51a8-4e63-ad09-3164b8c1a2bc"><br>
+<img width="1200" alt="로그인후" src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/b8d18c08-0d0e-499f-abe7-f22bc0726daa"><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/5969d419-c08e-4eba-aae3-ddd1ff7dc3f0"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/0ce21133-b8bd-4fc0-9e28-f0b9ff934cb3"></img><br>
 <br>
 [FE]<br>
 여러 캐러셀을 통해 많은 정보를 전달합니다. <br>
@@ -90,7 +99,10 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 <br>
 <br>
 <h2>상품 리스트</h2>
-<img src=web-images/product_list.jpg>
+<!-- <img src=web-images/product_list.jpg> -->
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fa6fd96f-2146-4a99-9a43-d5084f3e5c8c"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/1e7f5601-193d-45eb-b3ec-34c48bd13b11"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9d7dbe2a-aef4-4002-a13e-1cd196e3d133"></img><br>
 필터 기능을 구현해 사용자들이 자신의 입맛에 맞게 상품을 필터링/정렬을 할 수 있습니다. <br>또한, 보기 편하도록 한국어와 영어로 음식의 이름이 표기되어잇고, 한 줄에 3개의 상품을 나열하였습니다. <br>사용자들은 현재 인기 상품에 흥미가 생기는 경향이 잇고, 가격순으로 결정하는 경우가 있기 때문에 인기순, 가격순으로 정렬할 수 있는 기능을 구현했습니다.  <br>
 <br>
 [FE]<br>
@@ -102,8 +114,11 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 <br>
 <h2>상품 상세</h2>
-![언어변경](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/109189690/35baeca4-ebe0-45e7-af8f-aa372141af95)
-<img src=web-images/product_detail.jpg>
+<!-- <img src=web-images/product_detail.jpg> -->
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/7becb7ae-310c-4b25-ab39-1e9e60cfd677"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fabbca74-0b8e-4051-a817-dbac7416b784"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/8050882e-7b07-4f41-8a9b-fb66620f80ba"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/260aa1ae-de85-4571-8505-3533af3ff3e7"></img><br>
 이름,가격,알러지 여부, 채식여부, 상품의 대한 설명 등과 같은 정보들을 상세 페이지에서 표시함으로, 사용자들은 정확한 정보를 통해 상품에 대한 구매 의사 결정. <br>
 <br>
 [FE]<br>
@@ -114,7 +129,8 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 <br>
 <h2>장바구니</h2>
-<img src=web-images/cart.jpg>
+<!-- <img src=web-images/cart.jpg> -->
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/ba4c0535-3aba-49e1-8308-b9e58414976f"></img><br>
 장바구니에 추가한 음식을 나열해서 목록으로 보여주고 제품목록에서 구매하려는 제품을 선택 시 제품들의 총 금액을 보여줍니다. 그리고 추천 제품 목록에서 추천하는 음식을 보여줍니다.<br>
 <br>
 [FE]<br>
@@ -125,7 +141,9 @@ DB가 주문 물품을 담아놓는 order_items 테이블, 주문 내역을 담�
 <br>
 <br>
 <h2>결제</h2>
-<img src=web-images/payment.jpg>
+<!-- <img src=web-images/payment.jpg> -->
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9cb52b7a-6a98-4186-a0f1-f8dfdde77bc4"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/f2852945-0b88-40f0-8f80-2f62692aaaee"></img><br>
 회원가입시 입력했던 배송지가 기본 배송지로 설정되어 있고 보유하고 있는 포인트와 총결제 비용을 통해 결제가 가능한지 확인합니다.<br>
 <br>
 [FE]<br>
