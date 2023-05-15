@@ -3,9 +3,9 @@ const { catchAsync } = require("../utils/error");
 
 const getUserCartInfo = catchAsync(async (req, res) => {
   const userId = req.user.id;
-  const foodId = req.body;
+  const foodIds = req.body.foodId;
 
-  const result = await paymentService.getUserCartInfo(userId, foodId);
+  const result = await paymentService.getUserCartInfo(userId, foodIds);
 
   if (!result) {
     error = new Error("CART_NOT_FOUND!!");

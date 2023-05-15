@@ -13,9 +13,10 @@ const getUserInfo = async (userId) => {
         u.points,
         a.address
       FROM addresses a
-      JOIN users u ON a.id = u.id
+      JOIN users u ON a.id = u.address_id
       WHERE u.id = ?;
-      `, [userId]
+      `,
+      [userId]
     );
   } catch (error) {
     error = new Error("DATASOURCE ERROR");
@@ -24,7 +25,7 @@ const getUserInfo = async (userId) => {
   }
 };
 
-const getCartFoodInfo = async (userId, foodId) => {
+const getCartFoodInfo = async (userId, foodIds) => {
   try {
     return await dataSource.query(
       `
@@ -43,10 +44,10 @@ const getCartFoodInfo = async (userId, foodId) => {
       JOIN foods f ON f.id = oi.food_id
       JOIN countries c ON c.id = f.country_id
       JOIN food_images fi ON fi.food_id = f.id
-      JOIN countries c ON f.country_id = c.id
 	    JOIN continents co ON co.id = c.continent_id
       WHERE u.id = ? AND oi.order_status_id = 1 AND oi.food_id IN (?);
-    `, [userId, foodId]
+    `,
+      [userId, foodIds]
     );
   } catch (error) {
     error = new Error("DATASOURCE ERROR");
@@ -66,7 +67,8 @@ const checkAddress = async (userId) => {
       FROM users u
       JOIN addresses a ON u.address_id = a.id
       WHERE u.id = ?
-      `, [userId]
+      `,
+      [userId]
     );
     return address[0].address;
   } catch (error) {
@@ -103,7 +105,8 @@ const checkPoint = async (userId) => {
         u.points
       FROM users u
       WHERE u.id = ?
-    `, [userId]
+    `,
+      [userId]
     );
     return result[0].points;
   } catch (error) {
@@ -128,7 +131,8 @@ const payment = async (userId, point) => {
         users u
       SET points = u.points - ?
       WHERE id = ?
-      `, [point, userId]
+      `,
+      [point, userId]
     );
 
     await queryRunner.query(
@@ -138,7 +142,8 @@ const payment = async (userId, point) => {
       JOIN order_items oi ON o.order_items_id = oi.id
       SET oi.order_status_id = 2, o.order_number = ?
       WHERE o.user_id = ? AND oi.order_status_id = 1;
-        `, [orderNumber, userId]
+        `,
+      [orderNumber, userId]
     );
 
     const userFinalPoint = await queryRunner.query(
@@ -147,7 +152,8 @@ const payment = async (userId, point) => {
       u.points
       FROM users u
       WHERE u.id = ?
-    `, [userId]
+    `,
+      [userId]
     );
 
     await queryRunner.commitTransaction();
