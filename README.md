@@ -56,6 +56,7 @@
 </div>
 
 <h2>로그인/회원가입</h2>
+![login](https://github.com/wecode-bootcamp-korea/45-1st-TRES-backend/assets/126100135/0a8ea3dc-014d-4f49-aa05-5c28ad0f321e) <br>
 이메일 입력을 통한 회원가입 또는 로그인으로 이어집니다. 회원가입 도중 선호하는 음식의 국가를 선택하여 미래에 웹사이트를 이용할때, 그에 맞는 추천 음식의 대한 정보를 전달 받습니다.
 <br>
 [FE]<br>
