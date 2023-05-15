@@ -101,9 +101,6 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 <h2>상품 리스트</h2>
 <!-- <img src=web-images/product_list.jpg> -->
 필터 기능을 구현해 사용자들이 자신의 입맛에 맞게 상품을 필터링/정렬을 할 수 있습니다. <br>또한, 보기 편하도록 한국어와 영어로 음식의 이름이 표기되어잇고, 한 줄에 3개의 상품을 나열하였습니다. <br>사용자들은 현재 인기 상품에 흥미가 생기는 경향이 잇고, 가격순으로 결정하는 경우가 있기 때문에 인기순, 가격순으로 정렬할 수 있는 기능을 구현했습니다.<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fa6fd96f-2146-4a99-9a43-d5084f3e5c8c"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/1e7f5601-193d-45eb-b3ec-34c48bd13b11"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9d7dbe2a-aef4-4002-a13e-1cd196e3d133"></img><br>
 <br>
 <br>
 [FE]<br>
@@ -112,6 +109,9 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 [BE]<br>
 Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 그에 맞는 정보를 전달 가능 <br>
 조건문을 사용한 base query, condition query, sorty query와 limit query를 스트링으로 연결해 query문을 보냄<br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fa6fd96f-2146-4a99-9a43-d5084f3e5c8c"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/1e7f5601-193d-45eb-b3ec-34c48bd13b11"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9d7dbe2a-aef4-4002-a13e-1cd196e3d133"></img><br>
 <br>
 <br>
 <h2>상품 상세</h2>
