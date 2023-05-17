@@ -75,11 +75,11 @@
 로그인시 유저의 고유 id가 담긴 숫자를 JWT를 통해 보내, 유저가 API와 통신 요청시 항상 id를 체크하여 동작<br>
 Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 저장되어 있는 여러가지 정보를 바탕으로 추천 상품, 주문 시 배송지 불러오기, 메인페이지 상단 회원 닉네임 띄우기 등 다양한 기능으로 이어질 수 있다.<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/bc94544a-5166-4913-a9d0-7552d5112171"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/4e13ddb4-9ce6-422b-aa7a-73a35516cdb4"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/0928bb94-dc16-4e7a-82ed-e5fab387019a"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/14365785-e9c0-4010-9017-7dbc12907d5c"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/2f5f5cfe-2ac3-4a48-9293-673c973926e9"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/411b9ac1-9fb9-4656-a521-3999d616e4e0"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/a4bcb3bd-5329-469b-9e0a-aaab065b2f15"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fe515815-5516-4a3f-b41e-d3ef4c941e2d"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/f40078e9-15c8-42d9-a545-83f0c534978f"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/dac50e35-c078-4183-b4b4-db12e6667177"></img><br>
 <br>
 <br>
 <h2>메인페이지/네비게이션 바</h2>
@@ -95,7 +95,7 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 <img width="1200" alt="로그인전" src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/e7b0b915-51a8-4e63-ad09-3164b8c1a2bc"><br>
 <img width="1200" alt="로그인후" src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/b8d18c08-0d0e-499f-abe7-f22bc0726daa"><br>
 <img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/5969d419-c08e-4eba-aae3-ddd1ff7dc3f0"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/0ce21133-b8bd-4fc0-9e28-f0b9ff934cb3"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/08fe7b2d-f3ec-41c3-b9ca-aca5304ae768"></img><br>
 <br>
 <br>
 <h2>상품 리스트</h2>
@@ -109,9 +109,9 @@ Bcrypt를 사용한 password hashing으로 유저 정보 보안 강화<br>
 [BE]<br>
 Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 그에 맞는 정보를 전달 가능 <br>
 조건문을 사용한 base query, condition query, sorty query와 limit query를 스트링으로 연결해 query문을 보냄<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fa6fd96f-2146-4a99-9a43-d5084f3e5c8c"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/1e7f5601-193d-45eb-b3ec-34c48bd13b11"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9d7dbe2a-aef4-4002-a13e-1cd196e3d133"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9efa8fba-2f60-4467-9246-2b075bf9099c"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fc9c44b9-9e79-487d-957a-880f4aa5edc9"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/342c69d2-b241-49f8-bb19-918524f9791e"></img><br>
 <br>
 <br>
 <h2>상품 상세</h2>
@@ -123,10 +123,10 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 [BE]<br>
 클라이언트에서 요청하는 상품에 대한 상세 정보를 이미 가공된 형태로 전달해, 클라이언트가 더 쉽게 정보를 나열 할 수 있도록 도와줍니다.<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/7becb7ae-310c-4b25-ab39-1e9e60cfd677"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/fabbca74-0b8e-4051-a817-dbac7416b784"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/8050882e-7b07-4f41-8a9b-fb66620f80ba"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/260aa1ae-de85-4571-8505-3533af3ff3e7"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/abd09255-e949-49ad-bd5c-7c458013db80"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/f2f8a7b2-6eaf-47d2-b1f8-43fef73b3f80"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/10fbe896-01c1-4aa8-b723-75ee0eede639"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/2fddc86f-de8e-4b7b-8b59-50a30c23ccc3"></img><br>
 <br>
 <br>
 <h2>장바구니</h2>
@@ -138,7 +138,7 @@ Filter Builder를 제작해 다양한 합집합/교집합의 요청이 와도 �
 <br>
 [BE]<br>
 DB가 주문 물품을 담아놓는 order_items 테이블, 주문 내역을 담아 놓는 orders 테이블로 관리되어, Transaction으로 장바구니 상품 삭제 기능을 구현. (어떻게 더 효율적으로 주문 물품/주문내역/장바구니를 관리하고, 과거 주문 내역을 저장할 지 더 생각해볼 예정)<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/ba4c0535-3aba-49e1-8308-b9e58414976f"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/4ab5f303-5649-4c6c-b899-48a1663896f9"></img><br>
 <br>
 <br>
 <h2>결제</h2>
@@ -150,6 +150,6 @@ DB가 주문 물품을 담아놓는 order_items 테이블, 주문 내역을 담�
 <br>
 [BE]<br>
 프론트에서 이미 한번 계산을 통해 걸러 들어온 데이터를 더 확실하게 처리하기 위해, 백에서 한번더 보유 포인트와, 결제비용을 비교해서, 가능치 않으면 불가능 메시지 출력, 계산이 가능하면 Transaction을 이용한 처리. Transaction 중 에러 발생시, 모든 결제에 대한 동작 및 정보가 소멸.<br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/9cb52b7a-6a98-4186-a0f1-f8dfdde77bc4"></img><br>
-<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/f2852945-0b88-40f0-8f80-2f62692aaaee"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/09b9efe9-72f3-47ef-a56e-98658b87e1f6"></img><br>
+<img src="https://github.com/wecode-bootcamp-korea/45-1st-TRES-frontend/assets/109189690/8c2296bc-88a5-42c0-a068-6bff900ab679"></img><br>
 <br>
